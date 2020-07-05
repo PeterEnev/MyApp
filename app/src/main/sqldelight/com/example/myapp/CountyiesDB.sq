@@ -1,0 +1,35 @@
+
+CREATE TABLE CountriesCode (
+    countryCodeID       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    countryName         TEXT        NOT NULL,
+    countryPrefix       TEXT        NOT NULL
+);
+
+INSERT INTO CountriesCode (countryName, countryPrefix)
+VALUES ('ALASKA', '+1907'),('BULGARIA','+359'),('TURKEY', '+90'),('POLAND', '+48'),('PERU', '+51'),
+('PHILIPPINES', '+63'),('POLAND', '+48'),('PORTUGAL', '+351'),('PUERTO RICO', '+1787'),('QATAR', '+974'),
+('ROMANIA', '+40'),('RUSSIAN FEDERATION', '+7'),('SIERRA LEONE', '+232'),('SINGAPORE', '+65'),
+('SLOVAK REPUBLIC', '+421'),('SLOVENIA', '+386'),('SWAZILAND', '+268'),('SWEDEN', '+46'),
+('SWITZERLAND', '+41'),('UGANDA', '+256'),('UKRAINE', '+380'),('UZBEKISTAN', '+998'),('VIETNAM', '+84');
+
+selectAll:
+SELECT *
+FROM CountriesCode;
+
+selectAllCountry:
+SELECT countryName, countryPrefix
+FROM CountriesCode;
+
+selectCountry:
+SELECT *
+FROM CountriesCode
+WHERE countryName =?;
+
+selectPhonePrefix:
+SELECT countryPrefix
+FROM CountriesCode
+WHERE countryName =?;
+
+insertCountryCode:
+INSERT INTO CountriesCode(countryName, countryPrefix)
+VALUES (?, ?);

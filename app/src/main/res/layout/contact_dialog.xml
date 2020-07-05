@@ -1,0 +1,124 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="376dp"
+    android:layout_height="270dp"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialogTextNameTxt"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:text="@string/name_dialog"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/dialogContactNameTxt"
+            android:layout_width="240dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/dialogTextNameTxt" />
+
+        <TextView
+            android:id="@+id/dialogTextPhoneTxt"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogTextNameTxt"
+            android:layout_marginTop="10dp"
+            android:text="@string/phone_dialog"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/dialogContactPhoneTxt"
+            android:layout_width="240dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogContactNameTxt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/dialogTextPhoneTxt" />
+
+        <TextView
+            android:id="@+id/dialogContactMailTxt"
+            android:layout_width="240dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogContactPhoneTxt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/dialogTextMailTxt" />
+
+        <TextView
+            android:id="@+id/dialogContactCountryTxt"
+            android:layout_width="240dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogContactMailTxt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/dialogTextMailTxt" />
+
+        <TextView
+            android:id="@+id/dialogTextMailTxt"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogTextPhoneTxt"
+            android:layout_marginTop="10dp"
+            android:text="@string/email_dialog"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/dialogTextCountryTxt"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogTextMailTxt"
+            android:layout_marginTop="10dp"
+            android:text="@string/country_dialog"
+            android:textAlignment="textEnd" />
+        <TextView
+            android:id="@+id/dialogTextGenderTxt"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogTextCountryTxt"
+            android:layout_marginTop="10dp"
+            android:text="@string/Gender"
+            android:textAlignment="textEnd" />
+        <TextView
+            android:id="@+id/dialogContactGenderTxt"
+            android:layout_width="240dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dialogContactCountryTxt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/dialogTextGenderTxt" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/dialogTextGenderTxt"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialogCancelBtn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/dialog_text_gender_txt"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/dialogEditBtn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/edit" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>
