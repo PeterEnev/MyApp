@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.country_search_dialog.*
 class ContactActivity : AppCompatActivity(), ContactView {
 
     val contactPresenter: ContactPresenter = ContactPresenter(this)
-   // private lateinit var contactPresenter: ContactPresenter
 
     init {
         instance = this
@@ -46,7 +45,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         var contactId       = DEFAULT_VALUE_NEW_CONTACT
 
         if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
-            var editContact = intent.getSerializableExtra(CONTACT) as? Contact
+            val editContact = intent.getSerializableExtra(CONTACT) as? Contact
             contactId = editContact!!.contactID!!.toLong()
             firstNameInput  .setText(editContact!!.contactFirstName)
             lastNameInput   .setText(editContact.contactLastName)
@@ -198,7 +197,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
     }
 
     override fun navigateToMainActivity(status: Int) {
-        var message = getString(R.string.MSG_SAVE_SUCCESSFUL)
+        val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
