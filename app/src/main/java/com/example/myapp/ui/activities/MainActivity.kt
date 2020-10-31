@@ -1,5 +1,8 @@
 package com.example.myapp.ui.activities
 
+
+//import android.2.permission.READ_CONTACTS
+//import
 import android.Manifest.permission.READ_CONTACTS
 import android.content.Context
 import android.content.Intent
@@ -67,7 +70,7 @@ class MainActivity : AppCompatActivity(), MainView {
         var phoneContact: ArrayList<Contact> = getPhoneContact()
         contactList.addAll(phoneContact)
         var listContactRenew = contactList
-        var contactListAdapter = ContactListAdapter(listContactRenew, this)
+        var contactListAdapter = ContactListAdapter(listContactRenew)
 
         mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
         mainActivityRecyclerView.adapter = contactListAdapter
@@ -81,7 +84,7 @@ class MainActivity : AppCompatActivity(), MainView {
                         listContactRenew.add(contactList[i])
                     }
                 }
-                contactListAdapter = ContactListAdapter(listContactRenew, context = this@MainActivity)
+                contactListAdapter = ContactListAdapter(listContactRenew)
                 mainActivityRecyclerView.adapter = contactListAdapter
             }
 
