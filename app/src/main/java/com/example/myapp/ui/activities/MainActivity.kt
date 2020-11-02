@@ -27,11 +27,11 @@ class MainActivity : AppCompatActivity(), MainView {
 
     val mainPresenter: MainPresenter = MainPresenter(this)
 
-    init {
+    /*init {
         instance = this
-    }
+    }*/
     companion object{
-        private var instance: MainActivity? = null
+        //private var instance: MainActivity? = null
 
         val CONTACT_STATUS                  : String    = "contactStatus"
         val CONTACT_STATUS_NEW              : String    = "new"
@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity(), MainView {
         val DEFAULT_VALUE_PHONE_CONTACT     : Long      = -2
         val STORAGE_PERMISSION_CODE         : Int       = 1
 
-        fun applicationContext() : Context {
+        /*fun applicationContext() : Context {
             return instance!!.applicationContext
-        }
+        }*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

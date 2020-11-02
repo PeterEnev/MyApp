@@ -2,19 +2,17 @@ package com.example.myapp
 
 import android.app.Application
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 
 
 class MyApplication : Application() {
+    companion object {
+        lateinit var instansce: MyApplication
+    }
     override fun onCreate() {
         super.onCreate()
-        // Required initialization logic here!
-    }
+        instansce = this
 
-    override fun onConfigurationChanged ( newConfig : Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 }

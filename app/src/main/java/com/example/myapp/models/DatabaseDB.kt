@@ -6,13 +6,14 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.example.myapp.ContactsDBQueries
 import com.example.myapp.CountyiesDBQueries
 import com.example.myapp.Database
+import com.example.myapp.MyApplication
 import com.example.myapp.ui.activities.MainActivity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.delay
 
 class DatabaseDB {
-    val context             : Context               = MainActivity.applicationContext()
+    val context             : Context               = MyApplication.instansce
     val databaseName        : String                = "test.db"
     val driver              : SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
     val database            : Database              = Database(driver)

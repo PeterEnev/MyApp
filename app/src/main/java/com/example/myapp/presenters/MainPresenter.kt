@@ -15,6 +15,10 @@ class MainPresenter(private val mainView: MainView) {
     fun newContactFabClick(){
         mainView.navigateToNewContactActivity()
     }
+
+    fun getPhoneContact(){
+
+    }
 }
 
 interface MainView{
