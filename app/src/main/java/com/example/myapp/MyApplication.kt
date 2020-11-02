@@ -12,7 +12,5 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instansce = this
-
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 }
