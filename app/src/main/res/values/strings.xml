@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My App</string>
     <string name="action_settings">Settings</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="search_contact">Search Contact</string>
     <string name="name_dialog">Name:</string>
