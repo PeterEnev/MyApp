@@ -42,6 +42,35 @@ class ContactListAdapter (val contactList: ArrayList<Contact>) :
                 itemView.imageView.setImageResource(R.drawable.phone_android_black)
             }
             itemView.expandableLayout.visibility = View.GONE
+
+            itemView.setOnClickListener {
+                if (itemView.expandableLayout.visibility == GONE){
+                    itemView.expandableLayout.visibility = View.VISIBLE
+                }else{
+                    itemView.expandableLayout.visibility = View.GONE
+                }
+            }
+
+            itemView.editBtn.setOnClickListener {
+                if (contact.contactLocalStorageStats){
+                    val intent = Intent(itemView.context, ContactActivity::class.java)
+                    intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_EXISTING)
+                    intent.putExtra(CONTACT_NAME,
+                        Contact(
+                            contactID                   = contact.contactID,
+                            contactFirstName            = contact.contactFirstName,
+                            contactLastName             = contact.contactLastName,
+                            contactCountryName          = contact.contactCountryName,
+                            contactCountryPrefix        = contact.contactCountryPrefix,
+                            contactPhoneNumber          = contact.contactPhoneNumber,
+                            contactEMail                = contact.contactEMail,
+                            contactGender               = contact.contactGender,
+                            contactLocalStorageStats    = contact.contactLocalStorageStats))
+                    itemView.context.startActivity(intent)
+                }else{
+                    Toast.makeText(itemView.context, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
     override fun onCreateViewHolder(
@@ -55,35 +84,6 @@ class ContactListAdapter (val contactList: ArrayList<Contact>) :
 
     override fun onBindViewHolder(holder: ContactListAdapter.ViewHolder, position: Int) {
         holder.bindItems(contactList[position])
-
-        holder.itemView.setOnClickListener {
-            if (holder.itemView.expandableLayout.visibility == GONE){
-                holder.itemView.expandableLayout.visibility = View.VISIBLE
-            }else{
-                holder.itemView.expandableLayout.visibility = View.GONE
-            }
-        }
-
-        holder.itemView.editBtn.setOnClickListener {
-                if (contactList[position].contactLocalStorageStats){
-                    val intent = Intent(holder.itemView.context, ContactActivity::class.java)
-                    intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_EXISTING)
-                    intent.putExtra(CONTACT_NAME,
-                        Contact(
-                            contactID                   = contactList[position].contactID,
-                            contactFirstName            = contactList[position].contactFirstName,
-                            contactLastName             = contactList[position].contactLastName,
-                            contactCountryName          = contactList[position].contactCountryName,
-                            contactCountryPrefix        = contactList[position].contactCountryPrefix,
-                            contactPhoneNumber          = contactList[position].contactPhoneNumber,
-                            contactEMail                = contactList[position].contactEMail,
-                            contactGender               = contactList[position].contactGender,
-                            contactLocalStorageStats    = contactList[position].contactLocalStorageStats))
-                    holder.itemView.context.startActivity(intent)
-                }else{
-                    Toast.makeText(holder.itemView.context, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     override fun getItemCount(): Int {
