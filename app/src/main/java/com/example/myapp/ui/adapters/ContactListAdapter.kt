@@ -12,6 +12,8 @@ import com.example.myapp.models.Contact
 import com.example.myapp.ui.activities.ContactActivity
 import kotlinx.android.synthetic.main.recycler_contact.view.*
 import kotlinx.android.synthetic.main.recycler_contact.view.editBtn
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.recycler_contact.*
 
 class ContactListAdapter (val contactList: ArrayList<Contact>) :
     RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
@@ -25,17 +27,17 @@ class ContactListAdapter (val contactList: ArrayList<Contact>) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindItems(contact: Contact){
-            itemView.recyclerContactName.text =
-                contact.contactFirstName + " " + contact.contactLastName
-            itemView.recyclerContactPhone.text =
-                contact.contactCountryPrefix + contact.contactPhoneNumber
 
+            itemView.recyclerContactName.text =
+                with(contact){contactFirstName + " " + contactLastName}
+            itemView.recyclerContactPhone.text =
+                with(contact){contactCountryPrefix + contactPhoneNumber}
             itemView.recyclerContactMail.text =
-                contact.contactEMail
+                with(contact){contactEMail}
             itemView.recyclerContactCountry.text =
-                contact.contactCountryName
+                with(contact){contactCountryName}
             itemView.recyclerContactGender.text =
-                contact.contactGender
+                with(contact){contactGender}
             if (contact.contactLocalStorageStats){
                 itemView.imageView.setImageResource(R.drawable.ic_contact_calendar_black)
             }else{
