@@ -57,8 +57,6 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun setContactList(contactList: ArrayList<Contact>){
-        /*var phoneContact: ArrayList<Contact> = getPhoneContact()
-        contactList.addAll(phoneContact)*/
         var listContactRenew = contactList
         var contactListAdapter = ContactListAdapter(listContactRenew)
 
@@ -87,39 +85,4 @@ class MainActivity : AppCompatActivity(), MainView {
             }
         })
     }
-
-    /*fun getPhoneContact(): ArrayList<Contact> {
-        var contactPhoneList = ArrayList<Contact>()
-
-        val phones = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null
-        )
-
-        while (phones.moveToNext()) {
-            val name =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            println(name)
-            val list = Contact(
-                contactID                   = DEFAULT_VALUE_PHONE_CONTACT,
-                contactFirstName            = name,
-                contactLastName             = EMPTY_STRING,
-                contactPhoneNumber          = phoneNumber,
-                contactEMail                = EMPTY_STRING,
-                contactCountryPrefix        = EMPTY_STRING,
-                contactCountryName          = EMPTY_STRING,
-                contactGender               = EMPTY_STRING,
-                contactLocalStorageStats    = false
-            )
-            println(list.toString())
-            contactPhoneList.add(list)
-        }
-        phones.close()
-        return contactPhoneList
-    }*/
 }
