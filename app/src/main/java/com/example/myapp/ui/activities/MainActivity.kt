@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainView {
         val EMPTY_STRING                    : String    = ""
         val DEFAULT_VALUE_PHONE_CONTACT     : Long      = -2
         val STORAGE_PERMISSION_CODE         : Int       = 1
-
+        val REQUEST_CODE                    : Int       = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun navigateToNewContactActivity(){
         val intent = Intent(this, ContactActivity::class.java)
         intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_NEW)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE)
 
     }
 
@@ -84,5 +85,18 @@ class MainActivity : AppCompatActivity(), MainView {
 
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data : Intent?){
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE){
+            finish()
+            startActivity(intent)
+        }
+        else{
+            val message = getString(R.string.MSG_OOPS)
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.myapp.ui.activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.pm.ActivityInfoCompat
 import com.example.myapp.R
 import com.example.myapp.models.Contact
 import com.example.myapp.models.Country
@@ -17,6 +19,7 @@ import com.example.myapp.ui.adapters.CountryListAdapter
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
+import kotlin.contracts.Returns
 
 class ContactActivity : AppCompatActivity(), ContactView {
 
@@ -191,7 +194,10 @@ class ContactActivity : AppCompatActivity(), ContactView {
     override fun navigateToMainActivity(status: Int) {
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+
+        intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("result",0)
+        setResult(Activity.RESULT_OK,intent)
+        finish()
     }
 }
