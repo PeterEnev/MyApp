@@ -1,10 +1,6 @@
 package com.example.myapp.ui.activities
 
-
-//import android.2.permission.READ_CONTACTS
-//import
 import android.Manifest.permission.READ_CONTACTS
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,7 +8,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    val mainPresenter: MainPresenter = MainPresenter(this)
+    private lateinit var mainPresenter: MainPresenter
 
     companion object{
 
@@ -40,6 +35,8 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainPresenter = MainPresenter(this)
 
         if(ContextCompat.checkSelfPermission(this, READ_CONTACTS)
             == PackageManager.PERMISSION_GRANTED) {
@@ -60,8 +57,8 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun setContactList(contactList: ArrayList<Contact>){
-        var phoneContact: ArrayList<Contact> = getPhoneContact()
-        contactList.addAll(phoneContact)
+        /*var phoneContact: ArrayList<Contact> = getPhoneContact()
+        contactList.addAll(phoneContact)*/
         var listContactRenew = contactList
         var contactListAdapter = ContactListAdapter(listContactRenew)
 
@@ -91,7 +88,7 @@ class MainActivity : AppCompatActivity(), MainView {
         })
     }
 
-    fun getPhoneContact(): ArrayList<Contact> {
+    /*fun getPhoneContact(): ArrayList<Contact> {
         var contactPhoneList = ArrayList<Contact>()
 
         val phones = contentResolver.query(
@@ -101,7 +98,6 @@ class MainActivity : AppCompatActivity(), MainView {
             null,
             null
         )
-
 
         while (phones.moveToNext()) {
             val name =
@@ -125,5 +121,5 @@ class MainActivity : AppCompatActivity(), MainView {
         }
         phones.close()
         return contactPhoneList
-    }
+    }*/
 }

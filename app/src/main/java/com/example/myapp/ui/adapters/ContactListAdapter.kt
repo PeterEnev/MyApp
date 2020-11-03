@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.recycler_contact.view.*
 import kotlinx.android.synthetic.main.recycler_contact.view.editBtn
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ContactListAdapter (val contactList: ArrayList<Contact>) :
     RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
@@ -25,35 +27,35 @@ class ContactListAdapter (val contactList: ArrayList<Contact>) :
         val TOAST_CONTACT_EDITED        = "The contact cannot be edited"
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View, override val containerView: View?) : RecyclerView.ViewHolder(itemView), LayoutContainer{
         fun bindItems(contact: Contact){
 
-            itemView.recyclerContactName.text =
+            recyclerContactName.text =
                 with(contact){contactFirstName + " " + contactLastName}
-            itemView.recyclerContactPhone.text =
+            recyclerContactPhone.text =
                 with(contact){contactCountryPrefix + contactPhoneNumber}
-            itemView.recyclerContactMail.text =
+            recyclerContactMail.text =
                 with(contact){contactEMail}
-            itemView.recyclerContactCountry.text =
+            recyclerContactCountry.text =
                 with(contact){contactCountryName}
-            itemView.recyclerContactGender.text =
+            recyclerContactGender.text =
                 with(contact){contactGender}
             if (contact.contactLocalStorageStats){
-                itemView.imageView.setImageResource(R.drawable.ic_contact_calendar_black)
+                imageView.setImageResource(R.drawable.ic_contact_calendar_black)
             }else{
-                itemView.imageView.setImageResource(R.drawable.phone_android_black)
+                imageView.setImageResource(R.drawable.phone_android_black)
             }
-            itemView.expandableLayout.visibility = View.GONE
+            expandableLayout.visibility = View.GONE
 
             itemView.setOnClickListener {
-                if (itemView.expandableLayout.visibility == GONE){
-                    itemView.expandableLayout.visibility = View.VISIBLE
+                if (expandableLayout.visibility == GONE){
+                    expandableLayout.visibility = View.VISIBLE
                 }else{
-                    itemView.expandableLayout.visibility = View.GONE
+                    expandableLayout.visibility = View.GONE
                 }
             }
 
-            itemView.editBtn.setOnClickListener {
+            editBtn.setOnClickListener {
                 if (contact.contactLocalStorageStats){
                     val intent = Intent(itemView.context, ContactActivity::class.java)
                     intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_EXISTING)
@@ -81,7 +83,7 @@ class ContactListAdapter (val contactList: ArrayList<Contact>) :
     ): ContactListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_contact, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, view)
     }
 
     override fun onBindViewHolder(holder: ContactListAdapter.ViewHolder, position: Int) {

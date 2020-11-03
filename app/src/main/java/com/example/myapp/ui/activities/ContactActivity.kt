@@ -1,7 +1,6 @@
 package com.example.myapp.ui.activities
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -21,33 +20,26 @@ import kotlinx.android.synthetic.main.country_search_dialog.*
 
 class ContactActivity : AppCompatActivity(), ContactView {
 
-    val contactPresenter: ContactPresenter = ContactPresenter(this)
-
-    init {
-        instance = this
-    }
+    private lateinit var contactPresenter: ContactPresenter
 
     companion object {
-        private var instance            :ContactActivity?   = null
         val CONTACT                     :String             = "contact"
         val DEFAULT_VALUE_NEW_CONTACT   :Long               = -1
-
-        fun applicationContext(): Context {
-            return instance!!.applicationContext
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
 
+        contactPresenter = ContactPresenter(this)
+
         val contactStatus  = intent.getStringExtra(ContactListAdapter.CONTACT_STATUS)
         var contactId       = DEFAULT_VALUE_NEW_CONTACT
 
         if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
             val editContact = intent.getSerializableExtra(CONTACT) as? Contact
-            contactId = editContact!!.contactID!!.toLong()
-            firstNameInput  .setText(editContact!!.contactFirstName)
+            contactId = editContact!!.contactID.toLong()
+            firstNameInput  .setText(editContact.contactFirstName)
             lastNameInput   .setText(editContact.contactLastName)
             countryInput    .setText(editContact.contactCountryName)
             prefixInput     .setText(editContact.contactCountryPrefix)
@@ -181,7 +173,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
     }
 
     override fun toastMsg(status: Int) {
-        var message: String = ""
+        var message: String
         when(status){
             0 -> message = getString(R.string.MSG_SAVE_SUCCESSFUL)
             1 -> message = getString(R.string.MSG_ENTER_VALID_FIRST_NAME)

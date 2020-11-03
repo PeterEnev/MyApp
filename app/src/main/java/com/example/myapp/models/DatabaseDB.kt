@@ -49,7 +49,7 @@ class DatabaseDB {
     }
 
     fun getContactList() : ArrayList<Contact>{
-        insertFirstContatct()
+        //insertFirstContatct()
         val list                            = ArrayList<Contact>()
         val listQuery  = dbContactsQuery.selectAllContacts().executeAsList()
 
