@@ -1,16 +1,12 @@
 package com.example.myapp.models
 
 import android.content.Context
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.example.myapp.ContactsDBQueries
 import com.example.myapp.CountyiesDBQueries
 import com.example.myapp.Database
 import com.example.myapp.MyApplication
-import com.example.myapp.ui.activities.MainActivity
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import kotlinx.coroutines.delay
 
 class DatabaseDB {
     val context             : Context               = MyApplication.instansce

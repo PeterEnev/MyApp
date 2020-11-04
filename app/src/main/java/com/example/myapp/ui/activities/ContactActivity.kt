@@ -162,7 +162,6 @@ class ContactActivity : AppCompatActivity(), ContactView {
             dialog.dialogEditBtn.setText(getString(R.string.BTN_UPDATE))
         }
 
-
         dialog.dialogCancelBtn.setOnClickListener { dialog.dismiss() }
 
         dialog.dialogEditBtn.setOnClickListener {

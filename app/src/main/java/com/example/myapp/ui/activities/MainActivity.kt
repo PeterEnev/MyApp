@@ -40,16 +40,24 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
         mainPresenter = MainPresenter(this)
 
-        if(ContextCompat.checkSelfPermission(this, READ_CONTACTS)
-            == PackageManager.PERMISSION_GRANTED) {
-        }else{
-            if(Build.VERSION.SDK_INT > 22){
-                requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
-            }
+        if(ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            mainPresenter.setContactList()
+        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
         }
-        mainPresenter.setContactList()
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == STORAGE_PERMISSION_CODE && ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED ){
+            mainPresenter.setContactList()
+        }
     }
 
     override fun navigateToNewContactActivity(){
