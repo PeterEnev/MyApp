@@ -1,30 +1,27 @@
 package com.example.myapp.ui.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
-import com.example.myapp.ui.activities.ContactActivity
+import com.example.myapp.ui.activities.MainActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList
 
-class ContactListAdapter (private val contactList: ArrayList<Contact>) :
+class ContactListAdapter (private val contactList: ArrayList<Contact>, private val listener: ContactAdapterListener) :
     RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
 
     companion object{
         val CONTACT_STATUS              = "contactStatus"
         val CONTACT_STATUS_EXISTING     = "existing"
-        val CONTACT_NAME                = "contact"
-        val TOAST_CONTACT_EDITED        = "The contact cannot be edited"
     }
 
-    class ViewHolder(itemView: View, override val containerView: View?) : RecyclerView.ViewHolder(itemView), LayoutContainer{
+    inner class ViewHolder(itemView: View, override val containerView: View?) : RecyclerView.ViewHolder(itemView), LayoutContainer{
+
         fun bindItems(contact: Contact){
 
             recyclerContactName.text =
@@ -53,24 +50,7 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>) :
             }
 
             editBtn.setOnClickListener {
-                if (contact.contactLocalStorageStats){
-                    val intent = Intent(itemView.context, ContactActivity::class.java)
-                    intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_EXISTING)
-                    intent.putExtra(CONTACT_NAME,
-                        Contact(
-                            contactID                   = contact.contactID,
-                            contactFirstName            = contact.contactFirstName,
-                            contactLastName             = contact.contactLastName,
-                            contactCountryName          = contact.contactCountryName,
-                            contactCountryPrefix        = contact.contactCountryPrefix,
-                            contactPhoneNumber          = contact.contactPhoneNumber,
-                            contactEMail                = contact.contactEMail,
-                            contactGender               = contact.contactGender,
-                            contactLocalStorageStats    = contact.contactLocalStorageStats))
-                    itemView.context.startActivity(intent)
-                }else{
-                    Toast.makeText(itemView.context, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
-                }
+                listener.onEditBtnListener(contact, CONTACT_STATUS, CONTACT_STATUS_EXISTING)
             }
         }
     }
@@ -90,4 +70,8 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>) :
     override fun getItemCount(): Int {
         return contactList.size
     }
+}
+
+interface ContactAdapterListener{
+    fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: String)
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
@@ -16,18 +15,20 @@ import com.example.myapp.R
 import com.example.myapp.models.Contact
 import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
+import com.example.myapp.ui.adapters.ContactAdapterListener
 import com.example.myapp.ui.adapters.ContactListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     private lateinit var mainPresenter: MainPresenter
-
     companion object{
 
         val CONTACT_STATUS                  : String    = "contactStatus"
         val CONTACT_STATUS_NEW              : String    = "new"
         val EMPTY_STRING                    : String    = ""
+        val CONTACT_NAME                    : String    = "contact"
+        val TOAST_CONTACT_EDITED            : String    = "The contact cannot be edited"
         val DEFAULT_VALUE_PHONE_CONTACT     : Long      = -2
         val STORAGE_PERMISSION_CODE         : Int       = 1
         val REQUEST_CODE                    : Int       = 0
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(), MainView {
         }
         mainPresenter.setContactList()
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
+
     }
 
     override fun navigateToNewContactActivity(){
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun setContactList(contactList: ArrayList<Contact>){
         var listContactRenew = contactList
-        var contactListAdapter = ContactListAdapter(listContactRenew)
+        var contactListAdapter = ContactListAdapter(listContactRenew, this)
 
         mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
         mainActivityRecyclerView.adapter = contactListAdapter
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity(), MainView {
                         listContactRenew.add(contactList[i])
                     }
                 }
-                contactListAdapter = ContactListAdapter(listContactRenew)
+                contactListAdapter = ContactListAdapter(listContactRenew, this@MainActivity)
                 mainActivityRecyclerView.adapter = contactListAdapter
             }
 
@@ -98,5 +100,26 @@ class MainActivity : AppCompatActivity(), MainView {
             val message = getString(R.string.MSG_OOPS)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: String) {
+        if (contact.contactLocalStorageStats){
+            val intent = Intent(this, ContactActivity::class.java)
+                    intent.putExtra(contactStatus, contactStatusExisting)
+                    intent.putExtra(CONTACT_NAME,
+                        Contact(
+                            contactID                   = contact.contactID,
+                            contactFirstName            = contact.contactFirstName,
+                            contactLastName             = contact.contactLastName,
+                            contactCountryName          = contact.contactCountryName,
+                            contactCountryPrefix        = contact.contactCountryPrefix,
+                            contactPhoneNumber          = contact.contactPhoneNumber,
+                            contactEMail                = contact.contactEMail,
+                            contactGender               = contact.contactGender,
+                            contactLocalStorageStats    = contact.contactLocalStorageStats))
+                    startActivityForResult(intent, REQUEST_CODE)
+                }else{
+                    Toast.makeText(this, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
+                }
     }
 }
