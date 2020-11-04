@@ -18,26 +18,26 @@ class ContactPresenter(private val contactView: ContactView) {
     fun saveContactDialog(contact: Contact) {
         var checkResultStatus = Validator().checkContact(contact)
 
-        if (checkResultStatus == 0){
+        if (checkResultStatus == 0) {
             contactView.saveContactDialog(contact)
-        }else{
+        } else {
             contactView.toastMsg(checkResultStatus)
         }
     }
 
     fun saveContact(contact: Contact) = runBlocking {
         val result = async {  DatabaseDB().saveNewContact(contact) }.await()
-        if (result == 0){
+        if (result == 0) {
             contactView.navigateToMainActivity(result)
-        }else{
+        } else {
             contactView.toastMsg(result)
         }
     }
     fun editContact(contact: Contact) = runBlocking{
         val result = async {  DatabaseDB().updateContact(contact) }.await()
-        if (result == 0){
+        if (result == 0) {
             contactView.navigateToMainActivity(result)
-        }else{
+        } else {
             contactView.toastMsg(result)
         }
     }

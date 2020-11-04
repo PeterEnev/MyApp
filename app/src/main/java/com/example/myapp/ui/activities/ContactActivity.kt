@@ -166,8 +166,10 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         dialog.dialogEditBtn.setOnClickListener {
             if (contact.contactID < 0){
+                dialog.dismiss()
                 contactPresenter.saveContact(contact)
             }else{
+                dialog.dismiss()
                 contactPresenter.editContact(contact)
             }
         }
@@ -193,10 +195,9 @@ class ContactActivity : AppCompatActivity(), ContactView {
     override fun navigateToMainActivity(status: Int) {
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-        intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("result",0)
-        setResult(Activity.RESULT_OK,intent)
         finish()
+        /*intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("result",0)
+        setResult(Activity.RESULT_OK,intent)*/
     }
 }
