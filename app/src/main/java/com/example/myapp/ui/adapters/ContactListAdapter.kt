@@ -24,16 +24,14 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
 
         fun bindItems(contact: Contact){
 
-            recyclerContactName.text =
-                with(contact){contactFirstName + " " + contactLastName}
-            recyclerContactPhone.text =
-                with(contact){contactCountryPrefix + contactPhoneNumber}
-            recyclerContactMail.text =
-                with(contact){contactEMail}
-            recyclerContactCountry.text =
-                with(contact){contactCountryName}
-            recyclerContactGender.text =
-                with(contact){contactGender}
+            with(contact){
+                recyclerContactName.text        = contactFirstName + " " + contactLastName
+                recyclerContactPhone.text       = contactCountryPrefix + contactPhoneNumber
+                recyclerContactMail.text        = contactEMail
+                recyclerContactCountry.text     = contactCountryName
+                recyclerContactGender.text      = contactGender
+            }
+
             if (contact.contactLocalStorageStats){
                 imageView.setImageResource(R.drawable.ic_contact_calendar_black)
             }else{

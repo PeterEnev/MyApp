@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                         listContactRenew.add(contactList[i])
                     }
                 }
-                contactListAdapter = ContactListAdapter(listContactRenew, this@MainActivity)
-                mainActivityRecyclerView.adapter = contactListAdapter
+                contactListAdapter.notifyDataSetChanged()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
