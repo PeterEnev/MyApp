@@ -15,4 +15,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyApp.Button" parent="">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <!--<item name="android:background">@color/buttonBackground</item>-->
+    </style>
+
+    <style name="MyApp.Dialog.Text" parent="">
+
+    </style>
+
 </resources>

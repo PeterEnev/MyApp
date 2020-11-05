@@ -195,9 +195,9 @@ class ContactActivity : AppCompatActivity(), ContactView {
     override fun navigateToMainActivity(status: Int) {
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        finish()
-        /*intent = Intent(this, MainActivity::class.java)
+        intent = Intent(this, MainActivity::class.java)
         intent.putExtra("result",0)
-        setResult(Activity.RESULT_OK,intent)*/
+        setResult(Activity.RESULT_OK,intent)
+        finish()
     }
 }
