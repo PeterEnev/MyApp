@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:gravity="center"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android                           ="http://schemas.android.com/apk/res/android"
+    android:layout_width                                ="match_parent"
+    android:orientation                                 ="vertical"
+    android:padding                                     ="5dp"
+    android:gravity                                     ="center"
+    android:layout_height                               ="match_parent">
 
     <AutoCompleteTextView
-        android:id="@+id/searchCountryTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="@string/search_country_dialog" />
+        android:id                                      ="@+id/searchCountryTxt"
+        android:layout_width                            ="match_parent"
+        android:layout_height                           ="wrap_content"
+        android:gravity                                 ="center"
+        android:hint                                    ="@string/search_country_dialog" />
 
     <ListView
-        android:id="@+id/countryListView"
-        android:layout_width="wrap_content"
-        android:layout_height="301dp"
-        android:layout_below="@+id/searchCountryTxt"
-        android:layout_weight=".5" />
+        android:id                                      ="@+id/countryListView"
+        android:layout_width                            ="wrap_content"
+        android:layout_height                           ="301dp"
+        android:layout_below                            ="@+id/searchCountryTxt"
+        android:layout_weight                           =".5" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/countryListView"
-        android:gravity="end"
-        android:orientation="horizontal">
+        android:layout_width                            ="match_parent"
+        android:layout_height                           ="wrap_content"
+        android:layout_below                            ="@id/countryListView"
+        android:gravity                                 ="end"
+        android:orientation                             ="horizontal">
 
         <Button
-            android:id="@+id/choiceCountryCancelBtn"
-            style="@style/MyApp.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:text="@string/cancel_dialog"
+            android:id                                  ="@+id/choiceCountryCancelBtn"
+            style                                       ="@style/MyApp.Button"
+            android:layout_width                        ="wrap_content"
+            android:layout_height                       ="wrap_content"
+            android:layout_marginEnd                    ="12dp"
+            android:text                                ="@string/cancel_dialog"
             />
 
     </LinearLayout>
