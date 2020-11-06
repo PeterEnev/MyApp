@@ -51,9 +51,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
         }
-        if(ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_DENIED){
-            mainPresenter.setContactListNoPermission()
-        }
 
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
@@ -66,12 +63,15 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == STORAGE_PERMISSION_CODE && ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED ){
             mainPresenter.setContactList()
+        } else {
+            mainPresenter.setContactListNoPermission()
         }
     }
 
     fun mainActivityRecyclerViewAdapter(contactList: ArrayList<Contact>, updateList: Boolean){
         if (isFirstLoadRecycler){
             dataContactList = contactList
+            mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
             isFirstLoadRecycler = false
         } else if (updateList){
             var isFirstDBContact = true
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         } else {
             dataContactList = contactList
         }
-        mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
+        //mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
         mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun setContactList(contactList: ArrayList<Contact>){
         var listContactRenew = contactList
+
         mainActivityRecyclerViewAdapter(listContactRenew, false)
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
         val contactList = ArrayList<Contact>()
         val contact = intent?.getSerializableExtra("contact") as Contact
+
         val req = intent.getBooleanExtra("request", true)
 
         if (req){
