@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         val CONTACT_NAME                    :String    ="contact"
         val TOAST_CONTACT_EDITED            :String    ="The contact cannot be edited"
         val DEFAULT_VALUE_PHONE_CONTACT     :Long      =-2
-        val STORAGE_PERMISSION_CODE         :Int       =1
-        val REQUEST_CODE_OK                 :Int       =0
+        val STORAGE_PERMISSION_CODE         :Int       = 1
+        val REQUEST_CODE_OK                 :Int       = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
