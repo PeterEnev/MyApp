@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     private lateinit var dataContactList: ArrayList<Contact>
 
     companion object{
+        var isFirstLoadRecycler             :Boolean   =true
 
         val CONTACT_STATUS                  :String    ="contactStatus"
         val CONTACT_STATUS_NEW              :String    ="new"
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
         }
+        if(ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_DENIED){
+            mainPresenter.setContactListNoPermission()
+        }
+
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
 
@@ -65,16 +70,19 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     }
 
     fun mainActivityRecyclerViewAdapter(contactList: ArrayList<Contact>, updateList: Boolean){
-        if (updateList){
-            var exist: Boolean = false
+        if (isFirstLoadRecycler){
+            dataContactList = contactList
+            isFirstLoadRecycler = false
+        } else if (updateList){
+            var isFirstDBContact = true
             for (i in 0 until dataContactList.size){
                 if (dataContactList[i].contactID == contactList[0].contactID){
                     dataContactList[i] = contactList[0]
-                    exist = true
+                    isFirstDBContact = false
                     break
                 }
             }
-            if (!exist){
+            if (isFirstDBContact){
                 dataContactList.addAll(contactList)
             }
         } else {
@@ -93,8 +101,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun setContactList(contactList: ArrayList<Contact>){
         var listContactRenew = contactList
         mainActivityRecyclerViewAdapter(listContactRenew, false)
-        /*mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this)
-        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)*/
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -106,8 +112,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                     }
                 }
                 mainActivityRecyclerViewAdapter(listContactRenew, false)
-                /*mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this@MainActivity)
-                mainActivityRecyclerView.adapter?.notifyDataSetChanged()*/
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -123,10 +127,10 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
         super.onActivityResult(requestCode, resultCode, intent)
 
+        val contactList = ArrayList<Contact>()
         val contact = intent?.getSerializableExtra("contact") as Contact
 
         if (requestCode == REQUEST_CODE_OK){
-            val contactList = ArrayList<Contact>()
             contactList.add(0, contact)
             mainActivityRecyclerViewAdapter(contactList, true)
         }

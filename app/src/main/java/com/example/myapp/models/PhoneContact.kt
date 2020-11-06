@@ -9,6 +9,7 @@ import com.example.myapp.ui.activities.MainActivity
 class PhoneContact {
 
     val context             : Context = MyApplication.instansce
+
     fun getPhoneContact(): ArrayList<Contact>{
         var contactPhoneList = ArrayList<Contact>()
 

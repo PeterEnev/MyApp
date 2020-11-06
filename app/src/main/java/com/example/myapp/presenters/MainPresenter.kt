@@ -14,6 +14,10 @@ class MainPresenter(private val mainView: MainView) {
         contactList.addAll(phoneContactList)
         mainView.setContactList(contactList)
     }
+    fun setContactListNoPermission() = runBlocking {
+        val contactList = async{ DatabaseDB().getContactList() }.await()
+        mainView.setContactList(contactList)
+    }
 
     fun newContactFabClick(){
         mainView.navigateToNewContactActivity()
