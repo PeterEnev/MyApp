@@ -11,9 +11,9 @@ class Validator {
                 "\\." +
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
-        val NAME_REGEX = "^[A-Za-z]{3,16}"
-        val PHONE_REGEX = "^[0-9]{9,10}"
-        val STRING_REGEX = "^[A-Za-z]{3,16}"
+        val NAME_REGEX                                  = "^[A-Za-z]{3,16}"
+        val PHONE_REGEX                                 = "^[0-9]{9,10}"
+        val STRING_REGEX                                = "^[A-Za-z]{3,16}"
         val CHECK_STRING_VALID              : String    = "valid" // 0
         val MSG_ENTER_VALID_FIRST_NAME      : String    = "Please enter a valid First Name" // 1
         val MSG_ENTER_VALID_LAST_NAME       : String    = "Please enter a valid Last Name"  // 2
@@ -23,7 +23,7 @@ class Validator {
 
     }
     fun checkContact(contact: Contact): Int{
-        var result: Int = 0
+        var result = 0
         if (!isNameValid(contact.contactFirstName)){
             result = 1
             return result

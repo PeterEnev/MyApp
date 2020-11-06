@@ -17,21 +17,26 @@ import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
 import com.example.myapp.ui.adapters.ContactAdapterListener
 import com.example.myapp.ui.adapters.ContactListAdapter
+import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.Collections.addAll
+import kotlin.contracts.contract
 
 class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     private lateinit var mainPresenter: MainPresenter
+    private lateinit var dataContactList: ArrayList<Contact>
+
     companion object{
 
-        val CONTACT_STATUS                  : String    = "contactStatus"
-        val CONTACT_STATUS_NEW              : String    = "new"
-        val EMPTY_STRING                    : String    = ""
-        val CONTACT_NAME                    : String    = "contact"
-        val TOAST_CONTACT_EDITED            : String    = "The contact cannot be edited"
-        val DEFAULT_VALUE_PHONE_CONTACT     : Long      = -2
-        val STORAGE_PERMISSION_CODE         : Int       = 1
-        val REQUEST_CODE                    : Int       = 0
+        val CONTACT_STATUS                  :String    ="contactStatus"
+        val CONTACT_STATUS_NEW              :String    ="new"
+        val EMPTY_STRING                    :String    =""
+        val CONTACT_NAME                    :String    ="contact"
+        val TOAST_CONTACT_EDITED            :String    ="The contact cannot be edited"
+        val DEFAULT_VALUE_PHONE_CONTACT     :Long      =-2
+        val STORAGE_PERMISSION_CODE         :Int       =1
+        val REQUEST_CODE_OK                 :Int       =0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +51,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
             requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
         }
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
-
     }
 
     override fun onRequestPermissionsResult(
@@ -60,19 +64,37 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         }
     }
 
+    fun mainActivityRecyclerViewAdapter(contactList: ArrayList<Contact>, updateList: Boolean){
+        if (updateList){
+            var exist: Boolean = false
+            for (i in 0 until dataContactList.size){
+                if (dataContactList[i].contactID == contactList[0].contactID){
+                    dataContactList[i] = contactList[0]
+                    exist = true
+                    break
+                }
+            }
+            if (!exist){
+                dataContactList.addAll(contactList)
+            }
+        } else {
+            dataContactList = contactList
+        }
+        mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
+        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
     override fun navigateToNewContactActivity(){
         val intent = Intent(this, ContactActivity::class.java)
         intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_NEW)
-        startActivityForResult(intent, REQUEST_CODE)
-
+        startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
     override fun setContactList(contactList: ArrayList<Contact>){
         var listContactRenew = contactList
-        var contactListAdapter = ContactListAdapter(listContactRenew, this)
-
-        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
-        mainActivityRecyclerView.adapter = contactListAdapter
+        mainActivityRecyclerViewAdapter(listContactRenew, false)
+        /*mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this)
+        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)*/
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -83,7 +105,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                         listContactRenew.add(contactList[i])
                     }
                 }
-                contactListAdapter.notifyDataSetChanged()
+                mainActivityRecyclerViewAdapter(listContactRenew, false)
+                /*mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this@MainActivity)
+                mainActivityRecyclerView.adapter?.notifyDataSetChanged()*/
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -96,12 +120,15 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data : Intent?){
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
+        super.onActivityResult(requestCode, resultCode, intent)
 
-        if (requestCode == REQUEST_CODE){
-            finish()
-            startActivity(intent)
+        val contact = intent?.getSerializableExtra("contact") as Contact
+
+        if (requestCode == REQUEST_CODE_OK){
+            val contactList = ArrayList<Contact>()
+            contactList.add(0, contact)
+            mainActivityRecyclerViewAdapter(contactList, true)
         }
         else{
             val message = getString(R.string.MSG_OOPS)
@@ -124,7 +151,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                             contactEMail                = contact.contactEMail,
                             contactGender               = contact.contactGender,
                             contactLocalStorageStats    = contact.contactLocalStorageStats))
-                    startActivityForResult(intent, REQUEST_CODE)
+                    startActivityForResult(intent, REQUEST_CODE_OK)
                 }else{
                     Toast.makeText(this, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
                 }

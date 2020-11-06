@@ -176,9 +176,9 @@ class ContactActivity : AppCompatActivity(), ContactView {
         dialog.show()
     }
 
-    override fun toastMsg(status: Int) {
+    override fun toastMsg(result: Int) {
         var message: String
-        when(status){
+        when(result){
             0 -> message = getString(R.string.MSG_SAVE_SUCCESSFUL)
             1 -> message = getString(R.string.MSG_ENTER_VALID_FIRST_NAME)
             2 -> message = getString(R.string.MSG_ENTER_VALID_LAST_NAME)
@@ -192,11 +192,23 @@ class ContactActivity : AppCompatActivity(), ContactView {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToMainActivity(status: Int) {
+    override fun navigateToMainActivity(result: Int, contact: Contact) {
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("result",0)
+        intent.putExtra("result",result)
+        intent.putExtra(
+            "contact",
+            Contact(
+                contactID                   = contact.contactID,
+                contactFirstName            = contact.contactFirstName,
+                contactLastName             = contact.contactLastName,
+                contactCountryName          = contact.contactCountryName,
+                contactCountryPrefix        = contact.contactCountryPrefix,
+                contactPhoneNumber          = contact.contactPhoneNumber,
+                contactEMail                = contact.contactEMail,
+                contactGender               = contact.contactGender,
+                contactLocalStorageStats    = true))
         setResult(Activity.RESULT_OK,intent)
         finish()
     }

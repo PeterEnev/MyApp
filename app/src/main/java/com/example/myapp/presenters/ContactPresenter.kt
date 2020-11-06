@@ -28,7 +28,7 @@ class ContactPresenter(private val contactView: ContactView) {
     fun saveContact(contact: Contact) = runBlocking {
         val result = async {  DatabaseDB().saveNewContact(contact) }.await()
         if (result == 0) {
-            contactView.navigateToMainActivity(result)
+            contactView.navigateToMainActivity(result, contact)
         } else {
             contactView.toastMsg(result)
         }
@@ -36,7 +36,7 @@ class ContactPresenter(private val contactView: ContactView) {
     fun editContact(contact: Contact) = runBlocking{
         val result = async {  DatabaseDB().updateContact(contact) }.await()
         if (result == 0) {
-            contactView.navigateToMainActivity(result)
+            contactView.navigateToMainActivity(result, contact)
         } else {
             contactView.toastMsg(result)
         }
@@ -46,6 +46,6 @@ class ContactPresenter(private val contactView: ContactView) {
 interface ContactView{
     fun openChoiceCountryDialog(listCountry: ArrayList<Country>)
     fun saveContactDialog(contact: Contact)
-    fun navigateToMainActivity(message: Int)
+    fun navigateToMainActivity(message: Int, contact: Contact)
     fun toastMsg(checkResultStatus: Int)
 }

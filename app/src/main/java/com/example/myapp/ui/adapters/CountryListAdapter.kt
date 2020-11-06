@@ -17,8 +17,8 @@ class CountryListAdapter(val context: Context,
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val rowView    = inflater.inflate(R.layout.list_item_country, parent, false)
-        val country  = getItem(position) as Country
+        val rowView     = inflater.inflate(R.layout.list_item_country, parent, false)
+        val country     = getItem(position) as Country
 
         rowView.countryName.text        = country.countryName
         rowView.countryPrefix.text      = country.countryPrefih
