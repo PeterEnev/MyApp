@@ -129,8 +129,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
         val contactList = ArrayList<Contact>()
         val contact = intent?.getSerializableExtra("contact") as Contact
+        val req = intent.getBooleanExtra("request", true)
 
-        if (requestCode == REQUEST_CODE_OK){
+        if (req){
             contactList.add(0, contact)
             mainActivityRecyclerViewAdapter(contactList, true)
         }

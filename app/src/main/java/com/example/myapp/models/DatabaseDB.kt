@@ -17,8 +17,8 @@ class DatabaseDB {
     val dbContactsQuery     : ContactsDBQueries     = database.contactsDBQueries
 
 
-    fun saveNewContact(contact: Contact) : Int{
-        val status = 0
+    fun saveNewContact(contact: Contact) : Boolean{
+        val status = true
         dbContactsQuery.insertContacts(
             contactFirstName    = contact.contactFirstName,
             contactLastName     = contact.contactLastName,
@@ -30,8 +30,8 @@ class DatabaseDB {
         return status
     }
 
-    fun updateContact(contact: Contact) : Int{
-        val status = 0
+    fun updateContact(contact: Contact) : Boolean{
+        val status = true
         dbContactsQuery.updateContacts(
             contactFirstName    = contact.contactFirstName,
             contactLastName     = contact.contactLastName,

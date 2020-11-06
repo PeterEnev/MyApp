@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">          @color/colorPrimary</item>
         <item name="colorPrimaryDark">      @color/colorPrimaryDark</item>
         <item name="colorAccent">           @color/colorAccent</item>
@@ -15,12 +15,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MyApp.Button" parent="">
+    <style name="MyApp.Button" parent="TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <!--<item name="android:background">@color/buttonBackground</item>-->
     </style>
 
-    <style name="MyApp.Dialog.Text" parent="">
+    <style name="MyApp.Dialog.Text" parent="AppTheme">
 
     </style>
 
