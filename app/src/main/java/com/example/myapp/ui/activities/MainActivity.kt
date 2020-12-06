@@ -128,19 +128,19 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
         super.onActivityResult(requestCode, resultCode, intent)
 
-        val contactList = ArrayList<Contact>()
-        val contact = intent?.getSerializableExtra("contact") as Contact
-
-        val req = intent.getBooleanExtra("request", true)
-
-        if (req){
-            contactList.add(0, contact)
-            mainActivityRecyclerViewAdapter(contactList, true)
-        }
-        else{
-            val message = getString(R.string.MSG_OOPS)
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        }
+//        val contactList = ArrayList<Contact>()
+//        val contact = intent?.getSerializableExtra("contact") as Contact
+//
+//        val req = intent.getBooleanExtra("request", true)
+//
+//        if (req){
+//            contactList.add(0, contact)
+//            mainActivityRecyclerViewAdapter(contactList, true)
+//        }
+//        else{
+//            val message = getString(R.string.MSG_OOPS)
+//            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//        }
     }
 
     override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: String) {

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">          @color/colorPrimary</item>
         <item name="colorPrimaryDark">      @color/colorPrimaryDark</item>
         <item name="colorAccent">           @color/colorAccent</item>
@@ -11,17 +11,31 @@
         <item name="windowNoTitle">         true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="MyApp.Button" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <!--<item name="android:background">@color/buttonBackground</item>-->
+    <style name="TextInputContactLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">      match_parent</item>
+        <item name="android:layout_height">     wrap_content</item>
+        <item name="android:paddingTop">        4dp</item>
+        <item name="android:paddingBottom">     4dp</item>
+    </style>
+    
+    <style name="TextInputContactEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">      match_parent</item>
+        <item name="android:layout_height">     wrap_content</item>
+        <item name="android:lines">             1</item>
     </style>
 
-    <style name="MyApp.Dialog.Text" parent="AppTheme">
+    <style name="LinearLayoutContact" parent="AppTheme">
+        <item name="android:layout_width">      match_parent</item>
+        <item name="android:layout_height">     wrap_content</item>
+        <item name="android:orientation">       vertical</item>
+        <item name="android:paddingTop">        20dp</item>
+        <item name="android:paddingStart">      20dp</item>
+        <item name="android:paddingEnd">        20dp</item>
+    </style>
 
+
+    <style name="MyApp.Button" parent="Widget.MaterialComponents.Button">
+        <!--<item name="android:background">@color/buttonBackground</item>-->
     </style>
 
 </resources>

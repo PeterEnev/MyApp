@@ -4,6 +4,7 @@ import android.content.Context
 import android.provider.ContactsContract
 import com.example.myapp.MyApplication
 import com.example.myapp.ui.activities.MainActivity
+import kotlin.collections.ArrayList
 
 
 class PhoneContact {
@@ -13,20 +14,34 @@ class PhoneContact {
     fun getPhoneContact(): ArrayList<Contact>{
         var contactPhoneList = ArrayList<Contact>()
 
+//        val url = ContactsContract.Data.CONTENT_URI
+//        val projection = arrayOf(
+//            ContactsContract.CommonDataKinds.Phone.NUMBER
+//        )
+//
+//        val selectArg = arrayOf(
+//            ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+//        )
+//        val mCursor = context.contentResolver.query(url, projection, null, null, null)
+//
+//
+//        while (mCursor.moveToNext()){
+//            println(mCursor.getString(mCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)))
+//        }
         val phones = context.contentResolver.query(
+            //ContactsContract.Data.CONTENT_URI,
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
             null,
             null,
             null
         )
-
         while (phones.moveToNext()) {
             val name =
                 phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber =
                 phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            println(name)
+
             val list = Contact(
                 contactID                   = MainActivity.DEFAULT_VALUE_PHONE_CONTACT,
                 contactFirstName            = name,
@@ -38,7 +53,6 @@ class PhoneContact {
                 contactGender               = MainActivity.EMPTY_STRING,
                 contactLocalStorageStats    = false
             )
-            println(list.toString())
             contactPhoneList.add(list)
         }
         phones.close()

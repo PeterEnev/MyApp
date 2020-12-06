@@ -50,7 +50,7 @@
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/contactMailText"
-                android:text                        ="@string/contact_mail"
+                android:text                        ="@string/email"
                 android:paddingStart                ="5dp"
                 android:paddingEnd                  ="30dp"/>
 
@@ -58,14 +58,14 @@
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/recyclerContactMail"
-                android:text                        ="@string/contact_mail"
+                android:text                        ="@string/email"
                 android:layout_toEndOf              ="@+id/contactMailText"/>
 
             <TextView
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/contactCountryText"
-                android:text                        ="@string/contact_country"
+                android:text                        ="@string/country"
                 android:layout_below                ="@+id/recyclerContactMail"
                 android:paddingStart                ="5dp"
                 android:paddingEnd                  ="20dp"/>
@@ -74,7 +74,7 @@
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/recyclerContactCountry"
-                android:text                        ="@string/contact_country"
+                android:text                        ="@string/country"
                 android:layout_toEndOf              ="@+id/contactMailText"
                 android:layout_below                ="@+id/recyclerContactMail"/>
 
@@ -82,7 +82,7 @@
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/contactGenderText"
-                android:text                        ="@string/contact_gender"
+                android:text                        ="@string/gender"
                 android:layout_below                ="@+id/contactCountryText"
                 android:paddingStart                ="5dp"
                 android:paddingEnd                  ="20dp"/>
@@ -91,7 +91,7 @@
                 android:layout_width                ="wrap_content"
                 android:layout_height               ="wrap_content"
                 android:id                          ="@+id/recyclerContactGender"
-                android:text                        ="@string/contact_gender"
+                android:text                        ="@string/gender"
                 android:layout_toEndOf              ="@+id/contactMailText"
                 android:layout_below                ="@+id/contactCountryText"/>
 

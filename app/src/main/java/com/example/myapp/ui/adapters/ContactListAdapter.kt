@@ -36,6 +36,7 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
                 imageView.setImageResource(R.drawable.ic_contact_calendar_black)
             }else{
                 imageView.setImageResource(R.drawable.phone_android_black)
+                editBtn.visibility = GONE
             }
             expandableLayout.visibility = View.GONE
 

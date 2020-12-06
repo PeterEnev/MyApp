@@ -2,20 +2,26 @@ package com.example.myapp.ui.activities
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.AttributeSet
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.ActivityInfoCompat
 import com.example.myapp.R
 import com.example.myapp.models.Contact
 import com.example.myapp.models.Country
+import com.example.myapp.models.Validator
 import com.example.myapp.presenters.ContactPresenter
 import com.example.myapp.presenters.ContactView
 import com.example.myapp.ui.adapters.ContactListAdapter
 import com.example.myapp.ui.adapters.CountryListAdapter
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
@@ -23,16 +29,25 @@ import kotlin.contracts.Returns
 
 class ContactActivity : AppCompatActivity(), ContactView {
 
-    private lateinit var contactPresenter: ContactPresenter
+    private lateinit var contactPresenter       : ContactPresenter
 
     companion object {
         val CONTACT                     :String             = "contact"
         val DEFAULT_VALUE_NEW_CONTACT   :Long               = -1
+        val EMAIL_REGEX = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
+
+        countryInput.setFocusable(false)
 
         contactPresenter = ContactPresenter(this)
 
@@ -41,46 +56,99 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
             val editContact = intent.getSerializableExtra(CONTACT) as? Contact
-            contactId = editContact!!.contactID.toLong()
-            firstNameInput  .setText(editContact.contactFirstName)
-            lastNameInput   .setText(editContact.contactLastName)
-            countryInput    .setText(editContact.contactCountryName)
-            prefixInput     .setText(editContact.contactCountryPrefix)
-            phoneInput      .setText(editContact.contactPhoneNumber)
-            eMailInput      .setText(editContact.contactEMail)
-            genderInput     .setText(editContact.contactGender)
+            contactId               = editContact!!.contactID.toLong()
+            firstNameInput  .setText        (editContact.contactFirstName)
+            lastNameInput   .setText        (editContact.contactLastName)
+            countryInput    .setText        (editContact.contactCountryName)
+            phoneTxt        .setPrefixText  (editContact.contactCountryPrefix)
+            phoneInput      .setText        (editContact.contactPhoneNumber)
+            eMailInput      .setText        (editContact.contactEMail)
+            genderInput     .setText        (editContact.contactGender)
         }
 
-        selectCountryBtn.setOnClickListener { contactPresenter.getCountryNames() }
+        firstNameInput.setOnFocusChangeListener { _ , hasFocus ->
+            errorHandler(
+                firstNameTxt,
+                !hasFocus && firstNameInput.text!!.count() < 5)
+        }
+
+        lastNameInput.setOnFocusChangeListener{ _ , hasFocus ->
+            errorHandler(
+                lastNameTxt,
+                !hasFocus && lastNameInput.text!!.count() < 5)
+        }
+
+        countryInput.setOnClickListener { contactPresenter.getCountryNames() }
+
+        phoneInput.setOnFocusChangeListener{ _ , hasFocus ->
+            errorHandler(
+                phoneTxt,
+                !hasFocus && phoneInput.text!!.count() !in 8..10)
+        }
+
+        eMailInput.setOnFocusChangeListener { _ , hasFocus ->
+            errorHandler(
+                emailTxt,
+                !hasFocus && !Validator.EMAIL_REGEX.toRegex()
+                    .matches(eMailInput.text.toString()))
+        }
+
+        genderInput.setOnFocusChangeListener{ _ , hasFocus ->
+            errorHandler(
+                genderTxt,
+                !hasFocus && (genderInput.text!!.count() < 2))
+        }
 
         saveEditContactBtn.setOnClickListener {
-            var contact: Contact
-            if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
-                contact = Contact(
-                    contactFirstName            = firstNameInput.text.toString(),
-                    contactLastName             = lastNameInput.text.toString(),
-                    contactCountryName          = countryInput.text.toString(),
-                    contactCountryPrefix        = prefixInput.text.toString(),
-                    contactPhoneNumber          = phoneInput.text.toString(),
-                    contactEMail                = eMailInput.text.toString(),
-                    contactGender               = genderInput.text.toString(),
-                    contactLocalStorageStats    = contactStatus.toBoolean(),
-                    contactID                   = contactId
-                )
+            if (countryInput.text!!.count() != 0) {
+                var contact: Contact
+                if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
+                    contact = Contact(
+                        contactFirstName = firstNameInput.text.toString(),
+                        contactLastName = lastNameInput.text.toString(),
+                        contactCountryName = countryInput.text.toString(),
+                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
+                        contactPhoneNumber = phoneInput.text.toString(),
+                        contactEMail = eMailInput.text.toString(),
+                        contactGender = genderInput.text.toString(),
+                        contactLocalStorageStats = contactStatus.toBoolean(),
+                        contactID = contactId
+                    )
+                } else {
+                    contact = Contact(
+                        contactFirstName = firstNameInput.text.toString(),
+                        contactLastName = lastNameInput.text.toString(),
+                        contactCountryName = countryInput.text.toString(),
+                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
+                        contactPhoneNumber = phoneInput.text.toString(),
+                        contactEMail = eMailInput.text.toString(),
+                        contactGender = genderInput.text.toString(),
+                        contactLocalStorageStats = false,
+                        contactID = contactId
+                    )
+                }
+                contactPresenter.saveContactDialog(contact)
             } else {
-                contact = Contact(
-                    contactFirstName            = firstNameInput.text.toString(),
-                    contactLastName             = lastNameInput.text.toString(),
-                    contactCountryName          = countryInput.text.toString(),
-                    contactCountryPrefix        = prefixInput.text.toString(),
-                    contactPhoneNumber          = phoneInput.text.toString(),
-                    contactEMail                = eMailInput.text.toString(),
-                    contactGender               = genderInput.text.toString(),
-                    contactLocalStorageStats    = false,
-                    contactID                   = contactId
-                )
+                errorHandler(countryInputLayout, true)
             }
-            contactPresenter.saveContactDialog(contact)
+        }
+
+    }
+
+
+    fun errorHandler(textLayout: TextInputLayout, condition: Boolean ) {
+        if(condition){
+            textLayout.setErrorEnabled(true)
+            textLayout.error = getString(when(textLayout){
+                firstNameTxt    -> R.string.MSG_ENTER_VALID_FIRST_NAME
+                lastNameTxt     -> R.string.MSG_ENTER_VALID_LAST_NAME
+                genderTxt       -> R.string.MSG_ENTER_VALID_GENDER
+                emailTxt        -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
+                phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
+                else            -> R.string.MSG_ENTER_COUNTRY
+            })
+        } else {
+            textLayout.setErrorEnabled(false)
         }
     }
 
@@ -122,7 +190,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         dialog.countryListView.setOnItemClickListener { parent, view, position, id ->
             countryInput.setText(listCountryRenew[position].countryName)
-            prefixInput.setText(listCountryRenew[position].countryPrefih)
+            phoneTxt.setPrefixText(listCountryRenew[position].countryPrefih)
             dialog.dismiss()
         }
         dialog.show()
