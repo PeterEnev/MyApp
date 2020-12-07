@@ -47,14 +47,12 @@ class ContactActivity : AppCompatActivity(), ContactView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
 
-        countryInput.setFocusable(false)
-
         contactPresenter = ContactPresenter(this)
 
         val contactStatus  = intent.getStringExtra(ContactListAdapter.CONTACT_STATUS)
         var contactId       = DEFAULT_VALUE_NEW_CONTACT
 
-        if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
+        if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
             val editContact = intent.getSerializableExtra(CONTACT) as? Contact
             contactId               = editContact!!.contactID.toLong()
             firstNameInput  .setText        (editContact.contactFirstName)
@@ -101,32 +99,43 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         saveEditContactBtn.setOnClickListener {
             if (countryInput.text!!.count() != 0) {
-                var contact: Contact
-                if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
-                    contact = Contact(
-                        contactFirstName = firstNameInput.text.toString(),
-                        contactLastName = lastNameInput.text.toString(),
-                        contactCountryName = countryInput.text.toString(),
-                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
-                        contactPhoneNumber = phoneInput.text.toString(),
-                        contactEMail = eMailInput.text.toString(),
-                        contactGender = genderInput.text.toString(),
-                        contactLocalStorageStats = contactStatus.toBoolean(),
-                        contactID = contactId
-                    )
-                } else {
-                    contact = Contact(
-                        contactFirstName = firstNameInput.text.toString(),
-                        contactLastName = lastNameInput.text.toString(),
-                        contactCountryName = countryInput.text.toString(),
-                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
-                        contactPhoneNumber = phoneInput.text.toString(),
-                        contactEMail = eMailInput.text.toString(),
-                        contactGender = genderInput.text.toString(),
-                        contactLocalStorageStats = false,
-                        contactID = contactId
-                    )
-                }
+                var contact =  Contact(
+                    contactFirstName                = firstNameInput.text.toString(),
+                    contactLastName                 = lastNameInput.text.toString(),
+                    contactCountryName              = countryInput.text.toString(),
+                    contactCountryPrefix            = phoneTxt.getPrefixText().toString(),
+                    contactPhoneNumber              = phoneInput.text.toString(),
+                    contactEMail                    = eMailInput.text.toString(),
+                    contactGender                   = genderInput.text.toString(),
+                    contactLocalStorageStats        = if (ContactListAdapter.CONTACT_STATUS_EXISTING)
+                                                        contactStatus.toBoolean() else false,
+                    contactID                       = contactId
+                )
+//                if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
+//                    contact = Contact(
+//                        contactFirstName = firstNameInput.text.toString(),
+//                        contactLastName = lastNameInput.text.toString(),
+//                        contactCountryName = countryInput.text.toString(),
+//                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
+//                        contactPhoneNumber = phoneInput.text.toString(),
+//                        contactEMail = eMailInput.text.toString(),
+//                        contactGender = genderInput.text.toString(),
+//                        contactLocalStorageStats = contactStatus.toBoolean(),
+//                        contactID = contactId
+//                    )
+//                } else {
+//                    contact = Contact(
+//                        contactFirstName = firstNameInput.text.toString(),
+//                        contactLastName = lastNameInput.text.toString(),
+//                        contactCountryName = countryInput.text.toString(),
+//                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
+//                        contactPhoneNumber = phoneInput.text.toString(),
+//                        contactEMail = eMailInput.text.toString(),
+//                        contactGender = genderInput.text.toString(),
+//                        contactLocalStorageStats = false,
+//                        contactID = contactId
+//                    )
+//                }
                 contactPresenter.saveContactDialog(contact)
             } else {
                 errorHandler(countryInputLayout, true)

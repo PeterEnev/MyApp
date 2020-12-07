@@ -17,7 +17,7 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
 
     companion object{
         val CONTACT_STATUS              = "contactStatus"
-        val CONTACT_STATUS_EXISTING     = "existing"
+        var CONTACT_STATUS_EXISTING     = true
     }
 
     inner class ViewHolder(itemView: View, override val containerView: View?) : RecyclerView.ViewHolder(itemView), LayoutContainer{
@@ -49,6 +49,7 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
             }
 
             editBtn.setOnClickListener {
+                CONTACT_STATUS_EXISTING = false
                 listener.onEditBtnListener(contact, CONTACT_STATUS, CONTACT_STATUS_EXISTING)
             }
         }
@@ -72,5 +73,5 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
 }
 
 interface ContactAdapterListener{
-    fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: String)
+    fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: Boolean)
 }

@@ -1,6 +1,7 @@
 package com.example.myapp.models
 
 import android.content.Context
+import android.graphics.Paint
 import android.provider.ContactsContract
 import com.example.myapp.MyApplication
 import com.example.myapp.ui.activities.MainActivity
@@ -13,21 +14,25 @@ class PhoneContact {
 
     fun getPhoneContact(): ArrayList<Contact>{
         var contactPhoneList = ArrayList<Contact>()
-
-//        val url = ContactsContract.Data.CONTENT_URI
+//
+//        val url = ContactsContract.Contacts.CONTENT_URI
 //        val projection = arrayOf(
-//            ContactsContract.CommonDataKinds.Phone.NUMBER
+//            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+//            ContactsContract.CommonDataKinds.Phone.NUMBER,
+//            ContactsContract.CommonDataKinds.Email.ADDRESS
 //        )
 //
-//        val selectArg = arrayOf(
-//            ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-//        )
-//        val mCursor = context.contentResolver.query(url, projection, null, null, null)
+//        val cursor = context.contentResolver.query(url, projection, null, null, null)
 //
+//        val name    = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+//        val phone   = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+//        val email   = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)
 //
-//        while (mCursor.moveToNext()){
-//            println(mCursor.getString(mCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)))
-//        }
+//        println(cursor.getString(name))
+
+
+
+
         val phones = context.contentResolver.query(
             //ContactsContract.Data.CONTENT_URI,
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,

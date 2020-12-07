@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         var isFirstLoadRecycler             :Boolean   =true
 
         val CONTACT_STATUS                  :String    ="contactStatus"
-        val CONTACT_STATUS_NEW              :String    ="new"
+        val CONTACT_STATUS_NEW              :Boolean   =true
         val EMPTY_STRING                    :String    =""
         val CONTACT_NAME                    :String    ="contact"
         val TOAST_CONTACT_EDITED            :String    ="The contact cannot be edited"
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 //        }
     }
 
-    override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: String) {
+    override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: Boolean) {
         if (contact.contactLocalStorageStats){
             val intent = Intent(this, ContactActivity::class.java)
                     intent.putExtra(contactStatus, contactStatusExisting)
