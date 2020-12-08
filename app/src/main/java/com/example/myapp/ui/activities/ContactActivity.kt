@@ -179,7 +179,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         dialog.countryListView.setOnItemClickListener { parent, view, position, id ->
             countryInput.setText(listCountryRenew[position].countryName)
-            phoneTxt.setPrefixText(listCountryRenew[position].countryPrefih)
+            phoneTxt.setPrefixText(listCountryRenew[position].countryPrefix)
             errorHandler(countryInputLayout, false)
             dialog.dismiss()
         }

@@ -1,5 +1,5 @@
 package com.example.myapp.models
 
-data class Country (var coutryId        : Long,
+data class Country (var countryId        : Long,
                     var countryName     : String,
-                    var countryPrefih   : String)
+                    var countryPrefix   : String)

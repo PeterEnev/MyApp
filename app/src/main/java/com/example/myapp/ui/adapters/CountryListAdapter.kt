@@ -26,7 +26,7 @@ class CountryListAdapter(val context: Context,
         val country = getItem(position) as Country
 
         rowView.countryName.text = country.countryName
-        rowView.countryPrefix.text = country.countryPrefih
+        rowView.countryPrefix.text = country.countryPrefix
         return rowView
     }
 
@@ -48,7 +48,7 @@ class CountryDiffUtil: DiffUtil.ItemCallback<Country>(){
         oldItem: Country,
         newItem: Country
     ): Boolean {
-        return oldItem.coutryId == newItem.coutryId
+        return oldItem.countryId == newItem.countryId
     }
 
     override fun areContentsTheSame(
