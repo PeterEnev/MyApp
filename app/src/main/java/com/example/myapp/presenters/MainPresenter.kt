@@ -8,12 +8,11 @@ import kotlinx.coroutines.Dispatchers.IO
 
 class MainPresenter(private val mainView: MainView) {
 
-    fun setContactList() = runBlocking{
-        val contactList = async{ DatabaseDB().getContactList() }.await()
-        val phoneContactList = async { PhoneContact().getPhoneContact() }.await()
-        contactList.addAll(phoneContactList)
+    fun setContactList() {
+        val contactList = getContactList()
         mainView.setContactList(contactList)
     }
+
     fun setContactListNoPermission() = runBlocking {
         val contactList = async{ DatabaseDB().getContactList() }.await()
         mainView.setContactList(contactList)
@@ -23,6 +22,12 @@ class MainPresenter(private val mainView: MainView) {
         mainView.navigateToNewContactActivity()
     }
 
+    fun getContactList(): ArrayList<Contact> = runBlocking{
+        val contactList = async { DatabaseDB().getContactList() }.await()
+        val phoneContactList = async { PhoneContact().getPhoneContact() }.await()
+        contactList.addAll(phoneContactList)
+        return@runBlocking contactList
+    }
 }
 
 interface MainView{

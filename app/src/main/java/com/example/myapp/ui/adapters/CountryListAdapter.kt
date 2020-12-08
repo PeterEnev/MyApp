@@ -11,11 +11,15 @@ import com.example.myapp.models.Country
 import kotlinx.android.synthetic.main.list_item_country.view.*
 
 class CountryListAdapter(val context: Context,
-                         val listCountry: ArrayList<Country>) : BaseAdapter() {
+                         var listCountry: ArrayList<Country>) : BaseAdapter() {
 
     val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
+    fun updateList(newListCountry: ArrayList<Country>){
+        listCountry = newListCountry
+        notifyDataSetChanged()
+    }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val rowView = inflater.inflate(R.layout.list_item_country, parent, false)

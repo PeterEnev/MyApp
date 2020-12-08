@@ -1,108 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android                               ="http://schemas.android.com/apk/res/android"
-    xmlns:app                                   ="http://schemas.android.com/apk/res-auto"
-    android:layout_width                        ="match_parent"
-    android:layout_height                       ="match_parent"
-    android:orientation                         ="vertical">
+<layout
+    xmlns:android                                   ="http://schemas.android.com/apk/res/android"
+    xmlns:app                                       ="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width                        ="match_parent"
+        android:layout_height                       ="match_parent"
+        android:orientation                         ="vertical">
 
 
 
-    <ScrollView
-        android:layout_width                    ="match_parent"
-        android:layout_height                   ="wrap_content">
+        <ScrollView
+            android:layout_width                    ="match_parent"
+            android:layout_height                   ="wrap_content">
 
-        <LinearLayout
-            style="@style/LinearLayoutContact">
+            <LinearLayout
+                style                               ="@style/LinearLayoutContact">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/firstNameTxt"
-                android:hint                    ="@string/first_name"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/firstNameTxt"
+                    android:hint                    ="@string/first_name"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/firstNameInput"
-                    android:inputType           ="textPersonName"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/firstNameInput"
+                        android:inputType           ="textPersonName"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/lastNameTxt"
-                android:hint                    ="@string/last_name"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/lastNameTxt"
+                    android:hint                    ="@string/last_name"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/lastNameInput"
-                    android:inputType           ="textPersonName"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/lastNameInput"
+                        android:inputType           ="textPersonName"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/countryInputLayout"
-                android:hint                    ="@string/country"
-                app:endIconMode                 ="custom"
-                app:endIconDrawable             ="@drawable/ic_search_black"
-                app:endIconCheckable            ="true"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/countryInputLayout"
+                    android:hint                    ="@string/country"
+                    app:endIconMode                 ="custom"
+                    app:endIconDrawable             ="@drawable/ic_search_black"
+                    app:endIconCheckable            ="true"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/countryInput"
-                    android:focusable="false"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/countryInput"
+                        android:focusable           ="false"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/phoneTxt"
-                android:hint                    ="@string/phone"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/phoneTxt"
+                    android:hint                    ="@string/phone"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/phoneInput"
-                    android:inputType           ="phone"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/phoneInput"
+                        android:inputType           ="phone"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/emailTxt"
-                android:hint                    ="@string/email"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/emailTxt"
+                    android:hint                    ="@string/email"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/eMailInput"
-                    android:inputType           ="textEmailAddress"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/eMailInput"
+                        android:inputType           ="textEmailAddress"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id                      ="@+id/genderTxt"
-                android:hint                    ="@string/gender"
-                style                           ="@style/TextInputContactLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id                      ="@+id/genderTxt"
+                    android:hint                    ="@string/gender"
+                    style                           ="@style/TextInputContactLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id                  ="@+id/genderInput"
-                    android:inputType           ="text"
-                    style                       ="@style/TextInputContactEditText"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id                  ="@+id/genderInput"
+                        android:inputType           ="text"
+                        style                       ="@style/TextInputContactEditText"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id                      ="@+id/saveEditContactBtn"
-                android:layout_height           ="wrap_content"
-                android:layout_width            ="wrap_content"
-                android:layout_marginTop        ="16dp"
-                android:layout_gravity          ="center"
-                android:text                    ="@string/save"
-                style                           ="?attr/materialButtonOutlinedStyle">
+                <Button
+                    android:id                      ="@+id/saveEditContactBtn"
+                    android:layout_height           ="wrap_content"
+                    android:layout_width            ="wrap_content"
+                    android:layout_marginTop        ="16dp"
+                    android:layout_gravity          ="center"
+                    android:text                    ="@string/save"
+                    style                           ="?attr/materialButtonOutlinedStyle">
 
-            </Button>
-        </LinearLayout>
+                </Button>
+            </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
 
-</LinearLayout>
+    </LinearLayout>
+
+</layout>

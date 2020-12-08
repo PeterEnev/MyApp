@@ -11,8 +11,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
+import com.example.myapp.databinding.ActivityMainBinding
 import com.example.myapp.models.Contact
 import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
@@ -25,8 +28,12 @@ import kotlin.contracts.contract
 
 class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
-    private lateinit var mainPresenter: MainPresenter
-    private lateinit var dataContactList: ArrayList<Contact>
+    private lateinit var bindingMain        : ActivityMainBinding
+    private lateinit var mainPresenter      : MainPresenter
+    private lateinit var dataContactList    : ArrayList<Contact>
+    private lateinit var adapter            : ContactListAdapter
+
+    var startTimer : Long = 0
 
     companion object{
         val CONTACT_STATUS                  :String    ="contactStatus"
@@ -41,7 +48,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        bindingMain = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        startTimer = System.currentTimeMillis()
 
         mainPresenter = MainPresenter(this)
 
@@ -52,7 +61,8 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         }
 
 
-        newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
+        bindingMain.newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
+        //newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
 
     override fun onRequestPermissionsResult(
@@ -74,21 +84,23 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
-    override fun setContactList(contactList: ArrayList<Contact>){
-        var listContactRenew = contactList
-        mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this)
+    override fun setContactList(data: ArrayList<Contact>){
+        dataContactList = data
+        var listContactRenew = data
+        adapter = ContactListAdapter(listContactRenew, this)
+        mainActivityRecyclerView.adapter = adapter
         mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                for (i in 0 until contactList.size){
-                    if ((contactList[i].contactFirstName + " " + contactList[i].contactLastName).
+                for (i in 0 until dataContactList.size){
+                    if ((dataContactList[i].contactFirstName + " " + dataContactList[i].contactLastName).
                         toUpperCase().contains(s.toString().toUpperCase()) ||
-                        (contactList[i].contactCountryPrefix + contactList[i].contactPhoneNumber).contains(s.toString())){
-                        listContactRenew.add(contactList[i])
+                        (dataContactList[i].contactCountryPrefix + dataContactList[i].contactPhoneNumber).contains(s.toString())){
+                        listContactRenew.add(dataContactList[i])
                     }
                 }
-
+                adapter.updateList(listContactRenew)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -101,9 +113,15 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.i("SystemMsg1", (System.currentTimeMillis() - startTimer).toString())
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        dataContactList = mainPresenter.getContactList()
+        adapter.updateList(dataContactList)
     }
 //  override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
 //        super.onActivityResult(requestCode, resultCode, intent)

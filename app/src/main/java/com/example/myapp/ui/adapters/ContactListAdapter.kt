@@ -13,12 +13,17 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList
 
-class ContactListAdapter (private val contactList: ArrayList<Contact>, private val listener: ContactAdapterListener) :
+class ContactListAdapter (private var contactList: ArrayList<Contact>, private val listener: ContactAdapterListener) :
     RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
 
     companion object{
         val CONTACT_STATUS              = "contactStatus"
         var CONTACT_STATUS_EXISTING     = true
+    }
+
+    fun updateList(newList: ArrayList<Contact>){
+        contactList = newList
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View, override val containerView: View?) : RecyclerView.ViewHolder(itemView), LayoutContainer{
@@ -73,16 +78,6 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
     }
 }
 
-class ContactDiffCallback: DiffUtil.ItemCallback<Contact>(){
-    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.contactID == newItem.contactID
-    }
-
-    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem == newItem
-    }
-
-}
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: Boolean)

@@ -12,7 +12,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.ActivityInfoCompat
+import androidx.databinding.DataBindingUtil
 import com.example.myapp.R
+import com.example.myapp.databinding.ActivityContactBinding
 import com.example.myapp.models.Contact
 import com.example.myapp.models.Country
 import com.example.myapp.models.Validator
@@ -29,6 +31,7 @@ import kotlin.contracts.Returns
 
 class ContactActivity : AppCompatActivity(), ContactView {
 
+    private lateinit var bindingContact         : ActivityContactBinding
     private lateinit var contactPresenter       : ContactPresenter
 
     companion object {
@@ -45,7 +48,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contact)
+        bindingContact = DataBindingUtil.setContentView(this, R.layout.activity_contact)
 
         contactPresenter = ContactPresenter(this)
 
@@ -54,7 +57,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
             val editContact = intent.getSerializableExtra(CONTACT) as? Contact
-            contactId               = editContact!!.contactID.toLong()
+            contactId               = editContact!!.contactID
             firstNameInput  .setText        (editContact.contactFirstName)
             lastNameInput   .setText        (editContact.contactLastName)
             countryInput    .setText        (editContact.contactCountryName)
@@ -111,34 +114,15 @@ class ContactActivity : AppCompatActivity(), ContactView {
                                                         contactStatus else false,
                     contactID                       = contactId
                 )
-//                if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {
-//                    contact = Contact(
-//                        contactFirstName = firstNameInput.text.toString(),
-//                        contactLastName = lastNameInput.text.toString(),
-//                        contactCountryName = countryInput.text.toString(),
-//                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
-//                        contactPhoneNumber = phoneInput.text.toString(),
-//                        contactEMail = eMailInput.text.toString(),
-//                        contactGender = genderInput.text.toString(),
-//                        contactLocalStorageStats = contactStatus.toBoolean(),
-//                        contactID = contactId
-//                    )
-//                } else {
-//                    contact = Contact(
-//                        contactFirstName = firstNameInput.text.toString(),
-//                        contactLastName = lastNameInput.text.toString(),
-//                        contactCountryName = countryInput.text.toString(),
-//                        contactCountryPrefix = phoneTxt.getPrefixText().toString(),
-//                        contactPhoneNumber = phoneInput.text.toString(),
-//                        contactEMail = eMailInput.text.toString(),
-//                        contactGender = genderInput.text.toString(),
-//                        contactLocalStorageStats = false,
-//                        contactID = contactId
-//                    )
-//                }
                 contactPresenter.saveContactDialog(contact)
             } else {
                 errorHandler(countryInputLayout, true)
+                errorHandler(firstNameTxt, firstNameInput.text!!.count() < 5)
+                errorHandler(lastNameTxt,lastNameInput.text!!.count() < 5)
+                errorHandler(phoneTxt,phoneInput.text!!.count() !in 8..10)
+                errorHandler(emailTxt,!Validator.EMAIL_REGEX.toRegex()
+                        .matches(eMailInput.text.toString()))
+                errorHandler(genderTxt,(genderInput.text!!.count() < 2))
             }
         }
 
@@ -181,11 +165,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
                         listCountryRenew.add(listCountry[i])
                     }
                 }
-                adapter = CountryListAdapter(
-                    context         = this@ContactActivity,
-                    listCountry     = listCountryRenew
-                )
-                dialog.countryListView.adapter = adapter
+                adapter.updateList(listCountryRenew)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -200,6 +180,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         dialog.countryListView.setOnItemClickListener { parent, view, position, id ->
             countryInput.setText(listCountryRenew[position].countryName)
             phoneTxt.setPrefixText(listCountryRenew[position].countryPrefih)
+            errorHandler(countryInputLayout, false)
             dialog.dismiss()
         }
         dialog.show()
