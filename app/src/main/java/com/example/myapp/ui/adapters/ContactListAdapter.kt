@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
@@ -49,7 +50,7 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
             }
 
             editBtn.setOnClickListener {
-                CONTACT_STATUS_EXISTING = false
+                CONTACT_STATUS_EXISTING = true
                 listener.onEditBtnListener(contact, CONTACT_STATUS, CONTACT_STATUS_EXISTING)
             }
         }
@@ -70,6 +71,17 @@ class ContactListAdapter (private val contactList: ArrayList<Contact>, private v
     override fun getItemCount(): Int {
         return contactList.size
     }
+}
+
+class ContactDiffCallback: DiffUtil.ItemCallback<Contact>(){
+    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+        return oldItem.contactID == newItem.contactID
+    }
+
+    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+        return oldItem == newItem
+    }
+
 }
 
 interface ContactAdapterListener{

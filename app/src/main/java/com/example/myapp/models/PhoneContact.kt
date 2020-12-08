@@ -33,6 +33,7 @@ class PhoneContact {
 
 
 
+        //val daddada = context.contentResolver.query(ContactsContract.Data.CONTENT_URI)
         val phones = context.contentResolver.query(
             //ContactsContract.Data.CONTENT_URI,
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,

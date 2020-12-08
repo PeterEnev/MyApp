@@ -49,7 +49,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         contactPresenter = ContactPresenter(this)
 
-        val contactStatus  = intent.getStringExtra(ContactListAdapter.CONTACT_STATUS)
+        val contactStatus  = intent.getBooleanExtra(ContactListAdapter.CONTACT_STATUS, false)
         var contactId       = DEFAULT_VALUE_NEW_CONTACT
 
         if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
@@ -108,7 +108,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
                     contactEMail                    = eMailInput.text.toString(),
                     contactGender                   = genderInput.text.toString(),
                     contactLocalStorageStats        = if (ContactListAdapter.CONTACT_STATUS_EXISTING)
-                                                        contactStatus.toBoolean() else false,
+                                                        contactStatus else false,
                     contactID                       = contactId
                 )
 //                if (contactStatus == ContactListAdapter.CONTACT_STATUS_EXISTING) {

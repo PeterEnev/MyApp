@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -28,8 +29,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     private lateinit var dataContactList: ArrayList<Contact>
 
     companion object{
-        var isFirstLoadRecycler             :Boolean   =true
-
         val CONTACT_STATUS                  :String    ="contactStatus"
         val CONTACT_STATUS_NEW              :Boolean   =true
         val EMPTY_STRING                    :String    =""
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
             requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
         }
 
+
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
 
@@ -68,30 +68,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         }
     }
 
-    fun mainActivityRecyclerViewAdapter(contactList: ArrayList<Contact>, updateList: Boolean){
-        if (isFirstLoadRecycler){
-            dataContactList = contactList
-            mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
-            isFirstLoadRecycler = false
-        } else if (updateList){
-            var isFirstDBContact = true
-            for (i in 0 until dataContactList.size){
-                if (dataContactList[i].contactID == contactList[0].contactID){
-                    dataContactList[i] = contactList[0]
-                    isFirstDBContact = false
-                    break
-                }
-            }
-            if (isFirstDBContact){
-                dataContactList.addAll(contactList)
-            }
-        } else {
-            dataContactList = contactList
-        }
-        //mainActivityRecyclerView.adapter = ContactListAdapter(dataContactList, this)
-        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
     override fun navigateToNewContactActivity(){
         val intent = Intent(this, ContactActivity::class.java)
         intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_NEW)
@@ -100,8 +76,8 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun setContactList(contactList: ArrayList<Contact>){
         var listContactRenew = contactList
-
-        mainActivityRecyclerViewAdapter(listContactRenew, false)
+        mainActivityRecyclerView.adapter = ContactListAdapter(listContactRenew, this)
+        mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -112,7 +88,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                         listContactRenew.add(contactList[i])
                     }
                 }
-                mainActivityRecyclerViewAdapter(listContactRenew, false)
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -125,28 +101,32 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
-        super.onActivityResult(requestCode, resultCode, intent)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-//        val contactList = ArrayList<Contact>()
-//        val contact = intent?.getSerializableExtra("contact") as Contact
-//
-//        val req = intent.getBooleanExtra("request", true)
-//
-//        if (req){
-//            contactList.add(0, contact)
-//            mainActivityRecyclerViewAdapter(contactList, true)
-//        }
-//        else{
-//            val message = getString(R.string.MSG_OOPS)
-//            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-//        }
     }
+//  override fun onActivityResult(requestCode: Int, resultCode: Int, intent : Intent?){
+//        super.onActivityResult(requestCode, resultCode, intent)
+//
+////        val contactList = ArrayList<Contact>()
+////        val contact = intent?.getSerializableExtra("contact") as Contact
+////
+////        val req = intent.getBooleanExtra("request", true)
+////
+////        if (req){
+////            contactList.add(0, contact)
+////            mainActivityRecyclerViewAdapter(contactList, true)
+////        }
+////        else{
+////            val message = getString(R.string.MSG_OOPS)
+////            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+////        }
+//    }
 
     override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: Boolean) {
-        if (contact.contactLocalStorageStats){
+        if (contactStatusExisting){
             val intent = Intent(this, ContactActivity::class.java)
-                    intent.putExtra(contactStatus, contactStatusExisting)
+                    intent.putExtra(CONTACT_STATUS, contactStatusExisting)
                     intent.putExtra(CONTACT_NAME,
                         Contact(
                             contactID                   = contact.contactID,
@@ -158,9 +138,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                             contactEMail                = contact.contactEMail,
                             contactGender               = contact.contactGender,
                             contactLocalStorageStats    = contact.contactLocalStorageStats))
-                    startActivityForResult(intent, REQUEST_CODE_OK)
-                }else{
-                    Toast.makeText(this, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
-                }
+            startActivityForResult(intent, REQUEST_CODE_OK)
+        }else{
+            Toast.makeText(this, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
+        }
     }
 }
