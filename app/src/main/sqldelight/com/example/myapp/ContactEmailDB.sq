@@ -1,0 +1,33 @@
+CREATE TABLE ContactEmail (
+    contactEmailId      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    contactId           INTEGER     NOT NULL,
+    email               TEXT        NOT NULL,
+    contactEmailTypeId  INTEGER     NOT NULL
+);
+
+insertContactEmail:
+INSERT INTO ContactEmail (contactId, email, contactEmailTypeId)
+VALUES ( ? , (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?) , ?);
+
+updateContactEmail:
+UPDATE ContactEmail
+SET
+    contactId = ?,
+    email = ?,
+    contactEmailTypeId = (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?)
+WHERE contactEmailId = ?;
+
+selectContactEmail:
+SELECT
+    contactEmailId,
+    contactId,
+    email,
+    contactEmailTypeId
+FROM ContactEmail
+INNER JOIN DataType
+ON ContactEmail.contactEmailTypeId = DataType.dataTypeId
+WHERE contactId = ?;
+
+deleteContactEmail:
+DELETE FROM ContactEmail
+WHERE contactEmailId = ?;

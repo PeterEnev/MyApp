@@ -1,0 +1,14 @@
+CREATE TABLE DataType (
+    dataTypeId          INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+    dataTypeName        TEXT     NOT NULL
+);
+
+INSERT INTO DataType (dataTypeName)
+VALUES  ('Home'),
+        ('Mobile'),
+        ('Work'),
+        ('Other');
+
+selectDataTypeName:
+SELECT dataTypeName
+FROM DataType;

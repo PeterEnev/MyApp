@@ -1,0 +1,33 @@
+CREATE TABLE ContactPhone (
+    contactPhoneId          INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    contactId               INTEGER     NOT NULL,
+    phone                   TEXT        NOT NULL,
+    contactPhoneTypeId      INTEGER     NOT NULL
+);
+
+insertContactPhone:
+INSERT INTO ContactPhone (contactId, phone, contactPhoneTypeId)
+VALUES ( ? , (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?) , ?);
+
+updateContactPhone:
+UPDATE ContactPhone
+SET
+    contactId = ?,
+    phone = ?,
+    contactPhoneTypeId = (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?)
+WHERE contactPhoneId = ?;
+
+selectContactPhone:
+SELECT
+    contactPhoneId,
+    contactId,
+    phone,
+    contactPhoneTypeId
+FROM ContactPhone
+INNER JOIN DataType
+ON ContactPhone.contactPhoneTypeId = DataType.dataTypeId
+WHERE contactId = ?;
+
+deleteContactPhone:
+DELETE FROM ContactPhone
+WHERE contactPhoneTypeId = ?;
