@@ -1,6 +1,7 @@
 package com.example.myapp.ui.activities
 
 import android.Manifest.permission.READ_CONTACTS
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapp.Database
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityMainBinding
 import com.example.myapp.models.Contact
@@ -21,6 +23,7 @@ import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
 import com.example.myapp.ui.adapters.ContactAdapterListener
 import com.example.myapp.ui.adapters.ContactListAdapter
+import com.squareup.sqldelight.android.AndroidSqliteDriver
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.Collections.addAll

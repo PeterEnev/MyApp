@@ -1,20 +1,20 @@
 package com.example.myapp.models
 
 import android.content.Context
-import com.example.myapp.ContactsDBQueries
-import com.example.myapp.CountyiesDBQueries
-import com.example.myapp.Database
-import com.example.myapp.MyApplication
+import com.example.myapp.*
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
 class DatabaseDB {
-    val context             : Context               = MyApplication.instansce
-    val databaseName        : String                = "test.db"
-    val driver              : SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
-    val database            : Database              = Database(driver)
-    val dbContriesQuery     : CountyiesDBQueries    = database.countyiesDBQueries
-    val dbContactsQuery     : ContactsDBQueries     = database.contactsDBQueries
+    val context                 : Context               = MyApplication.instansce
+    val databaseName            : String                = "test.db"
+    val driver                  : SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
+    val database                : Database              = Database(driver)
+    val dbContriesQuery         : CountyiesDBQueries    = database.countyiesDBQueries
+    val dbContactsQuery         : ContactsDBQueries     = database.contactsDBQueries
+    val dbContactEmailQuery     : ContactEmailDBQueries = database.contactEmailDBQueries
+    val dbContactPhoneDBQueries :ContactPhoneDBQueries  = database.contactPhoneDBQueries
+
 
 
     fun saveNewContact(contact: Contact) : Boolean{
