@@ -38,7 +38,7 @@ class PhoneContact {
         while (cursor.moveToNext()){
             println( " 0 -> " + cursor.getString(0) +
                     " 1 -> " + cursor.getString(1) +
-                    " 2 -> " + cursor.getString(2) +
+                    //" 2 -> " + cursor.getString(2) +
                     " 3 -> " + cursor.getString(3) +
                     " 4 -> " + cursor.getString(4) +
                     " 5 -> " + cursor.getString(5)
