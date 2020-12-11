@@ -46,35 +46,35 @@ class PhoneContact {
 //        }
 
 
-        val phones = context.contentResolver.query(
-            //ContactsContract.Data.CONTENT_URI,
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null
-        )
-        while (phones!!.moveToNext()) {
-            val name =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-            val list = Contact(
-                contactID = MainActivity.DEFAULT_VALUE_PHONE_CONTACT,
-                contactFirstName = name,
-                contactLastName = MainActivity.EMPTY_STRING,
-                contactPhoneNumber = phoneNumber,
-                contactEMail = MainActivity.EMPTY_STRING,
-                contactCountryPrefix = MainActivity.EMPTY_STRING,
-                contactCountryName = MainActivity.EMPTY_STRING,
-                //contactGender = MainActivity.EMPTY_STRING,
-                contactLocalStorageStats = false,
-                contactBlob = null
-            )
-            contactPhoneList.add(list)
-        }
-        phones.close()
+//        val phones = context.contentResolver.query(
+//            //ContactsContract.Data.CONTENT_URI,
+//            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//            null,
+//            null,
+//            null,
+//            null
+//        )
+//        while (phones!!.moveToNext()) {
+//            val name =
+//                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+//            val phoneNumber =
+//                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+//
+//            val list = Contact(
+//                contactID = MainActivity.DEFAULT_VALUE_PHONE_CONTACT,
+//                contactFirstName = name,
+//                contactLastName = MainActivity.EMPTY_STRING,
+//                contactPhoneNumber = phoneNumber,
+//                contactEMail = MainActivity.EMPTY_STRING,
+//                contactCountryPrefix = MainActivity.EMPTY_STRING,
+//                contactCountryName = MainActivity.EMPTY_STRING,
+//                //contactGender = MainActivity.EMPTY_STRING,
+//                contactLocalStorageStats = false,
+//                contactBlob = null
+//            )
+//            contactPhoneList.add(list)
+//        }
+//        phones.close()
         return contactPhoneList
     }
 }

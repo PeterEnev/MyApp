@@ -8,9 +8,8 @@ class Contact(
     var contactFirstName        : String,
     var contactLastName         : String,
     var contactCountryName      : String,
-    var contactCountryPrefix    : String,
-    var contactPhoneNumber      : String,
-    var contactEMail            : String,
+    var contactPhoneNumber      : List<ContactPhone>,
+    var contactEMail            : List<ContactEmail>,
     var contactLocalStorageStats: Boolean,
     var contactBlob             : Blob? = null
 ): Serializable

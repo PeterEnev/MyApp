@@ -30,12 +30,12 @@ class Validator {
         }else if (!isNameValid(contact.contactLastName)){
             result = 2
             return result
-        }else if (!isEmailValid(contact.contactEMail)){
-            result = 3
-            return result
-        }else if (!isPhoneValid(contact.contactPhoneNumber)){
-            result = 4
-            return result
+//        }else if (!isEmailValid(contact.contactEMail)){
+//            result = 3
+//            return result
+//        }else if (!isPhoneValid(contact.contactPhoneNumber)){
+//            result = 4
+//            return result
 //        }else if (!isStringValid(contact.contactGender)){
 //            result = 5
 //            return result

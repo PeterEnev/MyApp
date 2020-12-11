@@ -32,8 +32,8 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>, private v
 
             with(contact){
                 recyclerContactName.text        = contactFirstName + " " + contactLastName
-                recyclerContactPhone.text       = contactCountryPrefix + contactPhoneNumber
-                recyclerContactMail.text        = contactEMail
+ //               recyclerContactPhone.text       = contactCountryPrefix + contactPhoneNumber
+  //              recyclerContactMail.text        = contactEMail
                 recyclerContactCountry.text     = contactCountryName
                // recyclerContactGender.text      = contactGender
             }

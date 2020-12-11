@@ -93,26 +93,26 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         mainActivityRecyclerView.adapter = adapter
         mainActivityRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                for (i in 0 until dataContactList.size){
-                    if ((dataContactList[i].contactFirstName + " " + dataContactList[i].contactLastName).
-                        toUpperCase().contains(s.toString().toUpperCase()) ||
-                        (dataContactList[i].contactCountryPrefix + dataContactList[i].contactPhoneNumber).contains(s.toString())){
-                        listContactRenew.add(dataContactList[i])
-                    }
-                }
-                adapter.updateList(listContactRenew)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                listContactRenew = ArrayList()
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
+//        mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {
+//                for (i in 0 until dataContactList.size){
+//                    if ((dataContactList[i].contactFirstName + " " + dataContactList[i].contactLastName).
+//                        toUpperCase().contains(s.toString().toUpperCase()) ||
+//                        (dataContactList[i].contactCountryPrefix + dataContactList[i].contactPhoneNumber).contains(s.toString())){
+//                        listContactRenew.add(dataContactList[i])
+//                    }
+//                }
+//                adapter.updateList(listContactRenew)
+//            }
+//
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//                listContactRenew = ArrayList()
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//            }
+//        })
     }
 
     override fun onResume() {
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                             contactFirstName            = contact.contactFirstName,
                             contactLastName             = contact.contactLastName,
                             contactCountryName          = contact.contactCountryName,
-                            contactCountryPrefix        = contact.contactCountryPrefix,
+//                            contactCountryPrefix        = contact.contactCountryPrefix,
                             contactPhoneNumber          = contact.contactPhoneNumber,
                             contactEMail                = contact.contactEMail,
                             //contactGender               = contact.contactGender,

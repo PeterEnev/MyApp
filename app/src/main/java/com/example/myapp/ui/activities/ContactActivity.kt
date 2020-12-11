@@ -60,8 +60,6 @@ class ContactActivity : AppCompatActivity(), ContactView {
         parentMailLinearLayout  = listMail
         parentPhoneLinearLayout = listPhone
 
-
-
         contactPresenter = ContactPresenter(this)
 
         val contactStatus  = intent.getBooleanExtra(ContactListAdapter.CONTACT_STATUS, false)
@@ -73,8 +71,8 @@ class ContactActivity : AppCompatActivity(), ContactView {
             firstNameInput  .setText(editContact.contactFirstName)
             lastNameInput   .setText(editContact.contactLastName)
             countryInput    .setText(editContact.contactCountryName)
-            phoneTxt        .setPrefixText(editContact.contactCountryPrefix)
-            phoneInput      .setText(editContact.contactPhoneNumber)
+ //           phoneTxt        .setPrefixText(editContact.contactCountryPrefix)
+   //         phoneInput      .setText(editContact.contactPhoneNumber)
         //    eMailInput      .setText(editContact.contactEMail)
         }
 
@@ -255,14 +253,14 @@ class ContactActivity : AppCompatActivity(), ContactView {
             contact.contactFirstName + " " + contact.contactLastName
         )
             .toString()
-        dialog.dialogContactPhoneTxt.setText(
-            contact.contactCountryPrefix + contact.contactPhoneNumber
-        )
-            .toString()
-        dialog.dialogContactMailTxt.setText(
-            contact.contactEMail
-        )
-            .toString()
+//        dialog.dialogContactPhoneTxt.setText(
+//            contact.contactCountryPrefix + contact.contactPhoneNumber
+//        )
+//            .toString()
+//        dialog.dialogContactMailTxt.setText(
+//            contact.contactEMail
+//        )
+//            .toString()
         dialog.dialogContactCountryTxt.setText(
             contact.contactCountryName
         )
@@ -320,7 +318,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
                 contactFirstName = contact.contactFirstName,
                 contactLastName = contact.contactLastName,
                 contactCountryName = contact.contactCountryName,
-                contactCountryPrefix = contact.contactCountryPrefix,
+  //              contactCountryPrefix = contact.contactCountryPrefix,
                 contactPhoneNumber = contact.contactPhoneNumber,
                 contactEMail = contact.contactEMail,
                 // contactGender               = contact.contactGender,
@@ -329,17 +327,5 @@ class ContactActivity : AppCompatActivity(), ContactView {
         )
         setResult(Activity.RESULT_OK, intent)
         finish()
-    }
-}
-
-class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>) {
-        // Another interface callback
     }
 }
