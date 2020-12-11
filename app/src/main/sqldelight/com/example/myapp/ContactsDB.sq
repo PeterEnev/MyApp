@@ -2,30 +2,23 @@ CREATE TABLE Contacts (
     contactID           INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
     contactFirstName    TEXT        NOT NULL,
     contactLastName     TEXT        NOT NULL,
-    contactCountryId    INTEGER     NOT NULL,
-    contactEMail        TEXT        NOT NULL,
-    contactPhoneNumber  TEXT        NOT NULL,
-    contactGender       TEXT        NOT NULL
+    contactCountryId    INTEGER     NOT NULL
 );
 
 insertContacts:
-INSERT INTO Contacts(contactFirstName, contactLastName, contactCountryId,
-                     contactEMail, contactPhoneNumber, contactGender)
-VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?),? , ?, ?);
+INSERT INTO Contacts(contactFirstName, contactLastName, contactCountryId)
+VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?));
 
 updateContacts:
 UPDATE Contacts
 SET contactFirstName = ?,
     contactLastName = ?,
-    contactCountryId = (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?),
-    contactEMail = ?,
-    contactPhoneNumber = ?,
-    contactGender = ?
+    contactCountryId = (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?)
 WHERE contactID = ?;
 
 selectAllContacts:
 SELECT contactID, contactFirstName, contactLastName, CountriesCode.countryPrefix,
-CountriesCode.countryName, contactEMail, contactPhoneNumber, contactGender
+CountriesCode.countryName
 FROM Contacts
 INNER JOIN CountriesCode
 ON Contacts.contactCountryId = CountriesCode.countryCodeID;

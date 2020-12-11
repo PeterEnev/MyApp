@@ -1,6 +1,7 @@
 package com.example.myapp.models
 
 import java.io.Serializable
+import java.sql.Blob
 
 class Contact(
     val contactID               : Long,
@@ -10,6 +11,6 @@ class Contact(
     var contactCountryPrefix    : String,
     var contactPhoneNumber      : String,
     var contactEMail            : String,
-    var contactGender           : String,
-    val contactLocalStorageStats: Boolean
+    var contactLocalStorageStats: Boolean,
+    var contactBlob             : Blob? = null
 ): Serializable

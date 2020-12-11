@@ -35,7 +35,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>, private v
                 recyclerContactPhone.text       = contactCountryPrefix + contactPhoneNumber
                 recyclerContactMail.text        = contactEMail
                 recyclerContactCountry.text     = contactCountryName
-                recyclerContactGender.text      = contactGender
+               // recyclerContactGender.text      = contactGender
             }
 
             if (contact.contactLocalStorageStats){
@@ -77,6 +77,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>, private v
         return contactList.size
     }
 }
+
 
 
 interface ContactAdapterListener{

@@ -28,22 +28,22 @@ class PhoneContact {
 
         val cursor = context.contentResolver.query(url, projection,null,null,ContactsContract.Data.CONTACT_ID)
 
-        val mimetypeIndex       = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
-        val contactIdIndex      = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
-        val blobIndex           = cursor.getColumnIndex(ContactsContract.Data.DATA15)
-        val displayNameIndex    = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-        val dataIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
-        val typeIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
+        val mimetypeIndex       = cursor?.getColumnIndex(ContactsContract.Data.MIMETYPE)
+        val contactIdIndex      = cursor?.getColumnIndex(ContactsContract.Data.CONTACT_ID)
+        val blobIndex           = cursor?.getColumnIndex(ContactsContract.Data.DATA15)
+        val displayNameIndex    = cursor?.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+        val dataIndex           = cursor?.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
+        val typeIndex           = cursor?.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
 
-        while (cursor.moveToNext()){
-            println( " 0 -> " + cursor.getString(0) +
-                    " 1 -> " + cursor.getString(1) +
-                    //" 2 -> " + cursor.getString(2) +
-                    " 3 -> " + cursor.getString(3) +
-                    " 4 -> " + cursor.getString(4) +
-                    " 5 -> " + cursor.getString(5)
-            )
-        }
+//        while (cursor!!.moveToNext()){
+//            println( " 0 -> " + cursor.getString(0) +
+//                    " 1 -> " + cursor.getString(1) +
+//                    //" 2 -> " + cursor.getString(2) +
+//                    " 3 -> " + cursor.getString(3) +
+//                    " 4 -> " + cursor.getString(4) +
+//                    " 5 -> " + cursor.getString(5)
+//            )
+//        }
 
 
         val phones = context.contentResolver.query(
@@ -54,7 +54,7 @@ class PhoneContact {
             null,
             null
         )
-        while (phones.moveToNext()) {
+        while (phones!!.moveToNext()) {
             val name =
                 phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber =
@@ -68,8 +68,9 @@ class PhoneContact {
                 contactEMail = MainActivity.EMPTY_STRING,
                 contactCountryPrefix = MainActivity.EMPTY_STRING,
                 contactCountryName = MainActivity.EMPTY_STRING,
-                contactGender = MainActivity.EMPTY_STRING,
-                contactLocalStorageStats = false
+                //contactGender = MainActivity.EMPTY_STRING,
+                contactLocalStorageStats = false,
+                contactBlob = null
             )
             contactPhoneList.add(list)
         }

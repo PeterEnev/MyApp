@@ -1,8 +1,8 @@
 package com.example.myapp.models
 
 data class ContactEmail (
-    val contactEmailId          :Long,
-    val contactId               :Long,
+    val contactEmailId          :Long?,
+    val contactId               :Long?,
     val email                   :String,
-    val contactEmailTypeId      :Long
+    val contactEmailType        :String
 )

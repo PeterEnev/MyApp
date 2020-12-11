@@ -19,60 +19,63 @@ class DatabaseDB {
 
     fun saveNewContact(contact: Contact) : Boolean{
         val status = true
-        dbContactsQuery.insertContacts(
-            contactFirstName    = contact.contactFirstName,
-            contactLastName     = contact.contactLastName,
-            countryName         = contact.contactCountryName,
-            contactEMail        = contact.contactEMail,
-            contactPhoneNumber  = contact.contactPhoneNumber,
-            contactGender       = contact.contactGender
-        )
+        database.contactsDBQueries.transaction {
+
+        }
+        //        dbContactsQuery.insertContacts(
+//            contactFirstName    = contact.contactFirstName,
+//            contactLastName     = contact.contactLastName,
+//            countryName         = contact.contactCountryName,
+
+//            contactEMail        = contact.contactEMail,
+//            contactPhoneNumber  = contact.contactPhoneNumber
+//        )
         return status
     }
 
     fun updateContact(contact: Contact) : Boolean{
         val status = true
-        dbContactsQuery.updateContacts(
-            contactFirstName    = contact.contactFirstName,
-            contactLastName     = contact.contactLastName,
-            countryName         = contact.contactCountryName,
-            contactPhoneNumber  = contact.contactPhoneNumber,
-            contactEMail        = contact.contactEMail,
-            contactGender       = contact.contactGender,
-            contactID           = contact.contactID
-        )
+//        dbContactsQuery.updateContacts(
+//            contactFirstName    = contact.contactFirstName,
+//            contactLastName     = contact.contactLastName,
+//            countryName         = contact.contactCountryName,
+//            contactPhoneNumber  = contact.contactPhoneNumber,
+//            contactEMail        = contact.contactEMail,
+//            contactGender       = contact.contactGender,
+//            contactID           = contact.contactID
+//        )
         return status
     }
 
     fun getContactList() : ArrayList<Contact>{
         //insertFirstContatct()
         val list                            = ArrayList<Contact>()
-        val listQuery  = dbContactsQuery.selectAllContacts().executeAsList()
-
-        for (i in 0 until listQuery.size){
-            val contactID                = listQuery[i].contactID
-            val contactFirstName        = listQuery[i].contactFirstName
-            val contactLastName         = listQuery[i].contactLastName
-            val contactCountryName      = listQuery[i].countryName
-            val contactCountryPrefix    = listQuery[i].countryPrefix
-            val contactPhoneNumber      = listQuery[i].contactPhoneNumber
-            val contactEMail            = listQuery[i].contactEMail
-            val contactGender           = listQuery[i].contactGender
-            val contactLocalStorageStats       = true
-
-            val queryRol = Contact(
-                contactID,
-                contactFirstName,
-                contactLastName,
-                contactCountryName,
-                contactCountryPrefix,
-                contactPhoneNumber,
-                contactEMail,
-                contactGender,
-                contactLocalStorageStats
-            )
-            list += queryRol
-        }
+//        val listQuery  = dbContactsQuery.selectAllContacts().executeAsList()
+//
+//        for (i in 0 until listQuery.size){
+//            val contactID                = listQuery[i].contactID
+//            val contactFirstName        = listQuery[i].contactFirstName
+//            val contactLastName         = listQuery[i].contactLastName
+//            val contactCountryName      = listQuery[i].countryName
+//            val contactCountryPrefix    = listQuery[i].countryPrefix
+//            val contactPhoneNumber      = listQuery[i].contactPhoneNumber
+//            val contactEMail            = listQuery[i].contactEMail
+//            val contactGender           = listQuery[i].contactGender
+//            val contactLocalStorageStats       = true
+//
+//            val queryRol = Contact(
+//                contactID,
+//                contactFirstName,
+//                contactLastName,
+//                contactCountryName,
+//                contactCountryPrefix,
+//                contactPhoneNumber,
+//                contactEMail,
+//                contactGender,
+//                contactLocalStorageStats
+//            )
+//            list += queryRol
+//        }
         return list
     }
 
@@ -91,13 +94,13 @@ class DatabaseDB {
     }
 
     fun insertFirstContatct(){
-        dbContactsQuery.insertContacts("Ivan","Ivanov","BULGARIA",
-            "ivanivanov@abv.bg","888123123","Male")
-        dbContactsQuery.insertContacts("Peter","Petrov","BULGARIA",
-            "peterpetrov@abv.bg","888234234","Male")
-        dbContactsQuery.insertContacts("Ahmed","Mehmed","TURKEY",
-            "ahmedmehmed@abv.bg","888787878","Male")
-        dbContactsQuery.insertContacts("Dragan","Draganov","UZBEKISTAN",
-            "dragandraganov@abv.bg","888432432","Male")
+//        dbContactsQuery.insertContacts("Ivan","Ivanov","BULGARIA",
+//            "ivanivanov@abv.bg","888123123","Male")
+//        dbContactsQuery.insertContacts("Peter","Petrov","BULGARIA",
+//            "peterpetrov@abv.bg","888234234","Male")
+//        dbContactsQuery.insertContacts("Ahmed","Mehmed","TURKEY",
+//            "ahmedmehmed@abv.bg","888787878","Male")
+//        dbContactsQuery.insertContacts("Dragan","Draganov","UZBEKISTAN",
+//            "dragandraganov@abv.bg","888432432","Male")
     }
 }

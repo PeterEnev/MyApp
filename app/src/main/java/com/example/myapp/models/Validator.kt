@@ -36,9 +36,9 @@ class Validator {
         }else if (!isPhoneValid(contact.contactPhoneNumber)){
             result = 4
             return result
-        }else if (!isStringValid(contact.contactGender)){
-            result = 5
-            return result
+//        }else if (!isStringValid(contact.contactGender)){
+//            result = 5
+//            return result
         }else{
             return result
         }

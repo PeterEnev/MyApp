@@ -34,5 +34,12 @@
     <string name="save">                            Save</string>
     <string name="search_contact">                  Search Contact</string>
     <string name="search_country_dialog">           Search Country</string>
+    <string name="type">type</string>
 
+    <string-array name="type">
+        <item>Home</item>
+        <item>Mobile</item>
+        <item>Work</item>
+        <item>Other</item>
+    </string-array>
 </resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <Spinner
+        android:id                              ="@+id/typePhone"
+        android:layout_width                    ="110dp"
+        android:layout_height                   ="wrap_content"
+        android:entries                         ="@array/type"
+        android:paddingTop                      ="24dp"
+        app:layout_constraintEnd_toStartOf      ="@+id/phoneTxt"
+        app:layout_constraintStart_toStartOf    ="parent"
+        app:layout_constraintTop_toTopOf        ="parent"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneTxt"
+        style="@style/TextInputPhoneLayout"
+        android:hint="@string/phone"
+        android:paddingStart="8dp"
+        android:paddingEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/addPhoneButton"
+        app:layout_constraintStart_toEndOf="@+id/typePhone"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneInput"
+            style="@style/TextInputPhoneEditText"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/addPhoneButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="end"
+        app:icon="@drawable/remove_black_24dp"
+        android:onClick="onPhoneLayoutDelete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/phoneTxt"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

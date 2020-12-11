@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
 
         bindingMain.newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
-        //newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
 
     override fun onRequestPermissionsResult(
@@ -157,7 +156,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
                             contactCountryPrefix        = contact.contactCountryPrefix,
                             contactPhoneNumber          = contact.contactPhoneNumber,
                             contactEMail                = contact.contactEMail,
-                            contactGender               = contact.contactGender,
+                            //contactGender               = contact.contactGender,
                             contactLocalStorageStats    = contact.contactLocalStorageStats))
             startActivityForResult(intent, REQUEST_CODE_OK)
         }else{

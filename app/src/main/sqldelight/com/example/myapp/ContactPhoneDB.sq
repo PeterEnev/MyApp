@@ -7,7 +7,7 @@ CREATE TABLE ContactPhone (
 
 insertContactPhone:
 INSERT INTO ContactPhone (contactId, phone, contactPhoneTypeId)
-VALUES ( ? , (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?) , ?);
+VALUES ( ? ,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
 
 updateContactPhone:
 UPDATE ContactPhone

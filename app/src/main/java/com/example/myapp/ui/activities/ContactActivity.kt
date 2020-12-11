@@ -7,32 +7,37 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.pm.ActivityInfoCompat
+import androidx.core.view.get
+import androidx.core.view.iterator
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityContactBinding
-import com.example.myapp.models.Contact
-import com.example.myapp.models.Country
-import com.example.myapp.models.Validator
+import com.example.myapp.models.*
 import com.example.myapp.presenters.ContactPresenter
 import com.example.myapp.presenters.ContactView
 import com.example.myapp.ui.adapters.ContactListAdapter
 import com.example.myapp.ui.adapters.CountryListAdapter
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
-import kotlin.contracts.Returns
+import kotlinx.android.synthetic.main.list_item_email.view.*
+import kotlinx.android.synthetic.main.list_item_phone.view.*
+
 
 class ContactActivity : AppCompatActivity(), ContactView {
 
-    private lateinit var bindingContact         : ActivityContactBinding
-    private lateinit var contactPresenter       : ContactPresenter
+    private lateinit var bindingContact          : ActivityContactBinding
+    private lateinit var contactPresenter        : ContactPresenter
+    private lateinit var viewModel               : ContactActivityViewModel
+    private lateinit var parentMailLinearLayout  : LinearLayout
+    private lateinit var parentPhoneLinearLayout : LinearLayout
 
     companion object {
         val CONTACT                     :String             = "contact"
@@ -50,6 +55,13 @@ class ContactActivity : AppCompatActivity(), ContactView {
         super.onCreate(savedInstanceState)
         bindingContact = DataBindingUtil.setContentView(this, R.layout.activity_contact)
 
+        viewModel = ViewModelProvider(this).get(ContactActivityViewModel::class.java)
+
+        parentMailLinearLayout  = listMail
+        parentPhoneLinearLayout = listPhone
+
+
+
         contactPresenter = ContactPresenter(this)
 
         val contactStatus  = intent.getBooleanExtra(ContactListAdapter.CONTACT_STATUS, false)
@@ -58,88 +70,134 @@ class ContactActivity : AppCompatActivity(), ContactView {
         if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
             val editContact = intent.getSerializableExtra(CONTACT) as? Contact
             contactId               = editContact!!.contactID
-            firstNameInput  .setText        (editContact.contactFirstName)
-            lastNameInput   .setText        (editContact.contactLastName)
-            countryInput    .setText        (editContact.contactCountryName)
-            phoneTxt        .setPrefixText  (editContact.contactCountryPrefix)
-            phoneInput      .setText        (editContact.contactPhoneNumber)
-            eMailInput      .setText        (editContact.contactEMail)
-            genderInput     .setText        (editContact.contactGender)
+            firstNameInput  .setText(editContact.contactFirstName)
+            lastNameInput   .setText(editContact.contactLastName)
+            countryInput    .setText(editContact.contactCountryName)
+            phoneTxt        .setPrefixText(editContact.contactCountryPrefix)
+            phoneInput      .setText(editContact.contactPhoneNumber)
+        //    eMailInput      .setText(editContact.contactEMail)
         }
 
-        firstNameInput.setOnFocusChangeListener { _ , hasFocus ->
+        firstNameInput.setOnFocusChangeListener { _, hasFocus ->
             errorHandler(
                 firstNameTxt,
-                !hasFocus && firstNameInput.text!!.count() < 5)
+                !hasFocus && firstNameInput.text!!.count() < 5
+            )
         }
 
-        lastNameInput.setOnFocusChangeListener{ _ , hasFocus ->
+        lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
             errorHandler(
                 lastNameTxt,
-                !hasFocus && lastNameInput.text!!.count() < 5)
+                !hasFocus && lastNameInput.text!!.count() < 5
+            )
         }
 
         countryInput.setOnClickListener { contactPresenter.getCountryNames() }
 
-        phoneInput.setOnFocusChangeListener{ _ , hasFocus ->
+        phoneInput.setOnFocusChangeListener{ _, hasFocus ->
             errorHandler(
                 phoneTxt,
-                !hasFocus && phoneInput.text!!.count() !in 8..10)
+                !hasFocus && phoneInput.text!!.count() !in 11..14
+            )
         }
 
-        eMailInput.setOnFocusChangeListener { _ , hasFocus ->
+        eMailInput.setOnFocusChangeListener { _, hasFocus ->
             errorHandler(
                 emailTxt,
                 !hasFocus && !Validator.EMAIL_REGEX.toRegex()
-                    .matches(eMailInput.text.toString()))
+                    .matches(eMailInput.text.toString())
+            )
         }
 
-        genderInput.setOnFocusChangeListener{ _ , hasFocus ->
-            errorHandler(
-                genderTxt,
-                !hasFocus && (genderInput.text!!.count() < 2))
-        }
 
-        saveEditContactBtn.setOnClickListener {
-            if (countryInput.text!!.count() != 0) {
-                var contact =  Contact(
-                    contactFirstName                = firstNameInput.text.toString(),
-                    contactLastName                 = lastNameInput.text.toString(),
-                    contactCountryName              = countryInput.text.toString(),
-                    contactCountryPrefix            = phoneTxt.getPrefixText().toString(),
-                    contactPhoneNumber              = phoneInput.text.toString(),
-                    contactEMail                    = eMailInput.text.toString(),
-                    contactGender                   = genderInput.text.toString(),
-                    contactLocalStorageStats        = if (ContactListAdapter.CONTACT_STATUS_EXISTING)
-                                                        contactStatus else false,
-                    contactID                       = contactId
-                )
-                contactPresenter.saveContactDialog(contact)
-            } else {
-                errorHandler(countryInputLayout, true)
-                errorHandler(firstNameTxt, firstNameInput.text!!.count() < 5)
-                errorHandler(lastNameTxt,lastNameInput.text!!.count() < 5)
-                errorHandler(phoneTxt,phoneInput.text!!.count() !in 8..10)
-                errorHandler(emailTxt,!Validator.EMAIL_REGEX.toRegex()
-                        .matches(eMailInput.text.toString()))
-                errorHandler(genderTxt,(genderInput.text!!.count() < 2))
-            }
-        }
+//        saveEditContactBtn.setOnClickListener {
+//            if (countryInput.text!!.count() != 0) {
+//                var contact =  Contact(
+//                    contactFirstName                = firstNameInput.text.toString(),
+//                    contactLastName                 = lastNameInput.text.toString(),
+//                    contactCountryName              = countryInput.text.toString(),
+//                    contactCountryPrefix            = phoneTxt.getPrefixText().toString(),
+//                    contactPhoneNumber              = phoneInput.text.toString(),
+//                    contactEMail                    = eMailInput.text.toString(),
+//                    contactLocalStorageStats        = if (ContactListAdapter.CONTACT_STATUS_EXISTING)
+//                                                        contactStatus else false,
+//                    contactID                       = contactId
+//                )
+//                contactPresenter.saveContactDialog(contact)
+//            } else {
+//                errorHandler(countryInputLayout, true)
+//                errorHandler(firstNameTxt, firstNameInput.text!!.count() < 5)
+//                errorHandler(lastNameTxt,lastNameInput.text!!.count() < 5)
+//                errorHandler(phoneTxt,phoneInput.text!!.count() !in 8..10)
+//                errorHandler(emailTxt,!Validator.EMAIL_REGEX.toRegex()
+//                        .matches(eMailInput.text.toString()))
+//               // errorHandler(genderTxt,(genderInput.text!!.count() < 2))
+//            }
+//        }
 
     }
 
+    fun giveData(view: View) {
 
-    fun errorHandler(textLayout: TextInputLayout, condition: Boolean ) {
+        for (i in parentMailLinearLayout.size-1 downTo 0) {
+            val contactEmail = ContactEmail(
+                contactEmailId = null,
+                contactId = null,
+                contactEmailType = parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem.toString(),
+                email = parentMailLinearLayout.getChildAt(i).eMailInput.text.toString()
+            )
+//            println("${i} -> ${parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem}  " +
+//                    "-> ${parentMailLinearLayout.getChildAt(i).eMailInput.text}")
+        }
+
+        for (i in parentPhoneLinearLayout.size-1 downTo 0) {
+            val contactPhone = ContactPhone(
+                contactPhoneId     =null,
+                contactId = null,
+                phone = parentPhoneLinearLayout.getChildAt(i).phoneInput.text.toString(),
+                contactPhoneType = parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem.toString()
+            )
+//            println("${i} -> ${parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem}  " +
+//                    "-> ${parentPhoneLinearLayout.getChildAt(i).phoneInput.text}")
+        }
+    }
+
+    fun onPhoneLayoutDelete(view: View) {
+        listPhone.removeView(view.parent as View)
+    }
+
+    fun onPhoneLayoutAdd(view: View){
+        val inflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val rowView: View = inflater.inflate(R.layout.list_item_phone, null)
+        listPhone.addView(rowView, listPhone.childCount - 1)
+    }
+
+    fun onMailLayoutDelete(view: View) {
+        listMail.removeView(view.parent as View)
+    }
+
+    fun onMailLayoutAdd(view: View){
+        val inflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val rowView: View = inflater.inflate(R.layout.list_item_email, null)
+        listMail.addView(rowView, listMail.childCount - 1)
+    }
+
+
+    fun errorHandler(textLayout: TextInputLayout, condition: Boolean) {
         if(condition){
             textLayout.setErrorEnabled(true)
-            textLayout.error = getString(when(textLayout){
-                firstNameTxt    -> R.string.MSG_ENTER_VALID_FIRST_NAME
-                lastNameTxt     -> R.string.MSG_ENTER_VALID_LAST_NAME
-                genderTxt       -> R.string.MSG_ENTER_VALID_GENDER
-                emailTxt        -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
-                phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
-                else            -> R.string.MSG_ENTER_COUNTRY
-            })
+            textLayout.error = getString(
+                when (textLayout) {
+                    firstNameTxt -> R.string.MSG_ENTER_VALID_FIRST_NAME
+                    lastNameTxt -> R.string.MSG_ENTER_VALID_LAST_NAME
+                    //   genderTxt       -> R.string.MSG_ENTER_VALID_GENDER
+ //                   emailTxt -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
+                    phoneTxt -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
+                    else -> R.string.MSG_ENTER_COUNTRY
+                }
+            )
         } else {
             textLayout.setErrorEnabled(false)
         }
@@ -177,9 +235,9 @@ class ContactActivity : AppCompatActivity(), ContactView {
             }
         })
 
-        dialog.countryListView.setOnItemClickListener { parent, view, position, id ->
+        dialog.countryListView.setOnItemClickListener { _, _, position, _ ->
             countryInput.setText(listCountryRenew[position].countryName)
-            phoneTxt.setPrefixText(listCountryRenew[position].countryPrefix)
+          //  phoneTxt.setPrefixText(listCountryRenew[position].countryPrefix)
             errorHandler(countryInputLayout, false)
             dialog.dismiss()
         }
@@ -209,10 +267,10 @@ class ContactActivity : AppCompatActivity(), ContactView {
             contact.contactCountryName
         )
             .toString()
-        dialog.dialogContactGenderTxt.setText(
-            contact.contactGender
-        )
-            .toString()
+//        dialog.dialogContactGenderTxt.setText(
+//            contact.contactGender
+//        )
+//            .toString()
 
         if (contact.contactID < 0){
             dialog.dialogEditBtn.setText(getString(R.string.BTN_SAVE))
@@ -254,20 +312,34 @@ class ContactActivity : AppCompatActivity(), ContactView {
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("result",result)
+        intent.putExtra("result", result)
         intent.putExtra(
             "contact",
             Contact(
-                contactID                   = contact.contactID,
-                contactFirstName            = contact.contactFirstName,
-                contactLastName             = contact.contactLastName,
-                contactCountryName          = contact.contactCountryName,
-                contactCountryPrefix        = contact.contactCountryPrefix,
-                contactPhoneNumber          = contact.contactPhoneNumber,
-                contactEMail                = contact.contactEMail,
-                contactGender               = contact.contactGender,
-                contactLocalStorageStats    = true))
-        setResult(Activity.RESULT_OK,intent)
+                contactID = contact.contactID,
+                contactFirstName = contact.contactFirstName,
+                contactLastName = contact.contactLastName,
+                contactCountryName = contact.contactCountryName,
+                contactCountryPrefix = contact.contactCountryPrefix,
+                contactPhoneNumber = contact.contactPhoneNumber,
+                contactEMail = contact.contactEMail,
+                // contactGender               = contact.contactGender,
+                contactLocalStorageStats = true
+            )
+        )
+        setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+}
+
+class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
 }
