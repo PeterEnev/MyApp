@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.sql.Blob
 
 class Contact(
-    val contactID               : Long,
+    val contactID               : Long?,
     var contactFirstName        : String,
     var contactLastName         : String,
     var contactCountryName      : String,

@@ -173,7 +173,7 @@
                     android:layout_width            ="wrap_content"
                     android:layout_marginTop        ="16dp"
                     android:layout_gravity          ="center"
-                    android:onClick                 ="giveData"
+                    android:onClick                 ="saveContact"
                     android:text                    ="@string/save"
                     style                           ="?attr/materialButtonOutlinedStyle">
 

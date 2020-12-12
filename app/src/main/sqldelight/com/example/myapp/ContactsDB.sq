@@ -7,7 +7,8 @@ CREATE TABLE Contacts (
 
 insertContacts:
 INSERT INTO Contacts(contactFirstName, contactLastName, contactCountryId)
-VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?));
+VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?))
+;
 
 updateContacts:
 UPDATE Contacts

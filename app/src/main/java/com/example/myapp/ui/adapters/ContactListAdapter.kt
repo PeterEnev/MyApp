@@ -4,11 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
-import com.example.myapp.ui.activities.MainActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList

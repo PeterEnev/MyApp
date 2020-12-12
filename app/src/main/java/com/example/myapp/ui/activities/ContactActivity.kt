@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
 import kotlinx.android.synthetic.main.list_item_email.view.*
 import kotlinx.android.synthetic.main.list_item_phone.view.*
+import java.sql.Blob
 
 
 class ContactActivity : AppCompatActivity(), ContactView {
@@ -62,19 +63,20 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         contactPresenter = ContactPresenter(this)
 
+
         val contactStatus  = intent.getBooleanExtra(ContactListAdapter.CONTACT_STATUS, false)
         var contactId       = DEFAULT_VALUE_NEW_CONTACT
 
-        if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
-            val editContact = intent.getSerializableExtra(CONTACT) as? Contact
-            contactId               = editContact!!.contactID
-            firstNameInput  .setText(editContact.contactFirstName)
-            lastNameInput   .setText(editContact.contactLastName)
-            countryInput    .setText(editContact.contactCountryName)
+//        if (!ContactListAdapter.CONTACT_STATUS_EXISTING) {
+//            val editContact = intent.getSerializableExtra(CONTACT) as? Contact
+//            contactId               = editContact.contactID
+//            firstNameInput  .setText(editContact.contactFirstName)
+//            lastNameInput   .setText(editContact.contactLastName)
+//            countryInput    .setText(editContact.contactCountryName)
  //           phoneTxt        .setPrefixText(editContact.contactCountryPrefix)
    //         phoneInput      .setText(editContact.contactPhoneNumber)
         //    eMailInput      .setText(editContact.contactEMail)
-        }
+ //       }
 
         firstNameInput.setOnFocusChangeListener { _, hasFocus ->
             errorHandler(
@@ -135,29 +137,38 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
     }
 
-    fun giveData(view: View) {
-
+    fun saveContact(view: View){
+        var contactEmail = mutableListOf<ContactEmail>()
+        var contactPhone = mutableListOf<ContactPhone>()
         for (i in parentMailLinearLayout.size-1 downTo 0) {
-            val contactEmail = ContactEmail(
-                contactEmailId = null,
-                contactId = null,
-                contactEmailType = parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem.toString(),
-                email = parentMailLinearLayout.getChildAt(i).eMailInput.text.toString()
+            val email = ContactEmail(
+                contactEmailId          = null,
+                contactId               = null,
+                contactEmailType        = parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem.toString(),
+                email                   = parentMailLinearLayout.getChildAt(i).eMailInput.text.toString()
             )
-//            println("${i} -> ${parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem}  " +
-//                    "-> ${parentMailLinearLayout.getChildAt(i).eMailInput.text}")
+            contactEmail.add(email)
         }
 
         for (i in parentPhoneLinearLayout.size-1 downTo 0) {
-            val contactPhone = ContactPhone(
-                contactPhoneId     =null,
-                contactId = null,
-                phone = parentPhoneLinearLayout.getChildAt(i).phoneInput.text.toString(),
-                contactPhoneType = parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem.toString()
-            )
-//            println("${i} -> ${parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem}  " +
-//                    "-> ${parentPhoneLinearLayout.getChildAt(i).phoneInput.text}")
+            contactPhone.add(ContactPhone(
+                contactPhoneId          =null,
+                contactId               = null,
+                phone                   = parentPhoneLinearLayout.getChildAt(i).phoneInput.text.toString(),
+                contactPhoneType        = parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem.toString()
+            ))
         }
+        val contact = Contact(
+           contactID = null,
+            contactFirstName            = firstNameInput.text.toString(),
+            contactLastName             = lastNameInput.text.toString(),
+            contactCountryName          = countryInput.text.toString(),
+            contactPhoneNumber          = contactPhone,
+            contactEMail                = contactEmail,
+            contactLocalStorageStats    = true,
+            contactBlob                 = null
+        )
+        println(contact.contactEMail.size.toString())
     }
 
     fun onPhoneLayoutDelete(view: View) {
@@ -270,7 +281,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
 //        )
 //            .toString()
 
-        if (contact.contactID < 0){
+        if (contact.contactID == null){
             dialog.dialogEditBtn.setText(getString(R.string.BTN_SAVE))
         }else{
             dialog.dialogEditBtn.setText(getString(R.string.BTN_UPDATE))
@@ -279,7 +290,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         dialog.dialogCancelBtn.setOnClickListener { dialog.dismiss() }
 
         dialog.dialogEditBtn.setOnClickListener {
-            if (contact.contactID < 0){
+            if (contact.contactID != null){
                 dialog.dismiss()
                 contactPresenter.saveContact(contact)
             }else{
