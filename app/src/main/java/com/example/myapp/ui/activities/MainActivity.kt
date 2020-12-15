@@ -36,24 +36,22 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     private lateinit var dataContactList    : ArrayList<Contact>
     private lateinit var adapter            : ContactListAdapter
 
-    var startTimer : Long = 0
 
     companion object{
-        val CONTACT_STATUS                  :String    ="contactStatus"
-        val CONTACT_STATUS_NEW              :Boolean   =true
-        val EMPTY_STRING                    :String    =""
-        val CONTACT_NAME                    :String    ="contact"
-        val TOAST_CONTACT_EDITED            :String    ="The contact cannot be edited"
-        val DEFAULT_VALUE_PHONE_CONTACT     :Long      =-2
-        val STORAGE_PERMISSION_CODE         :Int       = 1
-        val REQUEST_CODE_OK                 :Int       = 0
+        val CONTACT_EXISTING_BOOLEAN_EXTRA  :String    = "existing"
+        val CONTACT_SERIALIZABLE_EXTRA      :String    = "data"
+        val CONTACT_STATUS_NEW              :Boolean   = true
+        val CONTACT_STATUS_EXISTING         :Boolean   = false
+        val EMPTY_STRING                    :String    = ""
+        val DEFAULT_VALUE_PHONE_CONTACT     :Long      = -2
+        val STORAGE_PERMISSION_CODE         :Int       =  1
+        val REQUEST_CODE_OK                 :Int       =  0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMain = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        startTimer = System.currentTimeMillis()
 
         mainPresenter = MainPresenter(this)
 
@@ -82,7 +80,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun navigateToNewContactActivity(){
         val intent = Intent(this, ContactActivity::class.java)
-        intent.putExtra(CONTACT_STATUS, CONTACT_STATUS_NEW)
         startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
@@ -115,10 +112,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 //        })
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.i("SystemMsg1", (System.currentTimeMillis() - startTimer).toString())
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -143,24 +136,12 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 ////        }
 //    }
 
-    override fun onEditBtnListener(contact: Contact, contactStatus: String, contactStatusExisting: Boolean) {
-        if (contactStatusExisting){
-            val intent = Intent(this, ContactActivity::class.java)
-                    intent.putExtra(CONTACT_STATUS, contactStatusExisting)
-                    intent.putExtra(CONTACT_NAME,
-                        Contact(
-                            contactID                   = contact.contactID,
-                            contactFirstName            = contact.contactFirstName,
-                            contactLastName             = contact.contactLastName,
-                            contactCountryName          = contact.contactCountryName,
-//                            contactCountryPrefix        = contact.contactCountryPrefix,
-                            contactPhoneNumber          = contact.contactPhoneNumber,
-                            contactEMail                = contact.contactEMail,
-                            //contactGender               = contact.contactGender,
-                            contactLocalStorageStats    = contact.contactLocalStorageStats))
-            startActivityForResult(intent, REQUEST_CODE_OK)
-        }else{
-            Toast.makeText(this, TOAST_CONTACT_EDITED, Toast.LENGTH_SHORT).show()
-        }
+    override fun onEditBtnListener(contact: Contact) {
+        val intent = Intent(this, ContactActivity::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable(CONTACT_SERIALIZABLE_EXTRA, contact)
+        intent.putExtras(bundle)
+        intent.putExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, true)
+        startActivityForResult(intent, REQUEST_CODE_OK)
     }
 }

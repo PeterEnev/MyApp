@@ -7,8 +7,15 @@ CREATE TABLE Contacts (
 
 insertContacts:
 INSERT INTO Contacts(contactFirstName, contactLastName, contactCountryId)
-VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?))
-;
+VALUES (?, ?, (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?));
+
+getContact:
+SELECT contactID, contactFirstName, contactLastName,
+       CountriesCode.countryName
+FROM Contacts
+INNER JOIN CountriesCode
+ON Contacts.contactCountryId = CountriesCode.countryCodeID
+WHERE contactID = ?;
 
 updateContacts:
 UPDATE Contacts
@@ -18,8 +25,23 @@ SET contactFirstName = ?,
 WHERE contactID = ?;
 
 selectAllContacts:
-SELECT contactID, contactFirstName, contactLastName, CountriesCode.countryPrefix,
+SELECT contactID, contactFirstName, contactLastName,
 CountriesCode.countryName
 FROM Contacts
 INNER JOIN CountriesCode
 ON Contacts.contactCountryId = CountriesCode.countryCodeID;
+
+updateFirstName:
+UPDATE Contacts
+SET contactFirstName = ?
+WHERE contactID = ?;
+
+updateLastName:
+UPDATE Contacts
+SET contactLastName = ?
+WHERE contactID = ?;
+
+updateCountryName:
+UPDATE Contacts
+SET contactCountryId = (SELECT countryCodeID FROM CountriesCode WHERE countryName = ?)
+WHERE contactID = ?;

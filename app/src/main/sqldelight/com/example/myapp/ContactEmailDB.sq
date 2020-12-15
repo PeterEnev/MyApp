@@ -7,13 +7,27 @@ CREATE TABLE ContactEmail (
 
 insertContactEmail:
 INSERT INTO ContactEmail (contactId, email, contactEmailTypeId)
-VALUES ( ? , (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?) , ?);
+VALUES ((SELECT MAX(contactID) FROM Contacts) ,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
+
+selectAllEmails:
+SELECT
+    contactEmailId,
+    contactId,
+    email,
+    dataTypeName
+FROM ContactEmail
+INNER JOIN DataType
+ON ContactEmail.contactEmailTypeId = DataType.dataTypeId;
 
 updateContactEmail:
 UPDATE ContactEmail
 SET
-    contactId = ?,
-    email = ?,
+    email = ?
+WHERE contactEmailId = ?;
+
+updateEmailType:
+UPDATE ContactEmail
+SET
     contactEmailTypeId = (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?)
 WHERE contactEmailId = ?;
 

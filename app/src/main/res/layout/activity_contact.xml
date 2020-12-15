@@ -1,70 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android                                               ="http://schemas.android.com/apk/res/android"
+    xmlns:app                                                       ="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width                        ="match_parent"
-        android:layout_height                       ="match_parent"
-        android:orientation                         ="vertical">
+        android:layout_width                                        ="match_parent"
+        android:layout_height                                       ="match_parent"
+        android:orientation                                         ="vertical">
 
 
         <ScrollView
-            android:layout_width                    ="match_parent"
-            android:layout_height                   ="wrap_content">
+            android:layout_width                                    ="match_parent"
+            android:layout_height                                   ="wrap_content">
 
             <LinearLayout
-                style                               ="@style/LinearLayoutContact">
+                style                                               ="@style/LinearLayoutContact">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id                      ="@+id/firstNameTxt"
-                    android:hint                    ="@string/first_name"
-                    style                           ="@style/TextInputContactLayout">
+                    android:id                                      ="@+id/firstNameTxt"
+                    android:hint                                    ="@string/first_name"
+                    style                                           ="@style/TextInputContactLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id                  ="@+id/firstNameInput"
-                        android:inputType           ="textPersonName"
-                        style                       ="@style/TextInputContactEditText"/>
+                        android:id                                  ="@+id/firstNameInput"
+                        android:inputType                           ="textPersonName"
+                        style                                       ="@style/TextInputContactEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id                      ="@+id/lastNameTxt"
-                    android:hint                    ="@string/last_name"
-                    style                           ="@style/TextInputContactLayout">
+                    android:id                                      ="@+id/lastNameTxt"
+                    android:hint                                    ="@string/last_name"
+                    style                                           ="@style/TextInputContactLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id                  ="@+id/lastNameInput"
-                        android:inputType           ="textPersonName"
-                        style                       ="@style/TextInputContactEditText"/>
+                        android:id                                  ="@+id/lastNameInput"
+                        android:inputType                           ="textPersonName"
+                        style                                       ="@style/TextInputContactEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id                      ="@+id/countryInputLayout"
-                    android:hint                    ="@string/country"
-                    app:endIconMode                 ="custom"
-                    app:endIconDrawable             ="@drawable/ic_search_black"
-                    app:endIconCheckable            ="true"
-                    style                           ="@style/TextInputContactLayout">
+                    android:id                                      ="@+id/countryInputLayout"
+                    android:hint                                    ="@string/country"
+                    app:endIconMode                                 ="custom"
+                    app:endIconDrawable                             ="@drawable/ic_search_black"
+                    app:endIconCheckable                            ="true"
+                    style                                           ="@style/TextInputContactLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id                  ="@+id/countryInput"
-                        android:focusable           ="false"
-                        style                       ="@style/TextInputContactEditText"/>
+                        android:id                                  ="@+id/countryInput"
+                        android:focusable                           ="false"
+                        style                                       ="@style/TextInputContactEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:id="@+id/listPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:id                                      ="@+id/listPhone"
+                    android:layout_width                            ="match_parent"
+                    android:layout_height                           ="wrap_content"
+                    android:orientation                             ="vertical">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        xmlns:app="http://schemas.android.com/apk/res-auto">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_height                       ="wrap_content"
+                        android:layout_width                        ="match_parent">
 
 
                         <Spinner
@@ -79,48 +77,48 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/phoneTxt"
-                            style="@style/TextInputPhoneLayout"
-                            android:hint="@string/phone"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="4dp"
-                            app:layout_constraintEnd_toStartOf="@+id/addPhoneButton"
-                            app:layout_constraintStart_toEndOf="@+id/typePhone"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:id                              ="@+id/phoneTxt"
+                            android:hint                            ="@string/phone"
+                            android:paddingStart                    ="8dp"
+                            android:paddingEnd                      ="4dp"
+                            app:layout_constraintEnd_toStartOf      ="@+id/addPhoneButton"
+                            app:layout_constraintStart_toEndOf      ="@+id/typePhone"
+                            app:layout_constraintTop_toTopOf        ="parent"
+                            style                                   ="@style/TextInputPhoneLayout">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/phoneInput"
-                                style="@style/TextInputPhoneEditText"
-                                android:inputType="phone" />
+                                android:id                          ="@+id/phoneInput"
+                                style                               ="@style/TextInputPhoneEditText"
+                                android:inputType                   ="phone" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
-                            android:id="@+id/addPhoneButton"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="40dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:gravity="end"
-                            app:icon="@drawable/ic_add"
-                            android:onClick="onPhoneLayoutAdd"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/phoneTxt"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:id                              ="@+id/addPhoneButton"
+                            android:layout_width                    ="40dp"
+                            android:layout_height                   ="wrap_content"
+                            android:layout_marginTop                ="16dp"
+                            android:gravity                         ="end"
+                            android:onClick                         ="onPhoneLayoutAdd"
+                            app:icon                                ="@drawable/ic_add"
+                            app:layout_constraintEnd_toEndOf        ="parent"
+                            app:layout_constraintStart_toEndOf      ="@+id/phoneTxt"
+                            app:layout_constraintTop_toTopOf        ="parent"
+                            style                                   ="@style/Widget.MaterialComponents.Button.TextButton" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/listMail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:id                                      ="@+id/listMail"
+                    android:layout_width                            ="match_parent"
+                    android:layout_height                           ="wrap_content"
+                    android:orientation                             ="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent">
+                        android:layout_height                       ="wrap_content"
+                        android:layout_width                        ="match_parent">
 
                         <Spinner
                             android:id                              ="@+id/typeEmail"
@@ -134,48 +132,48 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/emailTxt"
-                            style="@style/TextInputMailLayout"
-                            android:hint="@string/email"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="4dp"
-                            app:layout_constraintEnd_toStartOf="@+id/addEmailButton"
-                            app:layout_constraintStart_toEndOf="@+id/typeEmail"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:id                              ="@+id/emailTxt"
+                            style                                   ="@style/TextInputMailLayout"
+                            android:hint                            ="@string/email"
+                            android:paddingStart                    ="8dp"
+                            android:paddingEnd                      ="4dp"
+                            app:layout_constraintEnd_toStartOf      ="@+id/addEmailButton"
+                            app:layout_constraintStart_toEndOf      ="@+id/typeEmail"
+                            app:layout_constraintTop_toTopOf        ="parent">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/eMailInput"
-                                style="@style/TextInputMailEditText"
-                                android:inputType="textEmailAddress" />
+                                android:id                          ="@+id/eMailInput"
+                                style                               ="@style/TextInputMailEditText"
+                                android:inputType                   ="textEmailAddress" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
-                            android:id="@+id/addEmailButton"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="40dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:gravity="end"
-                            app:icon="@drawable/ic_add"
-                            android:onClick="onMailLayoutAdd"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/emailTxt"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:id                              ="@+id/addEmailButton"
+                            android:layout_width                    ="40dp"
+                            android:layout_height                   ="wrap_content"
+                            android:layout_marginTop                ="16dp"
+                            android:gravity                         ="end"
+                            app:icon                                ="@drawable/ic_add"
+                            android:onClick                         ="onMailLayoutAdd"
+                            app:layout_constraintEnd_toEndOf        ="parent"
+                            app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
+                            app:layout_constraintTop_toTopOf        ="parent"
+                            style                                   ="@style/Widget.MaterialComponents.Button.TextButton"/>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout >
 
                 <Button
-                    android:id                      ="@+id/saveEditContactBtn"
-                    android:layout_height           ="wrap_content"
-                    android:layout_width            ="wrap_content"
-                    android:layout_marginTop        ="16dp"
-                    android:layout_gravity          ="center"
-                    android:onClick                 ="saveContact"
-                    android:text                    ="@string/save"
-                    style                           ="?attr/materialButtonOutlinedStyle">
+                    android:id                                      ="@+id/saveEditContactBtn"
+                    android:layout_height                           ="wrap_content"
+                    android:layout_width                            ="wrap_content"
+                    android:layout_marginTop                        ="16dp"
+                    android:layout_gravity                          ="center"
+                    android:onClick                                 ="saveContact"
+                    android:text                                    ="@string/save"
+                    style                                           ="?attr/materialButtonOutlinedStyle">
 
                 </Button>
             </LinearLayout>

@@ -1,9 +1,7 @@
 package com.example.myapp.presenters
 
-import com.example.myapp.models.Contact
-import com.example.myapp.models.Country
-import com.example.myapp.models.DatabaseDB
-import com.example.myapp.models.Validator
+import com.example.myapp.Database
+import com.example.myapp.models.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
@@ -15,37 +13,39 @@ class ContactPresenter(private val contactView: ContactView) {
         contactView.openChoiceCountryDialog(listCountry)
     }
 
-    fun saveContactDialog(contact: Contact) {
-        var checkResultStatus = Validator().checkContact(contact)
-
-        if (checkResultStatus == 0) {
-            contactView.saveContactDialog(contact)
-        } else {
-            contactView.toastMsg(checkResultStatus)
-        }
-    }
+//    fun saveContactDialog(contact: Contact) {
+//        var checkResultStatus = 0// Validator().checkContact(contact)
+//
+//        if (checkResultStatus == 0) {
+//            contactView.saveContactDialog(contact)
+//        } else {
+//            contactView.toastMsg(checkResultStatus)
+//        }
+//    }
 
     fun saveContact(contact: Contact) = runBlocking {
         val result = async {  DatabaseDB().saveNewContact(contact) }.await()
         if (result) {
-            contactView.navigateToMainActivity(result, contact)
+            contactView.navigateToMainActivity(result)
         } else {
             contactView.toastMsg(6)
         }
     }
-    fun editContact(contact: Contact) = runBlocking{
-        val result = async {  DatabaseDB().updateContact(contact) }.await()
+    fun editContact(list: List<UpdateData>)
+            = runBlocking{
+        val result = async {  DatabaseDB().updateContact(list) }.await()
         if (result) {
-            contactView.navigateToMainActivity(result, contact)
+            contactView.navigateToMainActivity(result)
         } else {
             contactView.toastMsg(6)
         }
     }
+
 }
 
 interface ContactView{
     fun openChoiceCountryDialog(listCountry: ArrayList<Country>)
-    fun saveContactDialog(contact: Contact)
-    fun navigateToMainActivity(message: Boolean, contact: Contact)
+//    fun saveContactDialog(contact: Contact)
+    fun navigateToMainActivity(message: Boolean)
     fun toastMsg(checkResultStatus: Int)
 }

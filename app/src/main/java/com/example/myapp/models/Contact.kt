@@ -11,5 +11,5 @@ class Contact(
     var contactPhoneNumber      : List<ContactPhone>,
     var contactEMail            : List<ContactEmail>,
     var contactLocalStorageStats: Boolean,
-    var contactBlob             : Blob? = null
+    var contactBlob             : ByteArray? = null
 ): Serializable
