@@ -64,7 +64,6 @@ class DatabaseDB {
     }
 
     fun getContactList() : ArrayList<Contact>{
-        //insertFirstContatct()
         var list = arrayListOf<Contact>()
         var listContactQuery    = listOf<SelectAllContacts>()
         var listContactEmail    = listOf<SelectAllEmails>()
@@ -132,23 +131,12 @@ class DatabaseDB {
         val listQuery           = dbContriesQuery.selectAll().executeAsList()
 
         for(i in 0 until listQuery.size){
-            val coutryId        =listQuery[i].countryCodeID
+            val coutryId        = listQuery[i].countryCodeID
             val countryName     = listQuery[i].countryName
             val countryPrefih   = listQuery[i].countryPrefix
-            val queryRol                = Country(coutryId, countryName, countryPrefih)
+            val queryRol        = Country(coutryId, countryName, countryPrefih)
             countryList += queryRol
         }
         return countryList
-    }
-
-    fun insertFirstContatct(){
-//        dbContactsQuery.insertContacts("Ivan","Ivanov","BULGARIA",
-//            "ivanivanov@abv.bg","888123123","Male")
-//        dbContactsQuery.insertContacts("Peter","Petrov","BULGARIA",
-//            "peterpetrov@abv.bg","888234234","Male")
-//        dbContactsQuery.insertContacts("Ahmed","Mehmed","TURKEY",
-//            "ahmedmehmed@abv.bg","888787878","Male")
-//        dbContactsQuery.insertContacts("Dragan","Draganov","UZBEKISTAN",
-//            "dragandraganov@abv.bg","888432432","Male")
     }
 }

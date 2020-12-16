@@ -20,9 +20,94 @@ class PhoneContact {
 
     val context             : Context = MyApplication.instansce
 
+    fun getContactData(id: Int){
+        val contact : Contact
+        val url = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.MIMETYPE,
+            ContactsContract.Data.CONTACT_ID,
+            ContactsContract.Data.DATA15,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Contactables.DATA,
+            ContactsContract.CommonDataKinds.Contactables.TYPE
+
+        )
+        val selection = ContactsContract.Data.CONTACT_ID + " = ? " + "AND " + ContactsContract.Data.MIMETYPE + " in (?, ?, ?)"
+        val selectionArgs = arrayOf(
+            id.toString(),
+            ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE
+        )
+        val cursor = context.contentResolver.query(
+            url,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        val mimetypeIndex   = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
+        val contactIdIndex  = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
+        val blobIndex       = cursor.getColumnIndex(ContactsContract.Data.DATA15)
+        val nameIndex       = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+        val dataIndex       = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
+        val typeIndex       = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
+
+        while (cursor!!.moveToNext()) {
+
+            val id          = cursor.getLong(contactIdIndex)
+            val mimetype    = cursor.getString(mimetypeIndex)
+            val data        = cursor.getString(dataIndex)
+            val type        = cursor.getInt(typeIndex)
+            val name        = cursor.getString(nameIndex)
+            val blob        = cursor.getBlob(blobIndex)
+
+            //println(" id -> ${id} /  mimeType -> ${mimetype}  data-> ${data} type -> ${type} name -> ${name}  blob -> ${blob}")
+        }
+        cursor.close()
+    }
+
+
+
+    fun getAllNameAndPhoto() : ArrayList<Contact>{
+        val allNameAndPhotoList = arrayListOf<Contact>()
+        val url = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.CONTACT_ID,
+            ContactsContract.Data.DATA15,
+            ContactsContract.Contacts.DISPLAY_NAME
+        )
+        val selection = ContactsContract.Data.MIMETYPE + " in (?, ?)"
+        val selectionArgs = arrayOf(
+            ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+        )
+        val cursor = context.contentResolver.query(
+            url,
+            projection,
+            selection,
+            selectionArgs,
+            ContactsContract.Data.CONTACT_ID
+        )
+        val contactIdIndex  = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
+        val blobIndex       = cursor.getColumnIndex(ContactsContract.Data.DATA15)
+        val nameIndex       = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+
+        while (cursor!!.moveToNext()){
+            val id          = cursor.getLong(contactIdIndex)
+            val name        = cursor.getString(nameIndex)
+            val blob        = cursor.getBlob(blobIndex)
+
+            //println("id -> ${id}  name -> ${name}  blob -> ${blob}")
+        }
+
+        return allNameAndPhotoList
+    }
+
     fun getPhoneContact(): ArrayList<Contact> {
 
-        var contactPhoneList = arrayListOf<Contact>()
+        val contactPhoneList = arrayListOf<Contact>()
 
         val url = ContactsContract.Data.CONTENT_URI
 
@@ -62,7 +147,6 @@ class PhoneContact {
         val phones          = mutableListOf<ContactPhone>()
         val emails          = mutableListOf<ContactEmail>()
         val blobArray       = mutableMapOf<Long, ByteArray>()
-//        val typeString      =
 
         while (cursor!!.moveToNext()) {
 

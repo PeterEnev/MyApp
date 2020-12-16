@@ -1,6 +1,7 @@
 package com.example.myapp.presenters
 
 import com.example.myapp.models.Contact
+import com.example.myapp.models.ContactsData
 import com.example.myapp.models.DatabaseDB
 import com.example.myapp.models.PhoneContact
 import kotlinx.coroutines.*
@@ -9,7 +10,7 @@ import kotlinx.coroutines.Dispatchers.IO
 class MainPresenter(private val mainView: MainView) {
 
     fun setContactList() {
-        val contactList = getContactList()
+        val contactList = ContactsData().allContactData()
         mainView.setContactList(contactList)
     }
 
@@ -22,11 +23,8 @@ class MainPresenter(private val mainView: MainView) {
         mainView.navigateToNewContactActivity()
     }
 
-    fun getContactList(): ArrayList<Contact> = runBlocking{
-        val contactList = async { DatabaseDB().getContactList() }.await()
-        val phoneContactList = async { PhoneContact().getPhoneContact() }.await()
-        contactList.addAll(phoneContactList)
-        return@runBlocking contactList
+    fun getContactList(): ArrayList<Contact> {
+        return  ContactsData().allContactData()
     }
 }
 

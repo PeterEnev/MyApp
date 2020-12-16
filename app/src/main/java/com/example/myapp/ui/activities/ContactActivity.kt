@@ -81,39 +81,39 @@ class ContactActivity : AppCompatActivity(), ContactView {
                 intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
 
             with(viewModel.editingContact){
-                firstNameInput  .setText(contactFirstName)
-                lastNameInput   .setText(contactLastName)
-                countryInput    .setText(contactCountryName)
+                bindingContact.firstNameInput  .setText(contactFirstName)
+                bindingContact.lastNameInput   .setText(contactLastName)
+                bindingContact.countryInput    .setText(contactCountryName)
 
                 setEmailPhoneText(contactPhoneNumber, contactEMail)
             }
-            saveEditContactBtn.setText(R.string.BTN_EDIT)
+            bindingContact.saveEditContactBtn.setText(R.string.BTN_EDIT)
         }
 
-        firstNameInput.setOnFocusChangeListener { _, hasFocus ->
+        bindingContact.firstNameInput.setOnFocusChangeListener { _, hasFocus ->
             errorHandler(
                 firstNameTxt,
                 !hasFocus && firstNameInput.text!!.count() < 5
             )
         }
 
-        lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
+        bindingContact.lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
             errorHandler(
                 lastNameTxt,
                 !hasFocus && lastNameInput.text!!.count() < 5
             )
         }
 
-        countryInput.setOnClickListener { contactPresenter.getCountryNames() }
+        bindingContact.countryInput.setOnClickListener { contactPresenter.getCountryNames() }
 
-        phoneInput.setOnFocusChangeListener{ _, hasFocus ->
+        bindingContact.phoneInput.setOnFocusChangeListener{ _, hasFocus ->
             errorHandler(
                 phoneTxt,
                 !hasFocus && phoneInput.text!!.count() !in 11..14
             )
         }
 
-        eMailInput.setOnFocusChangeListener { _, hasFocus ->
+        bindingContact.eMailInput.setOnFocusChangeListener { _, hasFocus ->
             errorHandler(
                 emailTxt,
                 !hasFocus && !Validator.EMAIL_REGEX.toRegex()
@@ -220,7 +220,6 @@ class ContactActivity : AppCompatActivity(), ContactView {
                 COUNTRY_NAME_ID,TYPE_OPERATION_UPDATE, id, countryName
             ))
         }
-
 
         if (list.size != 0) contactPresenter.editContact(list) else navigateToMainActivity(false)
     }
