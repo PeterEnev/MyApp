@@ -158,12 +158,12 @@ class ContactActivity : AppCompatActivity(), ContactView {
     }
 
     fun onPhoneLayoutDelete(view: View) {
-        viewModel.phoneLinearLayoutFlag = false
+        if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
         parentPhoneLinearLayout.removeView(view.parent as View)
     }
 
     fun onPhoneLayoutAdd(view: View?){
-        viewModel.phoneLinearLayoutFlag = false
+        if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView: View = inflater.inflate(R.layout.list_item_phone, null)
 
@@ -176,12 +176,12 @@ class ContactActivity : AppCompatActivity(), ContactView {
     }
 
     fun onMailLayoutDelete(view: View) {
-        viewModel.emailLinearLayoutFlag = false
+        if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
         parentMailLinearLayout.removeView(view.parent as View)
     }
 
     fun onMailLayoutAdd(view: View?){
-        viewModel.emailLinearLayoutFlag = false
+        if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
         val inflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView: View = inflater.inflate(R.layout.list_item_email, null)
@@ -209,13 +209,16 @@ class ContactActivity : AppCompatActivity(), ContactView {
         val contactEmails           = mutableListOf<ContactEmail>()
         for (i in parentMailLinearLayout.size - 1 downTo 0) {
             contactEmails.add(ContactEmail(
-                contactEmailId          = null,
-                contactId               = viewModel.editingContact.contactID,
-                contactEmailType        =
-                parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem.toString(),
-                email                   =
-                parentMailLinearLayout.getChildAt(i).eMailInput.text.toString(),
-                emailEdit               = DATA_CREATE
+                contactEmailId
+                = null,
+                contactId
+                = if (viewModel.contactStatusExisting) viewModel.editingContact.contactID else null,
+                contactEmailType
+                = parentMailLinearLayout.getChildAt(i).typeEmail.selectedItem.toString(),
+                email
+                = parentMailLinearLayout.getChildAt(i).eMailInput.text.toString(),
+                emailEdit
+                = DATA_CREATE
             ))
         }
         return contactEmails
@@ -225,13 +228,16 @@ class ContactActivity : AppCompatActivity(), ContactView {
         val contactPhones           = mutableListOf<ContactPhone>()
         for (i in parentPhoneLinearLayout.size - 1 downTo 0) {
             contactPhones.add(ContactPhone(
-                contactPhoneId          = null,
-                contactId               = viewModel.editingContact.contactID,
-                phone                   =
-                parentPhoneLinearLayout.getChildAt(i).phoneInput.text.toString(),
-                contactPhoneType        =
-                parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem.toString(),
-                phoneEdit               = DATA_CREATE
+                contactPhoneId
+                = null,
+                contactId
+                = if (viewModel.contactStatusExisting) viewModel.editingContact.contactID else null,
+                phone
+                = parentPhoneLinearLayout.getChildAt(i).phoneInput.text.toString(),
+                contactPhoneType
+                = parentPhoneLinearLayout.getChildAt(i).typePhone.selectedItem.toString(),
+                phoneEdit
+                = DATA_CREATE
             ))
         }
         return contactPhones
