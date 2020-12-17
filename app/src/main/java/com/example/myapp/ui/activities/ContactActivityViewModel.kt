@@ -12,8 +12,8 @@ import com.example.myapp.models.Contact
 class ContactActivityViewModel: ViewModel() {
 
     lateinit var editingContact          : Contact
-    lateinit var parentPhoneLinearLayout : LinearLayout
-    lateinit var parentMailLinearLayout  : LinearLayout
+//    lateinit var parentPhoneLinearLayout : LinearLayout
+//    lateinit var parentMailLinearLayout  : LinearLayout
 
     var contactStatusExisting = false
     var phoneLinearLayoutFlag = true

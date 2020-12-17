@@ -2,9 +2,6 @@ package com.example.myapp.models
 
 import android.content.Context
 import com.example.myapp.*
-import com.example.myapp.ui.activities.ContactActivity.Companion.COUNTRY_NAME_ID
-import com.example.myapp.ui.activities.ContactActivity.Companion.FIRST_NAME_ID
-import com.example.myapp.ui.activities.ContactActivity.Companion.LAST_NAME_ID
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
@@ -17,7 +14,6 @@ open class DatabaseDB {
     val dbContactsQuery         :ContactsDBQueries     = database.contactsDBQueries
     val dbContactEmailQuery     :ContactEmailDBQueries = database.contactEmailDBQueries
     val dbContactPhoneDBQueries :ContactPhoneDBQueries = database.contactPhoneDBQueries
-
 
 
     fun saveNewContact(contact: Contact) : Boolean{

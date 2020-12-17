@@ -22,6 +22,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
     companion object{
         var CONTACT_STATUS_EXISTING     = true
+        var emptyString                 = " "
     }
 
     fun updateList(newList: ArrayList<Contact>){
@@ -51,22 +52,18 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                                 RecyclerView.ViewHolder(itemView), LayoutContainer{
 
         fun bindItems(contact: Contact){
-
-            with(contact){
-                var string = MainActivity.EMPTY_STRING
-                for (row in 0 until contactPhoneNumber.size){
-                    string += "Phone ${contactPhoneNumber[row].contactPhoneType}  ${contactPhoneNumber[row].phone} \n"
+            var string = emptyString
+                for (row in contact.contactPhoneNumber.indices){
+                    string += "Phone ${contact.contactPhoneNumber[row].contactPhoneType}  ${contact.contactPhoneNumber[row].phone} \n"
                 }
                 recyclerContactPhone.text       = string
 
-                string = MainActivity.EMPTY_STRING
-                for (row in 0 until contactEMail.size){
-                    string += "Email ${contactEMail[row].contactEmailType}  ${contactEMail[row].email} \n"
+                string = emptyString
+                for (row in contact.contactEMail.indices){
+                    string += "Email ${contact.contactEMail[row].contactEmailType}  ${contact.contactEMail[row].email} \n"
                 }
                 recyclerContactMail.text        = string
-
-                recyclerContactCountry.text     = contactCountryName
-            }
+                recyclerContactCountry.text     = contact.contactCountryName
 
             if (contact.contactLocalStorageStats){
                 recyclerContactName.text = contact.contactFirstName + " " + contact.contactLastName
@@ -91,7 +88,6 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                     expandableLayout.visibility = View.GONE
                 }
             }
-
             editBtn.setOnClickListener {
                 CONTACT_STATUS_EXISTING         = true
                 listener.onEditBtnListener(contact)
@@ -99,8 +95,6 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
         }
     }
 }
-
-
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact)
