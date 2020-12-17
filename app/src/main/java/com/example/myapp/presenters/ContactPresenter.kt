@@ -13,39 +13,26 @@ class ContactPresenter(private val contactView: ContactView) {
         contactView.openChoiceCountryDialog(listCountry)
     }
 
-//    fun saveContactDialog(contact: Contact) {
-//        var checkResultStatus = 0// Validator().checkContact(contact)
-//
-//        if (checkResultStatus == 0) {
-//            contactView.saveContactDialog(contact)
-//        } else {
-//            contactView.toastMsg(checkResultStatus)
-//        }
-//    }
-
     fun saveContact(contact: Contact) = runBlocking {
         val result = async {  DatabaseDB().saveNewContact(contact) }.await()
-        if (result) {
+        if (result)
             contactView.navigateToMainActivity(result)
-        } else {
+         else
             contactView.toastMsg(6)
-        }
+
     }
-    fun editContact(list: List<UpdateData>)
-            = runBlocking{
-        val result = async {  DatabaseDB().updateContact(list) }.await()
-        if (result) {
+    fun editContact(contact: Contact) = runBlocking{
+        val result = async { ContactsData().updateContactData(contact) }.await()
+        if (result)
             contactView.navigateToMainActivity(result)
-        } else {
+        else
             contactView.toastMsg(6)
-        }
     }
 
 }
 
 interface ContactView{
     fun openChoiceCountryDialog(listCountry: ArrayList<Country>)
-//    fun saveContactDialog(contact: Contact)
     fun navigateToMainActivity(message: Boolean)
     fun toastMsg(checkResultStatus: Int)
 }

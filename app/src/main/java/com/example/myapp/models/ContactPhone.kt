@@ -3,8 +3,9 @@ package com.example.myapp.models
 import java.io.Serializable
 
 data class ContactPhone(
-    val contactPhoneId          :Long?,
-    val contactId               :Long?,
-    val phone                   :String,
-    val contactPhoneType        :String
+    val contactPhoneId      : Long?,
+    var contactId           : Long?,
+    var phone               : String,
+    var contactPhoneType    : String,
+    var phoneEdit           : Int = 0
 ) : Serializable

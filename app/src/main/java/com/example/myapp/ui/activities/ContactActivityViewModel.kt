@@ -16,5 +16,7 @@ class ContactActivityViewModel: ViewModel() {
     lateinit var parentMailLinearLayout  : LinearLayout
 
     var contactStatusExisting = false
+    var phoneLinearLayoutFlag = true
+    var emailLinearLayoutFlag = true
 
 }

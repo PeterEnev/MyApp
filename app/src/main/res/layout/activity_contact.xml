@@ -4,9 +4,10 @@
 
     <data>
         <variable
-            name="contact"
-            type="com.example.myapp.models.Contact" />
+            name="contactActivity"
+            type="com.example.myapp.ui.activities.ContactActivity" />
     </data>
+
     <LinearLayout
         android:layout_width                                        ="match_parent"
         android:layout_height                                       ="match_parent"

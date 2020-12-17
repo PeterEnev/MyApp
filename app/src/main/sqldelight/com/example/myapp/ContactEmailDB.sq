@@ -5,9 +5,13 @@ CREATE TABLE ContactEmail (
     contactEmailTypeId  INTEGER     NOT NULL
 );
 
-insertContactEmail:
+insertNewContactEmail:
 INSERT INTO ContactEmail (contactId, email, contactEmailTypeId)
 VALUES ((SELECT MAX(contactID) FROM Contacts) ,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
+
+insertExistingContactEmail:
+INSERT INTO ContactEmail (contactId, email, contactEmailTypeId)
+VALUES ( ?,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
 
 selectAllEmails:
 SELECT
@@ -22,12 +26,7 @@ ON ContactEmail.contactEmailTypeId = DataType.dataTypeId;
 updateContactEmail:
 UPDATE ContactEmail
 SET
-    email = ?
-WHERE contactEmailId = ?;
-
-updateEmailType:
-UPDATE ContactEmail
-SET
+    email = ?,
     contactEmailTypeId = (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?)
 WHERE contactEmailId = ?;
 

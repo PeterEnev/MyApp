@@ -94,8 +94,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
             override fun afterTextChanged(s: Editable?) {
                 for (i in 0 until dataContactList.size){
                     if ((dataContactList[i].contactFirstName + " " + dataContactList[i].contactLastName).
-                        toUpperCase().contains(s.toString().toUpperCase()) ||
-                        (dataContactList[i].contactPhoneNumber.toString()).contains(s.toString())){
+                        toUpperCase().contains(s.toString().toUpperCase())){
                         listContactRenew.add(dataContactList[i])
                     }
                 }

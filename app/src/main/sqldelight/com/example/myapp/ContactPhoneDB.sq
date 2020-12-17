@@ -5,9 +5,13 @@ CREATE TABLE ContactPhone (
     contactPhoneTypeId      INTEGER     NOT NULL
 );
 
-insertContactPhone:
+insertNewContactPhone:
 INSERT INTO ContactPhone (contactId, phone, contactPhoneTypeId)
 VALUES ( (SELECT MAX(contactID) FROM Contacts) ,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
+
+insertExistingContactPhone:
+INSERT INTO ContactPhone (contactId, phone, contactPhoneTypeId)
+VALUES ( ?,  ?, (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?));
 
 selectAllPhones:
 SELECT
@@ -22,12 +26,7 @@ ON ContactPhone.contactPhoneTypeId = DataType.dataTypeId;
 updateContactPhone:
 UPDATE ContactPhone
 SET
-    phone = ?
-WHERE contactPhoneId = ?;
-
-updatePhoneType:
-UPDATE ContactPhone
-SET
+    phone = ?,
     contactPhoneTypeId = (SELECT dataTypeId FROM DataType WHERE dataTypeName = ?)
 WHERE contactPhoneId = ?;
 

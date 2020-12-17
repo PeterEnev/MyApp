@@ -8,7 +8,7 @@ import com.example.myapp.ui.activities.ContactActivity.Companion.LAST_NAME_ID
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
-class DatabaseDB {
+open class DatabaseDB {
     val context                 :Context               = MyApplication.instansce
     val databaseName            :String                = "test.db"
     val driver                  :SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
@@ -29,13 +29,13 @@ class DatabaseDB {
                 countryName         = contact.contactCountryName
             )
             for (i in contact.contactPhoneNumber.size-1 downTo 0){
-                dbContactPhoneDBQueries.insertContactPhone(
+                dbContactPhoneDBQueries.insertNewContactPhone(
                     phone = contact.contactPhoneNumber.get(i).phone,
                     dataTypeName = contact.contactPhoneNumber.get(i).contactPhoneType
                 )
             }
             for (i in contact.contactEMail.size-1 downTo 0){
-                dbContactEmailQuery.insertContactEmail(
+                dbContactEmailQuery.insertNewContactEmail(
                     email = contact.contactEMail.get(i).email,
                     dataTypeName = contact.contactEMail.get(i).contactEmailType
                 )
@@ -44,26 +44,60 @@ class DatabaseDB {
         return status
     }
 
-    fun updateContact(list: List<UpdateData>) : Boolean{
-        val status = true
-        database.transaction {
-            for (index in 0 until list.size) {
-                if (list[index].typeData == FIRST_NAME_ID) dbContactsQuery.updateFirstName(
-                    list[index].value,
-                    list[index].id
-                ) else if (list[index].typeData == LAST_NAME_ID) dbContactsQuery.updateLastName(
-                    list[index].value,
-                    list[index].id
-                ) else if (list[index].typeData == COUNTRY_NAME_ID) dbContactsQuery.updateCountryName(
-                    list[index].value,
-                    list[index].id
-                )
-            }
-        }
-        return status
+    fun updatePhone(phone: ContactPhone){
+        dbContactPhoneDBQueries.updateContactPhone(
+            phone.phone,
+            phone.contactPhoneType,
+            phone.contactPhoneId!!
+        )
     }
 
-    fun getContactList() : ArrayList<Contact>{
+    fun deletePhone(phone: ContactPhone){
+        dbContactPhoneDBQueries.deleteContactPhone(
+            phone.contactPhoneId!!
+        )
+    }
+
+    fun addPhone(phone: ContactPhone){
+        dbContactPhoneDBQueries.insertExistingContactPhone(
+            phone.contactId!!,
+            phone.phone,
+            phone.contactPhoneType
+        )
+    }
+
+    fun updateEmail(email: ContactEmail){
+        dbContactEmailQuery.updateContactEmail(
+            email.email,
+            email.contactEmailType,
+            email.contactEmailId!!
+        )
+    }
+
+    fun deleteEmail(email: ContactEmail){
+        dbContactEmailQuery.deleteContactEmail(
+            email.contactEmailId!!
+        )
+    }
+
+    fun addEmail(email: ContactEmail){
+        dbContactEmailQuery.insertExistingContactEmail(
+            email.contactId!!,
+            email.email,
+            email.contactEmailType
+        )
+    }
+
+    fun updateContact(contact: Contact){
+        dbContactsQuery.updateContacts(
+            contact.contactFirstName,
+            contact.contactLastName,
+            contact.contactCountryName,
+            contact.contactID!!
+        )
+    }
+
+    fun getContactList(): ArrayList<Contact>{
         var list = arrayListOf<Contact>()
         var listContactQuery    = listOf<SelectAllContacts>()
         var listContactEmail    = listOf<SelectAllEmails>()
