@@ -43,19 +43,3 @@ class CountryListAdapter(val context: Context,
     }
 }
 
-class CountryDiffUtil: DiffUtil.ItemCallback<Country>(){
-    override fun areItemsTheSame(
-        oldItem: Country,
-        newItem: Country
-    ): Boolean {
-        return oldItem.countryId == newItem.countryId
-    }
-
-    override fun areContentsTheSame(
-        oldItem: Country,
-        newItem: Country
-    ): Boolean {
-        return oldItem == newItem
-    }
-}
-

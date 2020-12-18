@@ -34,17 +34,31 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id                              ="@+id/addPhoneButton"
-        style                                   ="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width                    ="40dp"
         android:layout_height                   ="wrap_content"
-        android:layout_marginTop                ="16dp"
         android:gravity                         ="end"
-        android:onClick                         ="onPhoneLayoutDelete"
-        app:icon                                ="@drawable/remove_black_24dp"
+        android:layout_marginTop                ="16dp"
+        android:focusable                       ="true"
+        android:clickable                       ="true"
+        android:background                      ="#00FFFFFF"
+        android:src                             ="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf        ="parent"
         app:layout_constraintStart_toEndOf      ="@+id/phoneTxt"
-        app:layout_constraintTop_toTopOf        ="parent" />
+        app:layout_constraintTop_toTopOf        ="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--<Button-->
+<!--android:id                              ="@+id/addPhoneButton"-->
+<!--style                                   ="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--android:layout_width                    ="40dp"-->
+<!--android:layout_height                   ="wrap_content"-->
+<!--android:layout_marginTop                ="16dp"-->
+<!--android:gravity                         ="end"-->
+<!--android:onClick                         ="onPhoneLayoutDelete"-->
+<!--app:layout_constraintEnd_toEndOf        ="parent"-->
+<!--app:layout_constraintStart_toEndOf      ="@+id/phoneTxt"-->
+<!--app:layout_constraintTop_toTopOf        ="parent" />-->

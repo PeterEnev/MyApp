@@ -1,17 +1,14 @@
 package com.example.myapp.ui.adapters
 
 import android.graphics.BitmapFactory
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
-import com.example.myapp.ui.activities.MainActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList

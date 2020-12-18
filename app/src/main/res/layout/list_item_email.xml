@@ -34,15 +34,16 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id                              ="@+id/addEmailButton"
-        style                                   ="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width                    ="40dp"
         android:layout_height                   ="wrap_content"
         android:layout_marginTop                ="16dp"
         android:gravity                         ="end"
+        android:focusable                       ="true"
+        android:clickable                       ="true"
+        android:background                      ="#00FFFFFF"
         app:icon                                ="@drawable/remove_black_24dp"
-        android:onClick                         ="onMailLayoutDelete"
         app:layout_constraintEnd_toEndOf        ="parent"
         app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
         app:layout_constraintTop_toTopOf        ="parent" />

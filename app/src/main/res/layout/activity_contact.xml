@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android                                               ="http://schemas.android.com/apk/res/android"
-    xmlns:app                                                       ="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -60,116 +61,17 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
-                    android:id                                      ="@+id/listPhone"
-                    android:layout_width                            ="match_parent"
-                    android:layout_height                           ="wrap_content"
-                    android:orientation                             ="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/emailRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_height                       ="wrap_content"
-                        android:layout_width                        ="match_parent">
-
-
-                        <Spinner
-                            android:id                              ="@+id/typePhone"
-                            android:layout_width                    ="110dp"
-                            android:layout_height                   ="wrap_content"
-                            android:entries                         ="@array/type"
-                            android:paddingTop                      ="24dp"
-                            app:layout_constraintEnd_toStartOf      ="@+id/phoneTxt"
-                            app:layout_constraintStart_toStartOf    ="parent"
-                            app:layout_constraintTop_toTopOf        ="parent"/>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id                              ="@+id/phoneTxt"
-                            android:hint                            ="@string/phone"
-                            android:paddingStart                    ="8dp"
-                            android:paddingEnd                      ="4dp"
-                            app:layout_constraintEnd_toStartOf      ="@+id/addPhoneButton"
-                            app:layout_constraintStart_toEndOf      ="@+id/typePhone"
-                            app:layout_constraintTop_toTopOf        ="parent"
-                            style                                   ="@style/TextInputPhoneLayout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id                          ="@+id/phoneInput"
-                                style                               ="@style/TextInputPhoneEditText"
-                                android:inputType                   ="phone" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Button
-                            android:id                              ="@+id/addPhoneButton"
-                            android:layout_width                    ="40dp"
-                            android:layout_height                   ="wrap_content"
-                            android:layout_marginTop                ="16dp"
-                            android:gravity                         ="end"
-                            android:onClick                         ="onPhoneLayoutAdd"
-                            app:icon                                ="@drawable/ic_add"
-                            app:layout_constraintEnd_toEndOf        ="parent"
-                            app:layout_constraintStart_toEndOf      ="@+id/phoneTxt"
-                            app:layout_constraintTop_toTopOf        ="parent"
-                            style                                   ="@style/Widget.MaterialComponents.Button.TextButton" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id                                      ="@+id/listMail"
-                    android:layout_width                            ="match_parent"
-                    android:layout_height                           ="wrap_content"
-                    android:orientation                             ="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_height                       ="wrap_content"
-                        android:layout_width                        ="match_parent">
-
-                        <Spinner
-                            android:id                              ="@+id/typeEmail"
-                            android:layout_width                    ="110dp"
-                            android:layout_height                   ="wrap_content"
-                            android:entries                         ="@array/type"
-                            android:paddingTop                      ="24dp"
-                            app:layout_constraintEnd_toStartOf      ="@+id/emailTxt"
-                            app:layout_constraintStart_toStartOf    ="parent"
-                            app:layout_constraintTop_toTopOf        ="parent"/>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id                              ="@+id/emailTxt"
-                            style                                   ="@style/TextInputMailLayout"
-                            android:hint                            ="@string/email"
-                            android:paddingStart                    ="8dp"
-                            android:paddingEnd                      ="4dp"
-                            app:layout_constraintEnd_toStartOf      ="@+id/addEmailButton"
-                            app:layout_constraintStart_toEndOf      ="@+id/typeEmail"
-                            app:layout_constraintTop_toTopOf        ="parent">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id                          ="@+id/eMailInput"
-                                style                               ="@style/TextInputMailEditText"
-                                android:inputType                   ="textEmailAddress" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Button
-                            android:id                              ="@+id/addEmailButton"
-                            android:layout_width                    ="40dp"
-                            android:layout_height                   ="wrap_content"
-                            android:layout_marginTop                ="16dp"
-                            android:gravity                         ="end"
-                            app:icon                                ="@drawable/ic_add"
-                            android:onClick                         ="onMailLayoutAdd"
-                            app:layout_constraintEnd_toEndOf        ="parent"
-                            app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
-                            app:layout_constraintTop_toTopOf        ="parent"
-                            style                                   ="@style/Widget.MaterialComponents.Button.TextButton"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/phoneRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <Button
                     android:id                                      ="@+id/saveEditContactBtn"

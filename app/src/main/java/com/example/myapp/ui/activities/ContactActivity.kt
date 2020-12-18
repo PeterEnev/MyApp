@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityContactBinding
 import com.example.myapp.models.*
@@ -24,16 +25,18 @@ import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_EXISTING_B
 import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_SERIALIZABLE_EXTRA
 import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_STATUS_EXISTING
 import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_STATUS_NEW
+import com.example.myapp.ui.adapters.ContactListAdapter
 import com.example.myapp.ui.adapters.CountryListAdapter
+import com.example.myapp.ui.adapters.EmailAdapter
+import com.example.myapp.ui.adapters.PhoneAdapter
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
-import kotlinx.android.synthetic.main.activity_contact.eMailInput
-import kotlinx.android.synthetic.main.activity_contact.emailTxt
-import kotlinx.android.synthetic.main.activity_contact.typeEmail
+//import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
 import kotlinx.android.synthetic.main.list_item_email.*
 import kotlinx.android.synthetic.main.list_item_email.view.*
+import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.android.synthetic.main.list_item_phone.view.*
 
 
@@ -44,10 +47,11 @@ class ContactActivity : AppCompatActivity(), ContactView {
     private lateinit var viewModel               : ContactActivityViewModel
     private lateinit var parentPhoneLinearLayout : LinearLayout
     private lateinit var parentMailLinearLayout  : LinearLayout
+    private lateinit var phoneAdapter            : PhoneAdapter
+    private lateinit var emailAdapter            : EmailAdapter
 
     companion object {
         val DEFAULT_VALUE_NEW_CONTACT   :Long               = -1
-
         val DATA_EXISTS                 :Int                = 0
         val DATA_UPDATE                 :Int                = 1
         val DATA_DELETE                 :Int                = 2
@@ -72,8 +76,9 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         contactPresenter        = ContactPresenter(this)
 
-        parentMailLinearLayout  = listMail
-        parentPhoneLinearLayout = listPhone
+
+//        parentMailLinearLayout  = listMail
+//        parentPhoneLinearLayout = listPhone
 
         viewModel.contactStatusExisting =
             intent.getBooleanExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, false)
@@ -82,15 +87,27 @@ class ContactActivity : AppCompatActivity(), ContactView {
             viewModel.editingContact    =
                 intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
 
+            phoneAdapter = PhoneAdapter(viewModel.editingContact.contactPhoneNumber, viewModel.editingContact.contactID)
+
+            emailAdapter = EmailAdapter(viewModel.editingContact.contactEMail, viewModel.editingContact.contactID)
+
+
             with(viewModel.editingContact){
                 firstNameInput  .setText(contactFirstName)
                 lastNameInput   .setText(contactLastName)
                 countryInput    .setText(contactCountryName)
-
-                setEmailPhoneText(contactPhoneNumber, contactEMail)
             }
             saveEditContactBtn.setText(R.string.BTN_EDIT)
+        } else {
+            emailAdapter = EmailAdapter(null, DEFAULT_VALUE_NEW_CONTACT)
+            phoneAdapter = PhoneAdapter(null, DEFAULT_VALUE_NEW_CONTACT)
         }
+
+        emailRecyclerView.adapter = emailAdapter
+        emailRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        phoneRecyclerView.adapter = phoneAdapter
+        phoneRecyclerView.layoutManager = LinearLayoutManager(this)
 
         firstNameInput.setOnFocusChangeListener { _, hasFocus ->
             if (viewModel.contactStatusExisting
@@ -118,22 +135,22 @@ class ContactActivity : AppCompatActivity(), ContactView {
 
         countryInput.setOnClickListener { contactPresenter.getCountryNames() }
 
-        phoneInput.setOnFocusChangeListener{ _, hasFocus ->
-            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
-            errorHandler(
-                phoneTxt,
-                !hasFocus && phoneInput.text!!.count() !in 11..14
-            )
-        }
+//        phoneInput.setOnFocusChangeListener{ _, hasFocus ->
+//            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
+//            errorHandler(
+//                phoneTxt,
+//                !hasFocus && phoneInput.text!!.count() !in 11..14
+//            )
+//        }
 
-        eMailInput.setOnFocusChangeListener { _, hasFocus ->
-            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
-            errorHandler(
-                emailTxt,
-                !hasFocus && !Validator.EMAIL_REGEX.toRegex()
-                    .matches(eMailInput.text.toString())
-            )
-        }
+//        eMailInput.setOnFocusChangeListener { _, hasFocus ->
+//            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
+//            errorHandler(
+//                emailTxt,
+//                !hasFocus && !Validator.EMAIL_REGEX.toRegex()
+//                    .matches(eMailInput.text.toString())
+//            )
+//        }
     }
 
     fun saveContact(view: View){
@@ -224,7 +241,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         return contactEmails
     }
 
-    private fun getPhoneData(): List<ContactPhone>{
+    fun getPhoneData(): List<ContactPhone>{
         val contactPhones           = mutableListOf<ContactPhone>()
         for (i in parentPhoneLinearLayout.size - 1 downTo 0) {
             contactPhones.add(ContactPhone(
@@ -243,7 +260,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         return contactPhones
     }
 
-    private fun compareEmailsData () : List<ContactEmail>{
+    fun compareEmailsData () : List<ContactEmail>{
         val list            = mutableListOf<ContactEmail>()
         val existsList      = mutableListOf<ContactEmail>()
         val newList         = mutableListOf<ContactEmail>()
@@ -276,7 +293,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
         return list
     }
 
-    private fun comparePhonesData (): List<ContactPhone>{
+    fun comparePhonesData (): List<ContactPhone>{
         val list            = mutableListOf<ContactPhone>()
         val existsList      = mutableListOf<ContactPhone>()
         val newList         = mutableListOf<ContactPhone>()
@@ -308,11 +325,11 @@ class ContactActivity : AppCompatActivity(), ContactView {
         return list
     }
 
-    private fun setEmailPhoneText(phones: List<ContactPhone>, emails :List<ContactEmail>){
+    fun setEmailPhoneText(phones: List<ContactPhone>, emails :List<ContactEmail>){
         val phoneSize = phones.size
         if (phoneSize <= 1){
-            phoneInput  .setText(phones[phoneSize-1].phone)
-            typePhone   .setSelection(selectedType(phones[phoneSize-1].contactPhoneType))
+//            phoneInput  .setText(phones[phoneSize-1].phone)
+//            typePhone   .setSelection(selectedType(phones[phoneSize-1].contactPhoneType))
         } else {
             for (index in 0 until phoneSize-1){
                 onPhoneLayoutAdd(null)
@@ -358,7 +375,7 @@ class ContactActivity : AppCompatActivity(), ContactView {
                     firstNameTxt    -> R.string.MSG_ENTER_VALID_FIRST_NAME
                     lastNameTxt     -> R.string.MSG_ENTER_VALID_LAST_NAME
                     emailTxt        -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
-                    phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
+  //                  phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
                     else            -> R.string.MSG_ENTER_COUNTRY
                 }
             )
