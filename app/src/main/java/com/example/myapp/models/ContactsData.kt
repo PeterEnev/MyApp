@@ -41,28 +41,29 @@ class ContactsData : DatabaseDB(){
             if(contact.contactEdit != DATA_EXISTS) {
                 updateContact(contact)
                 result = true
-
-                for (index in contact.contactPhoneNumber.indices) {
-                    if (contact.contactPhoneNumber[index].phoneEdit == DATA_CREATE) {
-                        addPhone(contact.contactPhoneNumber[index])
-                    } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_UPDATE) {
-                        updatePhone(contact.contactPhoneNumber[index])
-                    } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_DELETE) {
-                        deletePhone(contact.contactPhoneNumber[index])
-                    } else {
-                        result = true
-                    }
+            }
+            for (index in contact.contactPhoneNumber.indices) {
+                if (contact.contactPhoneNumber[index].phoneEdit == DATA_CREATE) {
+                    addPhone(contact.contactPhoneNumber[index])
+                    result = true
+                } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_UPDATE) {
+                    updatePhone(contact.contactPhoneNumber[index])
+                    result = true
+                } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_DELETE) {
+                    deletePhone(contact.contactPhoneNumber[index])
+                    result = true
                 }
-                for (index in contact.contactEMail.indices) {
-                    if (contact.contactEMail[index].emailEdit == DATA_CREATE) {
-                        addEmail(contact.contactEMail[index])
-                    } else if (contact.contactEMail[index].emailEdit == DATA_UPDATE) {
-                        updateEmail(contact.contactEMail[index])
-                    } else if (contact.contactEMail[index].emailEdit == DATA_DELETE) {
-                        deleteEmail(contact.contactEMail[index])
-                    } else {
-                        result = true
-                    }
+            }
+            for (index in contact.contactEMail.indices) {
+                if (contact.contactEMail[index].emailEdit == DATA_CREATE) {
+                    addEmail(contact.contactEMail[index])
+                    result = true
+                } else if (contact.contactEMail[index].emailEdit == DATA_UPDATE) {
+                    updateEmail(contact.contactEMail[index])
+                    result = true
+                } else if (contact.contactEMail[index].emailEdit == DATA_DELETE) {
+                    deleteEmail(contact.contactEMail[index])
+                    result = true
                 }
             }
         }

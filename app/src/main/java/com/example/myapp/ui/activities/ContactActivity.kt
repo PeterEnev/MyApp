@@ -44,6 +44,8 @@ private const val DATA_UPDATE                       = 1
 private const val DATA_DELETE                       = 2
 private const val DATA_CREATE                       = 3
 
+private const val RESULT                            = "result"
+
 class ContactActivity :
     AppCompatActivity(),
     ContactView,
@@ -55,12 +57,14 @@ class ContactActivity :
     private lateinit var phoneAdapter               : PhoneAdapter
     private lateinit var emailAdapter               : EmailAdapter
     private lateinit var editingContact             : Contact
-    private lateinit var emptyContactEmail          : ContactEmail
+    private lateinit var contact                    : Contact
 
-    private          var deletedPhoneNumber         = mutableListOf<ContactPhone>()
+    private          var deletedPhones              = mutableListOf<ContactPhone>()
     private          var deletedEmails              = mutableListOf<ContactEmail>()
-    private          var contactPhoneList           = mutableListOf<ContactPhone>()
+    private          var contactEmails              = mutableListOf<ContactEmail>()
     private          var contactEmailList           = mutableListOf<ContactEmail>()
+    private          var contactPhones              = mutableListOf<ContactPhone>()
+    private          var contactPhoneList           = mutableListOf<ContactPhone>()
 
     private          var contactStatusExisting      = false
 
@@ -87,8 +91,8 @@ class ContactActivity :
         if (contactStatusExisting){
             editingContact = intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
 
-            contactPhoneList.addAll(editingContact.contactPhoneNumber)
-            contactEmailList.addAll(editingContact.contactEMail)
+            contactPhoneList        .addAll(editingContact.contactPhoneNumber)
+            contactEmailList        .addAll(editingContact.contactEMail)
 
 
             firstNameInput          .setText(editingContact.contactFirstName)
@@ -96,33 +100,34 @@ class ContactActivity :
             countryInput            .setText(editingContact.contactCountryName)
             saveEditContactBtn      .setText(R.string.BTN_EDIT)
         } else {
-            contactEmailList.add(ContactEmail(null,
-                if (contactStatusExisting) editingContact.contactID else null,
-                EMPTY_STRING,
-                EMPTY_STRING,
-                DATA_CREATE))
+            contactEmailList.add(
+                ContactEmail(null,
+                             if (contactStatusExisting) editingContact.contactID else null,
+                             EMPTY_STRING,
+                             EMPTY_STRING,
+                             DATA_CREATE))
 
-            contactPhoneList.add(ContactPhone(null,
-                if (contactStatusExisting) editingContact.contactID else null,
-                EMPTY_STRING,
-                EMPTY_STRING,
-                DATA_CREATE))
+            contactPhoneList.add(
+                ContactPhone(null,
+                             if (contactStatusExisting) editingContact.contactID else null,
+                             EMPTY_STRING,
+                             EMPTY_STRING,
+                             DATA_CREATE))
         }
 
 
-        phoneAdapter = PhoneAdapter(contactPhoneList, this)
-        emailAdapter = EmailAdapter(contactEmailList, this)
-        emailRecyclerView.adapter = emailAdapter
-        emailRecyclerView.layoutManager = LinearLayoutManager(this)
+        phoneAdapter                        = PhoneAdapter(contactPhoneList, this)
+        emailAdapter                        = EmailAdapter(contactEmailList, this)
+        emailRecyclerView.adapter           = emailAdapter
+        emailRecyclerView.layoutManager     = LinearLayoutManager(this)
 
-        phoneRecyclerView.adapter = phoneAdapter
-        phoneRecyclerView.layoutManager = LinearLayoutManager(this)
+        phoneRecyclerView.adapter           = phoneAdapter
+        phoneRecyclerView.layoutManager     = LinearLayoutManager(this)
 
         firstNameInput.setOnFocusChangeListener { _, hasFocus ->
-            if (contactStatusExisting
-                && editingContact.contactFirstName != firstNameInput.text.toString()){
-                editingContact.contactFirstName =  firstNameInput.text.toString()
-                editingContact.contactEdit = DATA_UPDATE
+            if (contactStatusExisting && editingContact.contactFirstName != firstNameInput.text.toString()){
+                editingContact.contactFirstName     = firstNameInput.text.toString()
+                editingContact.contactEdit          = DATA_UPDATE
             }
             errorHandler(
                 firstNameTxt,
@@ -132,10 +137,9 @@ class ContactActivity :
 
 
         lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
-            if (contactStatusExisting
-                && editingContact.contactLastName != lastNameInput.text.toString()){
-                editingContact.contactLastName = lastNameInput.text.toString()
-                editingContact.contactEdit = DATA_UPDATE
+            if (contactStatusExisting && editingContact.contactLastName != lastNameInput.text.toString()){
+                editingContact.contactLastName      = lastNameInput.text.toString()
+                editingContact.contactEdit          = DATA_UPDATE
             }
             errorHandler(
                 lastNameTxt,
@@ -144,43 +148,22 @@ class ContactActivity :
         }
 
         countryInput.setOnClickListener {
-            editingContact.contactEdit = DATA_UPDATE
+            if (contactStatusExisting) editingContact.contactEdit = DATA_UPDATE
             contactPresenter.getCountryNames()
         }
-
-//        phoneInput.setOnFocusChangeListener{ _, hasFocus ->
-//            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
-//            errorHandler(
-//                phoneTxt,
-//                !hasFocus && phoneInput.text!!.count() !in 11..14
-//            )
-//        }
-
-//        eMailInput.setOnFocusChangeListener { _, hasFocus ->
-//            if (viewModel.contactStatusExisting) viewModel.phoneLinearLayoutFlag = false
-//            errorHandler(
-//                emailTxt,
-//                !hasFocus && !Validator.EMAIL_REGEX.toRegex()
-//                    .matches(eMailInput.text.toString())
-//            )
-//        }
     }
 
     fun saveContact(view: View){
         if (contactStatusExisting){
-            var contact : Contact
-            with(editingContact){
-                contact = Contact(
-                    contactID,
-                    contactFirstName,
-                    contactLastName,
-                    contactCountryName,
-                    getPhoneData(),
-                    getEmailData(),
-                    contactLocalStorageStats,
-                    contactBlob,
-                    contactEdit
-                )}
+            with(editingContact){contact = Contact(contactID,
+                                                    contactFirstName,
+                                                    contactLastName,
+                                                    contactCountryName,
+                                                    getPhoneData(),
+                                                    getEmailData(),
+                                                    contactLocalStorageStats,
+                                                    contactBlob,
+                                                    contactEdit)}
             contactPresenter.editContact(contact)
         } else {
             contactPresenter.saveContact(getContactData())
@@ -188,39 +171,26 @@ class ContactActivity :
     }
 
     private fun getContactData() :Contact{
-        return Contact(
-            contactID                   = DEFAULT_VALUE_NEW_CONTACT,
-            contactFirstName            = firstNameInput.text.toString(),
-            contactLastName             = lastNameInput.text.toString(),
-            contactCountryName          = countryInput.text.toString(),
-            contactPhoneNumber          = getPhoneData(),
-            contactEMail                = getEmailData(),
-            contactLocalStorageStats    = true,
-            contactBlob                 = null
-        )
+        return Contact(contactID                   = DEFAULT_VALUE_NEW_CONTACT,
+                       contactFirstName            = firstNameInput.text.toString(),
+                       contactLastName             = lastNameInput.text.toString(),
+                       contactCountryName          = countryInput.text.toString(),
+                       contactPhoneNumber          = getPhoneData(),
+                       contactEMail                = getEmailData(),
+                       contactLocalStorageStats    = true,
+                       contactBlob                 = null)
     }
 
     private fun getEmailData(): List<ContactEmail>{
-        val contactEmails           = mutableListOf<ContactEmail>()
         contactEmails.addAll(contactEmailList)
         contactEmails.addAll(deletedEmails)
         return contactEmails
     }
 
     private fun getPhoneData(): List<ContactPhone>{
-        val contactPhones           = mutableListOf<ContactPhone>()
         contactPhones.addAll(contactPhoneList)
-        contactPhones.addAll(deletedPhoneNumber)
+        contactPhones.addAll(deletedPhones)
         return contactPhones
-    }
-
-    private fun selectedType(type: String) : Int{
-        return when (type){
-            "Home"      -> 0
-            "Mobile"    -> 1
-            "Work"      -> 2
-            else        -> 3
-        }
     }
 
     private fun errorHandler(textLayout: TextInputLayout, condition: Boolean) {
@@ -231,7 +201,7 @@ class ContactActivity :
                     firstNameTxt    -> R.string.MSG_ENTER_VALID_FIRST_NAME
                     lastNameTxt     -> R.string.MSG_ENTER_VALID_LAST_NAME
                     emailTxt        -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
-  //                  phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
+                    phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
                     else            -> R.string.MSG_ENTER_COUNTRY
                 }
             )
@@ -241,39 +211,39 @@ class ContactActivity :
     }
 
     override fun notifyDataChangedPhoneRow(position: Int, phone: String, type: String) {
-        contactPhoneList[position].phone = phone
-        contactPhoneList[position].contactPhoneType = type
-        if (contactPhoneList[position].phoneEdit != DATA_CREATE) contactPhoneList[position].phoneEdit = DATA_UPDATE
+        contactPhoneList[position].phone                = phone
+        contactPhoneList[position].contactPhoneType     = type
+        if (contactPhoneList[position].phoneEdit != DATA_CREATE)
+            contactPhoneList[position].phoneEdit = DATA_UPDATE
     }
 
     override fun notifyDataChangedEmailRow(position: Int, email: String, type: String){
-        contactEmailList[position].email = email
-        contactEmailList[position].contactEmailType = type
-        if (contactEmailList[position].emailEdit != DATA_CREATE) contactEmailList[position].emailEdit = DATA_UPDATE
+        contactEmailList[position].email                = email
+        contactEmailList[position].contactEmailType     = type
+        if (contactEmailList[position].emailEdit != DATA_CREATE)
+            contactEmailList[position].emailEdit = DATA_UPDATE
     }
 
     override fun addNewPhoneRow(id: Int) {
-        contactPhoneList.add(
-            ContactPhone(null,
-                if (contactStatusExisting) editingContact.contactID else null,
-                EMPTY_STRING,
-                EMPTY_STRING,
-                DATA_CREATE))
+        contactPhoneList.add(ContactPhone(null,
+                                            if (contactStatusExisting) editingContact.contactID else null,
+                                            EMPTY_STRING,
+                                            EMPTY_STRING,
+                                            DATA_CREATE))
     }
 
     override fun addNewEmailRow(id: Int) {
-        contactEmailList.add(
-            ContactEmail(null,
-                if (contactStatusExisting) editingContact.contactID else null,
-                EMPTY_STRING,
-                EMPTY_STRING,
-                DATA_CREATE))
+        contactEmailList.add(ContactEmail(null,
+                                            if (contactStatusExisting) editingContact.contactID else null,
+                                            EMPTY_STRING,
+                                            EMPTY_STRING,
+                                            DATA_CREATE))
     }
 
     override fun deletePhoneRow(position: Int) {
         if (contactPhoneList[position].contactPhoneId != null){
             contactPhoneList[position].phoneEdit = DATA_DELETE
-            deletedPhoneNumber.add(contactPhoneList[position])
+            deletedPhones.add(contactPhoneList[position])
             contactPhoneList.removeAt(position)
         } else {
             contactPhoneList.removeAt(position)
@@ -323,7 +293,9 @@ class ContactActivity :
             })
         }
         dialog.countryListView.setOnItemClickListener { _, _, position, _ ->
-            editingContact.contactCountryName = listCountryRenew[position].countryName
+            if (contactStatusExisting){
+                editingContact.contactCountryName = listCountryRenew[position].countryName
+            }
             countryInput.setText(listCountryRenew[position].countryName)
             errorHandler(countryInputLayout, false)
             dialog.dismiss()
@@ -339,7 +311,6 @@ class ContactActivity :
             2 -> message = getString(R.string.MSG_ENTER_VALID_LAST_NAME)
             3 -> message = getString(R.string.MSG_ENTER_VALID_EMAIL_ADDRESS)
             4 -> message = getString(R.string.MSG_ENTER_VALID_PHONE_NUMBER)
-            5 -> message = getString(R.string.MSG_ENTER_VALID_GENDER)
             else -> {
                 message = getString(R.string.MSG_OOPS)
             }
@@ -351,7 +322,7 @@ class ContactActivity :
         val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("result", result)
+        intent.putExtra(RESULT, result)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

@@ -10,9 +10,12 @@ import com.example.myapp.R
 import com.example.myapp.models.ContactPhone
 import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.list_item_email.*
 
-private const val EMPTY_STRING = ""
+private const val EMPTY_STRING              = ""
+private const val SPINNER_HOME              = "Home"
+private const val SPINNER_MOBILE            = "Mobile"
+private const val SPINNER_WORK              = "Work"
+private const val DATA_CREATE               = 3
 
 class PhoneAdapter (phoneList: List<ContactPhone>,
                     private val listener: PhoneAdapterListener):
@@ -23,7 +26,7 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
                                                             null,
                                                             EMPTY_STRING,
                                                             EMPTY_STRING,
-                                                            3)
+                                                            DATA_CREATE)
 
     init {
         phones.addAll(phoneList)
@@ -75,10 +78,10 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
 
     private fun selectedType(type: String) : Int{
         return when (type){
-            "Home"      -> 0
-            "Mobile"    -> 1
-            "Work"      -> 2
-            else        -> 3
+            SPINNER_HOME      -> 0
+            SPINNER_MOBILE    -> 1
+            SPINNER_WORK      -> 2
+            else              -> 3
         }
     }
 }

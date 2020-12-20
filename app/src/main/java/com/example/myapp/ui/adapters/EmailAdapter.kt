@@ -11,7 +11,11 @@ import com.example.myapp.models.ContactEmail
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
 
-private const val EMPTY_STRING = ""
+private const val EMPTY_STRING                      = ""
+private const val SPINNER_HOME                      = "Home"
+private const val SPINNER_MOBILE                    = "Mobile"
+private const val SPINNER_WORK                      = "Work"
+private const val DATA_CREATE                       = 3
 
 class EmailAdapter(emailList: List<ContactEmail>,
                    private val listener: EmailAdapterListener):
@@ -22,7 +26,7 @@ class EmailAdapter(emailList: List<ContactEmail>,
                                                             null,
                                                             EMPTY_STRING,
                                                             EMPTY_STRING,
-                                                            3)
+                                                            DATA_CREATE)
 
     init {
         emails.addAll(emailList)
@@ -57,6 +61,13 @@ class EmailAdapter(emailList: List<ContactEmail>,
                 addEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }
 
+//            if (email.emailEdit == 5){
+//                emailTxt.setErrorEnabled(true)
+//                emailTxt.error = "Please enter a valid Email Address"
+//            } else {
+//                emailTxt.setErrorEnabled(false)
+//            }
+
             eMailInput.doOnTextChanged { text, start, count, after ->
                 listener.notifyDataChangedEmailRow(adapterPosition, text.toString(), typeEmail.selectedItem.toString())
             }
@@ -77,10 +88,10 @@ class EmailAdapter(emailList: List<ContactEmail>,
 
     private fun selectedType(type: String) : Int{
         return when (type){
-            "Home"      -> 0
-            "Mobile"    -> 1
-            "Work"      -> 2
-            else        -> 3
+            SPINNER_HOME     -> 0
+            SPINNER_MOBILE   -> 1
+            SPINNER_WORK     -> 2
+            else             -> 3
         }
     }
 }

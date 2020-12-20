@@ -3,7 +3,6 @@ package com.example.myapp.models
 class Validator {
     companion object {
         @JvmStatic
-        //val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
         val EMAIL_REGEX = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
@@ -11,8 +10,8 @@ class Validator {
                 "\\." +
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
-        val NAME_REGEX                                  = "^[A-Za-z]{3,16}"
-        val PHONE_REGEX                                 = "^[0-9]{9,10}"
+        val NAME_REGEX                                  = "^[A-Za-z]{2,16}"
+        val PHONE_REGEX                                 = "^[+0-9]{9,15}"
         val STRING_REGEX                                = "^[A-Za-z]{3,16}"
         val CHECK_STRING_VALID              : String    = "valid" // 0
         val MSG_ENTER_VALID_FIRST_NAME      : String    = "Please enter a valid First Name" // 1
@@ -30,18 +29,19 @@ class Validator {
         }else if (!isNameValid(contact.contactLastName)){
             result = 2
             return result
-//        }else if (!isEmailValid(contact.contactEMail)){
-//            result = 3
-//            return result
-//        }else if (!isPhoneValid(contact.contactPhoneNumber)){
-//            result = 4
-//            return result
-//        }else if (!isStringValid(contact.contactGender)){
-//            result = 5
-//            return result
         }else{
-            return result
+            for (index in contact.contactEMail.indices){
+                if(!isEmailValid(contact.contactEMail[index].email)) {
+                    result = 3
+                }
+            }
+            for (index in contact.contactPhoneNumber.indices){
+                if (!isPhoneValid(contact.contactPhoneNumber[index].phone)){
+                    result = 4
+                }
+            }
         }
+        return result
     }
 
     private fun isEmailValid(email: String): Boolean {
