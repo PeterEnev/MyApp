@@ -4,20 +4,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactEmail
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
 
-class EmailAdapter(var emailList: List<ContactEmail>?, private val contactId: Long?):
+private const val EMPTY_STRING = ""
+
+class EmailAdapter(emailList: List<ContactEmail>,
+                   private val listener: EmailAdapterListener):
     RecyclerView.Adapter<EmailAdapter.ViewHolder>(){
 
-    val emails = mutableListOf<ContactEmail>()
+    private val emails                      = mutableListOf<ContactEmail>()
+    private val emptyContactEmail           = ContactEmail(null,
+                                                            null,
+                                                            EMPTY_STRING,
+                                                            EMPTY_STRING,
+                                                            3)
 
     init {
-        val emptyContact = ContactEmail(null, contactId!!, "", "")
-        if (emailList != null) emails.addAll(emailList!!) else emails.add(emptyContact)
+        emails.addAll(emailList)
     }
 
 
@@ -27,35 +35,42 @@ class EmailAdapter(var emailList: List<ContactEmail>?, private val contactId: Lo
         return ViewHolder(view, view)
     }
 
-    override fun getItemCount(): Int {
-        return emails.size
-    }
+    override fun getItemCount() = emails.size
 
     override fun onBindViewHolder(holder: EmailAdapter.ViewHolder, position: Int) {
         holder.bindItem(emails[position])
     }
 
-    inner class ViewHolder(itemView: View, override val containerView: View?): RecyclerView.ViewHolder(itemView), LayoutContainer{
+    inner class ViewHolder(itemView: View,
+                           override val containerView: View?):
+        RecyclerView.ViewHolder(itemView), LayoutContainer{
+
         fun bindItem(email: ContactEmail){
             eMailInput.setText(email.email)
             typeEmail.setSelection(selectedType(email.contactEmailType))
 
             if (adapterPosition == 0){
                 addEmailButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_add))
-                addEmailButton.setOnClickListener { addNewEmail() }
+                addEmailButton.setOnClickListener { addNewEmail(adapterPosition) }
             }else{
                 addEmailButton.setImageDrawable(getDrawable(itemView.context, R.drawable.remove_black_24dp))
                 addEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }
+
+            eMailInput.doOnTextChanged { text, start, count, after ->
+                listener.notifyDataChangedEmailRow(adapterPosition, text.toString(), typeEmail.selectedItem.toString())
+            }
         }
     }
 
-    fun addNewEmail(){
-        emails.add(ContactEmail(null, contactId!!, "", ""))
+    private fun addNewEmail(id: Int){
+        emails.add(emptyContactEmail)
+        listener.addNewEmailRow(id)
         notifyItemInserted(emails.size-1)
     }
 
-    fun removeEmail(position: Int){
+    private fun removeEmail(position: Int){
+        listener.deleteEmailRow(position)
         emails.removeAt(position)
         notifyItemRemoved(position)
     }
@@ -68,4 +83,10 @@ class EmailAdapter(var emailList: List<ContactEmail>?, private val contactId: Lo
             else        -> 3
         }
     }
+}
+
+interface EmailAdapterListener{
+    fun addNewEmailRow(id: Int)
+    fun deleteEmailRow(id: Int)
+    fun notifyDataChangedEmailRow(position: Int, email: String, type: String)
 }

@@ -1,14 +1,12 @@
 package com.example.myapp.models
 
-import com.example.myapp.Database
-import com.example.myapp.ui.activities.ContactActivity.Companion.DATA_CREATE
-import com.example.myapp.ui.activities.ContactActivity.Companion.DATA_DELETE
-import com.example.myapp.ui.activities.ContactActivity.Companion.DATA_EXISTS
-import com.example.myapp.ui.activities.ContactActivity.Companion.DATA_UPDATE
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
+private const val DATA_EXISTS                       = 0
+private const val DATA_UPDATE                       = 1
+private const val DATA_DELETE                       = 2
+private const val DATA_CREATE                       = 3
 class ContactsData : DatabaseDB(){
 
     fun allContactData(): ArrayList<Contact> = runBlocking {
@@ -28,10 +26,10 @@ class ContactsData : DatabaseDB(){
 
     private fun compareContact(list: ArrayList<Contact>, name: String) : Boolean{
         var result = false
-        loop@ for (index in list.indices){
+        for (index in list.indices){
             if((list[index].contactFirstName + " " + list[index].contactLastName).contains(name)) {
                 result = true
-                break@loop
+                break
             }
         }
         return result
@@ -40,33 +38,32 @@ class ContactsData : DatabaseDB(){
     fun updateContactData(contact: Contact) : Boolean{
         var result = false
         database.transaction {
-            if(contact.contactEdit != DATA_EXISTS){
+            if(contact.contactEdit != DATA_EXISTS) {
                 updateContact(contact)
                 result = true
-            }
-            phoneLoop@for (index in contact.contactPhoneNumber.indices){
-                result = true
-                if (contact.contactPhoneNumber[index].phoneEdit == DATA_EXISTS)
-                    break@phoneLoop
-                else if (contact.contactPhoneNumber[index].phoneEdit == DATA_CREATE)
-                    addPhone(contact.contactPhoneNumber[index])
-                else if (contact.contactPhoneNumber[index].phoneEdit == DATA_UPDATE)
-                    updatePhone(contact.contactPhoneNumber[index])
-                else if (contact.contactPhoneNumber[index].phoneEdit == DATA_DELETE)
-                    deletePhone(contact.contactPhoneNumber[index])
-                else result = false
-            }
-            emailLoop@for (index in contact.contactEMail.indices){
-                result = true
-                if (contact.contactEMail[index].emailEdit == DATA_EXISTS)
-                    break@emailLoop
-                else if (contact.contactEMail[index].emailEdit == DATA_CREATE)
-                    addEmail(contact.contactEMail[index])
-                else if (contact.contactEMail[index].emailEdit == DATA_UPDATE)
-                    updateEmail(contact.contactEMail[index])
-                else if (contact.contactEMail[index].emailEdit == DATA_DELETE)
-                    deleteEmail(contact.contactEMail[index])
-                else result = false
+
+                for (index in contact.contactPhoneNumber.indices) {
+                    if (contact.contactPhoneNumber[index].phoneEdit == DATA_CREATE) {
+                        addPhone(contact.contactPhoneNumber[index])
+                    } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_UPDATE) {
+                        updatePhone(contact.contactPhoneNumber[index])
+                    } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_DELETE) {
+                        deletePhone(contact.contactPhoneNumber[index])
+                    } else {
+                        result = true
+                    }
+                }
+                for (index in contact.contactEMail.indices) {
+                    if (contact.contactEMail[index].emailEdit == DATA_CREATE) {
+                        addEmail(contact.contactEMail[index])
+                    } else if (contact.contactEMail[index].emailEdit == DATA_UPDATE) {
+                        updateEmail(contact.contactEMail[index])
+                    } else if (contact.contactEMail[index].emailEdit == DATA_DELETE) {
+                        deleteEmail(contact.contactEMail[index])
+                    } else {
+                        result = true
+                    }
+                }
             }
         }
         return result
