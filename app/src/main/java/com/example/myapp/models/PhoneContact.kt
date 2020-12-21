@@ -1,24 +1,19 @@
 package com.example.myapp.models
 
 import android.content.Context
-import android.database.Cursor
 import android.provider.ContactsContract
-import android.provider.ContactsContract.CommonDataKinds.Phone
-import android.provider.Settings.Global.getString
-import androidx.core.database.getBlobOrNull
-import androidx.core.graphics.drawable.toIcon
 import com.example.myapp.MyApplication
-import com.example.myapp.SelectAllContacts
-import com.example.myapp.SelectAllEmails
-import com.example.myapp.SelectAllPhones
-import com.example.myapp.ui.activities.MainActivity
-import java.sql.Blob
-import kotlin.random.Random
 
+
+private const val STRING_EMPTY                          = ""
+private const val STRING_ITEM_PHOTO                     = "item/phone"
+private const val STRING_ITEM_EMAIL                     = "item/email"
+private const val STRING_HOME                           = "Home"
+private const val STRING_MOBILE                         = "Mobile"
 
 class PhoneContact {
 
-    val context             : Context = MyApplication.instansce
+    private val context: Context = MyApplication.instansce
 
     fun getContactData(id: Int){
         val contact : Contact
@@ -63,12 +58,9 @@ class PhoneContact {
             val name        = cursor.getString(nameIndex)
             val blob        = cursor.getBlob(blobIndex)
 
-            //println(" id -> ${id} /  mimeType -> ${mimetype}  data-> ${data} type -> ${type} name -> ${name}  blob -> ${blob}")
         }
         cursor.close()
     }
-
-
 
     fun getAllNameAndPhoto() : ArrayList<Contact>{
         val allNameAndPhotoList = arrayListOf<Contact>()
@@ -98,8 +90,6 @@ class PhoneContact {
             val id          = cursor.getLong(contactIdIndex)
             val name        = cursor.getString(nameIndex)
             val blob        = cursor.getBlob(blobIndex)
-
-            //println("id -> ${id}  name -> ${name}  blob -> ${blob}")
         }
 
         return allNameAndPhotoList
@@ -157,51 +147,38 @@ class PhoneContact {
             val name        = cursor.getString(nameIndex)
             val blob        = cursor.getBlob(blobIndex)
 
-            if (cursor.isFirst) {
-                currentId   = id
-            }
-            if (currentId != id){
-                currentId = id
-            }
-
+            if (cursor.isFirst)   currentId   = id
+            if (currentId != id)  currentId = id
             if (currentId == id) {
                 names[currentId] = name
-                if (mimetype.contains("item/phone")) {
-                    phones.add(
-                        ContactPhone(
-                            contactPhoneId = null,
-                            contactId = currentId.toLong(),
-                            contactPhoneType = if (type == 1) "Home" else "Mobile",
-                            phone = data
-                        )
-                    )
-                } else if (mimetype.contains("item/email")) {
-                    emails.add(
-                        ContactEmail(
-                            contactEmailId = null,
-                            contactId = currentId.toLong(),
-                            contactEmailType = if (type == 1) "Home" else "Mobile",
-                            email = data
-                        )
-                    )
-                } else if (mimetype.contains("item/photo")) {
-                    blobArray[currentId] = blob
-                }
+                if (mimetype.contains(STRING_ITEM_PHOTO)) {
+                    phones.add(ContactPhone(
+                            contactPhoneId      = null,
+                            contactId           = currentId,
+                            contactPhoneType    = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            phone               = data))
+                } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
+                    emails.add(ContactEmail(
+                            contactEmailId      = null,
+                            contactId           = currentId.toLong(),
+                            contactEmailType    = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            email               = data))
+                } else if (mimetype.contains(STRING_ITEM_PHOTO)) blobArray[currentId] = blob
             }
         }
         cursor.close()
         for ((id, name) in names) {
-            val lastName = MainActivity.EMPTY_STRING
-            val country = MainActivity.EMPTY_STRING
+            val lastName    = STRING_EMPTY
+            val country     = STRING_EMPTY
             val contactPhoneNumber = mutableListOf<ContactPhone>()
             for (item in 0 until phones.size) {
                 if (phones[item].contactId == id) {
                     contactPhoneNumber.add(
                         ContactPhone(
-                            contactPhoneId = null,
-                            contactId = id,
-                            phone = phones[item].phone,
-                            contactPhoneType = phones[item].contactPhoneType
+                            contactPhoneId      = null,
+                            contactId           = id,
+                            phone               = phones[item].phone,
+                            contactPhoneType    = phones[item].contactPhoneType
                         )
                     )
                 }
@@ -211,10 +188,10 @@ class PhoneContact {
                 if (emails[item].contactId == id) {
                     contactEmail.add(
                         ContactEmail(
-                            contactEmailId = null,
-                            contactId = id,
-                            email = emails[item].email,
-                            contactEmailType = emails[item].contactEmailType
+                            contactEmailId      = null,
+                            contactId           = id,
+                            email               = emails[item].email,
+                            contactEmailType    = emails[item].contactEmailType
                         )
                     )
                 }
@@ -232,7 +209,7 @@ class PhoneContact {
                 contactPhoneNumber,
                 contactEmail,
                 contactLocalStorageStats,
-                contactBlob = contactBlob
+                contactBlob
             )
             contactPhoneList.add(queryRol)
         }

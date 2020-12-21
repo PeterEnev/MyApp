@@ -1,6 +1,8 @@
 package com.example.myapp.ui.adapters
 
+import android.content.Context
 import android.graphics.BitmapFactory
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -13,14 +15,14 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList
 
+
+private const val STRING_EMPTY                          = ""
+
 class ContactListAdapter (private var contactList: ArrayList<Contact>,
                           private val listener: ContactAdapterListener) :
                                 RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
 
-    companion object{
-        var CONTACT_STATUS_EXISTING     = true
-        var emptyString                 = " "
-    }
+    var contactStatusExisting               = true
 
     fun updateList(newList: ArrayList<Contact>){
         contactList = newList
@@ -49,13 +51,13 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                                 RecyclerView.ViewHolder(itemView), LayoutContainer{
 
         fun bindItems(contact: Contact){
-            var string = emptyString
+            var string = STRING_EMPTY
                 for (row in contact.contactPhoneNumber.indices){
                     string += "Phone ${contact.contactPhoneNumber[row].contactPhoneType}  ${contact.contactPhoneNumber[row].phone} \n"
                 }
-                recyclerContactPhone.text       = string
+                recyclerContactPhone.text = string
 
-                string = emptyString
+                string = STRING_EMPTY
                 for (row in contact.contactEMail.indices){
                     string += "Email ${contact.contactEMail[row].contactEmailType}  ${contact.contactEMail[row].email} \n"
                 }
@@ -65,7 +67,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
             if (contact.contactLocalStorageStats){
                 recyclerContactName.text = contact.contactFirstName + " " + contact.contactLastName
                 imageView.setImageResource(R.drawable.ic_contact_calendar_black)
-                editBtn.visibility              = VISIBLE
+                editBtn.visibility = VISIBLE
             }else{
                 recyclerContactName.text        = contact.contactFirstName
                 if(contact.contactBlob != null){
@@ -74,19 +76,19 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                 } else {
                     imageView.setImageResource(R.drawable.phone_android_black)
                 }
-                editBtn.visibility              = GONE
+                editBtn.visibility = GONE
             }
-            expandableLayout.visibility         = GONE
+            expandableLayout.visibility = GONE
 
             itemView.setOnClickListener {
                 if (expandableLayout.visibility == GONE){
-                    expandableLayout.visibility = View.VISIBLE
+                    expandableLayout.visibility = VISIBLE
                 }else{
-                    expandableLayout.visibility = View.GONE
+                    expandableLayout.visibility = GONE
                 }
             }
             editBtn.setOnClickListener {
-                CONTACT_STATUS_EXISTING         = true
+                contactStatusExisting = true
                 listener.onEditBtnListener(contact)
             }
         }

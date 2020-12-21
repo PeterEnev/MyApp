@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.myapp.*
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import kotlinx.coroutines.delay
 
 open class DatabaseDB {
     val context                 :Context               = MyApplication.instansce

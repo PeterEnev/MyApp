@@ -2,49 +2,39 @@ package com.example.myapp.ui.activities
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
-import com.example.myapp.SelectAllPhones
 import com.example.myapp.databinding.ActivityContactBinding
 import com.example.myapp.models.*
 import com.example.myapp.presenters.ContactPresenter
 import com.example.myapp.presenters.ContactView
-import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_EXISTING_BOOLEAN_EXTRA
-import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_SERIALIZABLE_EXTRA
-import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_STATUS_EXISTING
-import com.example.myapp.ui.activities.MainActivity.Companion.CONTACT_STATUS_NEW
-import com.example.myapp.ui.activities.MainActivity.Companion.EMPTY_STRING
 import com.example.myapp.ui.adapters.*
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
-//import kotlinx.android.synthetic.main.activity_contact.*
-import kotlinx.android.synthetic.main.contact_dialog.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
 import kotlinx.android.synthetic.main.list_item_email.*
-import kotlinx.android.synthetic.main.list_item_email.view.*
 import kotlinx.android.synthetic.main.list_item_phone.*
-import kotlinx.android.synthetic.main.list_item_phone.view.*
+import kotlinx.coroutines.withTimeoutOrNull
 
-private const val DEFAULT_VALUE_NEW_CONTACT         = -1L
-private const val DATA_EXISTS                       = 0
-private const val DATA_UPDATE                       = 1
-private const val DATA_DELETE                       = 2
-private const val DATA_CREATE                       = 3
+private const val TIME_OUT_IN_MILISECONDS               = 30000L
+private const val DEFAULT_VALUE_NEW_CONTACT             = -1L
+private const val DATA_EXISTS                           = 0
+private const val DATA_UPDATE                           = 1
+private const val DATA_DELETE                           = 2
+private const val DATA_CREATE                           = 3
 
-private const val RESULT                            = "result"
+private const val EMPTY_STRING                          = ""
+private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
+private const val CONTACT_SERIALIZABLE_EXTRA            = "data"
+private const val RESULT                                = "result"
 
 class ContactActivity :
     AppCompatActivity(),
@@ -67,15 +57,6 @@ class ContactActivity :
     private          var contactPhoneList           = mutableListOf<ContactPhone>()
 
     private          var contactStatusExisting      = false
-
-    private          val EMAIL_REGEX = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-                         "\\@" +
-                         "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                         "(" +
-                         "\\." +
-                         "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                         ")+"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

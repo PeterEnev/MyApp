@@ -16,6 +16,13 @@ private const val SPINNER_HOME                      = "Home"
 private const val SPINNER_MOBILE                    = "Mobile"
 private const val SPINNER_WORK                      = "Work"
 private const val DATA_CREATE                       = 3
+private       val EMAIL_REGEX = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+        "\\@" +
+        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+        "(" +
+        "\\." +
+        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+        ")+"
 
 class EmailAdapter(emailList: List<ContactEmail>,
                    private val listener: EmailAdapterListener):
@@ -31,7 +38,6 @@ class EmailAdapter(emailList: List<ContactEmail>,
     init {
         emails.addAll(emailList)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmailAdapter.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -60,13 +66,14 @@ class EmailAdapter(emailList: List<ContactEmail>,
                 addEmailButton.setImageDrawable(getDrawable(itemView.context, R.drawable.remove_black_24dp))
                 addEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }
-
-//            if (email.emailEdit == 5){
-//                emailTxt.setErrorEnabled(true)
-//                emailTxt.error = "Please enter a valid Email Address"
-//            } else {
-//                emailTxt.setErrorEnabled(false)
-//            }
+            eMailInput.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus && !EMAIL_REGEX.toRegex().matches(eMailInput.text!!)){
+                    emailTxt.setErrorEnabled(true)
+                    emailTxt.error = "Please enter a valid Email Address"
+                } else {
+                    emailTxt.setErrorEnabled(false)
+                }
+            }
 
             eMailInput.doOnTextChanged { text, start, count, after ->
                 listener.notifyDataChangedEmailRow(adapterPosition, text.toString(), typeEmail.selectedItem.toString())

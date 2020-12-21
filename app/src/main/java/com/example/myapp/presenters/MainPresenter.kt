@@ -7,6 +7,7 @@ import com.example.myapp.models.PhoneContact
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
+private const val TIME_OUT_IN_MILISECONDS               = 3000L
 class MainPresenter(private val mainView: MainView) {
 
     fun setContactList() {
@@ -15,8 +16,11 @@ class MainPresenter(private val mainView: MainView) {
     }
 
     fun setContactListNoPermission() = runBlocking {
-        val contactList = async{ DatabaseDB().getContactList() }.await()
-        mainView.setContactList(contactList)
+        when (val result = withTimeoutOrNull(TIME_OUT_IN_MILISECONDS){DatabaseDB().getContactList()}){
+            null -> mainView.toastErrorMsg()
+            else -> mainView.setContactList(result)
+        }
+        //val result = async{ DatabaseDB().getContactList() }.await()
     }
 
     fun newContactFabClick(){
@@ -31,4 +35,5 @@ class MainPresenter(private val mainView: MainView) {
 interface MainView{
     fun navigateToNewContactActivity()
     fun setContactList(contactList: ArrayList<Contact>)
+    fun toastErrorMsg()
 }

@@ -10,6 +10,7 @@ import com.example.myapp.R
 import com.example.myapp.models.ContactPhone
 import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.list_item_email.*
 
 private const val EMPTY_STRING              = ""
 private const val SPINNER_HOME              = "Home"
@@ -57,6 +58,15 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
             }else{
                 addPhoneButton.setImageDrawable(getDrawable(itemView.context, R.drawable.remove_black_24dp))
                 addPhoneButton.setOnClickListener { removePhone(adapterPosition) }
+            }
+
+            phoneInput.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus && phoneInput.text!!.count() !in 8..12){
+                    phoneTxt.setErrorEnabled(true)
+                    phoneTxt.error = "Please enter a valid Phone Number"
+                } else {
+                    phoneTxt.setErrorEnabled(false)
+                }
             }
 
             phoneInput.doOnTextChanged { text, start, count, after ->
