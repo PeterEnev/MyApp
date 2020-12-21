@@ -35,11 +35,15 @@ class ContactPresenter(private val contactView: ContactView) {
     fun editContact(contact: Contact) = runBlocking{
         val checkValid = Validator().checkContact(contact)
         if (checkValid == 0) {
-            val result = async { ContactsData().updateContactData(contact) }.await()
-            if (result)
-                contactView.navigateToMainActivity(result)
-            else
-                contactView.toastMsg(6)
+            when (val result = withTimeoutOrNull(TIME_OUT_IN_MILISECONDS){ContactsData().updateContactData(contact)}){
+                null -> contactView.toastMsg(6)
+                else -> contactView.navigateToMainActivity(result)
+            }
+//            val result = async { ContactsData().updateContactData(contact) }.await()
+//            if (result)
+//                contactView.navigateToMainActivity(result)
+//            else
+//                contactView.toastMsg(6)
         }else {
             contactView.toastMsg(checkValid)
         }
