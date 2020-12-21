@@ -23,7 +23,7 @@
         android:hint                            ="@string/email"
         android:paddingStart                    ="8dp"
         android:paddingEnd                      ="4dp"
-        app:layout_constraintEnd_toStartOf      ="@+id/addEmailButton"
+        app:layout_constraintEnd_toStartOf      ="@+id/removeEmailButton"
         app:layout_constraintStart_toEndOf      ="@+id/typeEmail"
         app:layout_constraintTop_toTopOf        ="parent">
 
@@ -35,17 +35,29 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id                              ="@+id/removeEmailButton"
+        android:layout_width                    ="38dp"
+        android:layout_height                   ="38dp"
+        android:background                      ="#00FFFFFF"
+        android:clickable                       ="true"
+        android:focusable                       ="true"
+        android:gravity                         ="end"
+        android:src                             ="@drawable/remove_black_24dp"
+        app:layout_constraintEnd_toEndOf        ="parent"
+        app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
+        app:layout_constraintTop_toTopOf        ="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id                              ="@+id/addEmailButton"
-        android:layout_width                    ="40dp"
-        android:layout_height                   ="wrap_content"
-        android:layout_marginTop                ="16dp"
+        android:layout_width                    ="38dp"
+        android:layout_height                   ="38dp"
         android:gravity                         ="end"
         android:focusable                       ="true"
         android:clickable                       ="true"
         android:background                      ="#00FFFFFF"
-        app:icon                                ="@drawable/remove_black_24dp"
+        android:src                             ="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf        ="parent"
         app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
-        app:layout_constraintTop_toTopOf        ="parent" />
+        app:layout_constraintTop_toBottomOf     ="@+id/removeEmailButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

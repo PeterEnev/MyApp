@@ -59,12 +59,13 @@ class EmailAdapter(emailList: List<ContactEmail>,
             eMailInput.setText(email.email)
             typeEmail.setSelection(selectedType(email.contactEmailType))
 
-            if (adapterPosition == 0){
-                addEmailButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_add))
+            if (adapterPosition == emails.size-1){
+                addEmailButton.visibility = View.VISIBLE
                 addEmailButton.setOnClickListener { addNewEmail(adapterPosition) }
+                removeEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }else{
-                addEmailButton.setImageDrawable(getDrawable(itemView.context, R.drawable.remove_black_24dp))
-                addEmailButton.setOnClickListener { removeEmail(adapterPosition) }
+                addEmailButton.visibility = View.GONE
+                removeEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }
             eMailInput.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus && !EMAIL_REGEX.toRegex().matches(eMailInput.text!!)){
@@ -77,6 +78,8 @@ class EmailAdapter(emailList: List<ContactEmail>,
 
             eMailInput.doOnTextChanged { text, start, count, after ->
                 listener.notifyDataChangedEmailRow(adapterPosition, text.toString(), typeEmail.selectedItem.toString())
+                emails[adapterPosition].email = text.toString()
+                emails[adapterPosition].contactEmailType = typeEmail.selectedItem.toString()
             }
         }
     }
@@ -84,13 +87,19 @@ class EmailAdapter(emailList: List<ContactEmail>,
     private fun addNewEmail(id: Int){
         emails.add(emptyContactEmail)
         listener.addNewEmailRow(id)
-        notifyItemInserted(emails.size-1)
+        notifyDataSetChanged()
+        //notifyItemInserted(emails.size-1)
     }
 
     private fun removeEmail(position: Int){
         listener.deleteEmailRow(position)
         emails.removeAt(position)
-        notifyItemRemoved(position)
+        if (emails.size == 0){
+            emails.add(emptyContactEmail)
+            listener.addNewEmailRow(0)
+        }
+        notifyDataSetChanged()
+        //notifyItemRemoved(position)
     }
 
     private fun selectedType(type: String) : Int{

@@ -7,6 +7,8 @@ private const val DATA_EXISTS                       = 0
 private const val DATA_UPDATE                       = 1
 private const val DATA_DELETE                       = 2
 private const val DATA_CREATE                       = 3
+private const val EMPTY_STRING                      = " "
+
 class ContactsData : DatabaseDB(){
 
     fun allContactData(): ArrayList<Contact> = runBlocking {
@@ -27,7 +29,7 @@ class ContactsData : DatabaseDB(){
     private fun compareContact(list: ArrayList<Contact>, name: String) : Boolean{
         var result = false
         for (index in list.indices){
-            if((list[index].contactFirstName + " " + list[index].contactLastName).contains(name)) {
+            if((list[index].contactFirstName + EMPTY_STRING + list[index].contactLastName) == name) {
                 result = true
                 break
             }

@@ -1,8 +1,6 @@
 package com.example.myapp.ui.adapters
 
-import android.content.Context
 import android.graphics.BitmapFactory
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE

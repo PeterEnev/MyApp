@@ -43,4 +43,4 @@ WHERE contactId = ?;
 
 deleteContactPhone:
 DELETE FROM ContactPhone
-WHERE contactPhoneTypeId = ?;
+WHERE contactPhoneId = ?;

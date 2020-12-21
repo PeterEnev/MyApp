@@ -116,7 +116,6 @@ class ContactActivity :
             )
         }
 
-
         lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
             if (contactStatusExisting && editingContact.contactLastName != lastNameInput.text.toString()){
                 editingContact.contactLastName      = lastNameInput.text.toString()

@@ -52,12 +52,13 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
             phoneInput.setText(phone.phone)
             typePhone.setSelection(selectedType(phone.contactPhoneType))
 
-            if (adapterPosition == 0){
-                addPhoneButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_add))
+            if (adapterPosition == phones.size-1){
+                addPhoneButton.visibility = View.VISIBLE
                 addPhoneButton.setOnClickListener { addNewPhone(adapterPosition) }
+                removePhoneButton.setOnClickListener { removePhone(adapterPosition) }
             }else{
-                addPhoneButton.setImageDrawable(getDrawable(itemView.context, R.drawable.remove_black_24dp))
-                addPhoneButton.setOnClickListener { removePhone(adapterPosition) }
+                addPhoneButton.visibility = View.GONE
+                removePhoneButton.setOnClickListener { removePhone(adapterPosition) }
             }
 
             phoneInput.setOnFocusChangeListener { _, hasFocus ->
@@ -71,19 +72,27 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
 
             phoneInput.doOnTextChanged { text, start, count, after ->
                 listener.notifyDataChangedPhoneRow(adapterPosition, text.toString(),typePhone.selectedItem.toString())
+                phones[adapterPosition].phone = text.toString()
+                phones[adapterPosition].contactPhoneType = typePhone.selectedItem.toString()
             }
         }
     }
     private fun addNewPhone(id: Int){
         phones.add(emptyContactPhone)
         listener.addNewPhoneRow(id)
-        notifyItemInserted(phones.size-1)
+        notifyDataSetChanged()
+        //notifyItemInserted(phones.size-1)
     }
 
     private fun removePhone(position: Int){
         listener.deletePhoneRow(position)
         phones.removeAt(position)
-        notifyItemRemoved(position)
+        if (phones.size == 0){
+            phones.add(emptyContactPhone)
+            listener.addNewPhoneRow(0)
+        }
+        notifyDataSetChanged()
+        //notifyItemRemoved(position)
     }
 
     private fun selectedType(type: String) : Int{

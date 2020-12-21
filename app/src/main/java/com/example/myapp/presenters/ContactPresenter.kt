@@ -22,11 +22,6 @@ class ContactPresenter(private val contactView: ContactView) {
                 null -> contactView.toastMsg(6)
                 else -> contactView.navigateToMainActivity(result)
             }
-//            val result = async {  DatabaseDB().saveNewContact(contact) }.await()
-//            if (result)
-//                contactView.navigateToMainActivity(result)
-//            else
-//                contactView.toastMsg(6)
         } else {
             contactView.toastMsg(checkValid)
         }
@@ -39,11 +34,6 @@ class ContactPresenter(private val contactView: ContactView) {
                 null -> contactView.toastMsg(6)
                 else -> contactView.navigateToMainActivity(result)
             }
-//            val result = async { ContactsData().updateContactData(contact) }.await()
-//            if (result)
-//                contactView.navigateToMainActivity(result)
-//            else
-//                contactView.toastMsg(6)
         }else {
             contactView.toastMsg(checkValid)
         }
