@@ -6,9 +6,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
+import com.example.myapp.models.ContactPhone
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlin.collections.ArrayList
@@ -26,6 +28,13 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
         contactList = newList
         notifyDataSetChanged()
     }
+
+    fun updateContactData(contact: Contact, position: Int){
+        contactList[position] = contact
+        //notifyItemChanged(position)
+
+    }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -49,18 +58,17 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                                 RecyclerView.ViewHolder(itemView), LayoutContainer{
 
         fun bindItems(contact: Contact){
-            var string = STRING_EMPTY
-                for (row in contact.contactPhoneNumber.indices){
-                    string += "Phone ${contact.contactPhoneNumber[row].contactPhoneType}  ${contact.contactPhoneNumber[row].phone} \n"
-                }
-                recyclerContactPhone.text = string
-
-                string = STRING_EMPTY
-                for (row in contact.contactEMail.indices){
-                    string += "Email ${contact.contactEMail[row].contactEmailType}  ${contact.contactEMail[row].email} \n"
-                }
-                recyclerContactMail.text        = string
-                recyclerContactCountry.text     = contact.contactCountryName
+//                for (row in contact.contactPhoneNumber.indices){
+//                    string += "Phone ${contact.contactPhoneNumber[row].contactPhoneType}  ${contact.contactPhoneNumber[row].phone} \n"
+//                }
+//                recyclerContactPhone.text = string
+//
+//                string = STRING_EMPTY
+//                for (row in contact.contactEMail.indices){
+//                    string += "Email ${contact.contactEMail[row].contactEmailType}  ${contact.contactEMail[row].email} \n"
+//                }
+//                recyclerContactMail.text        = string
+//                recyclerContactCountry.text     = contact.contactCountryName
 
             if (contact.contactLocalStorageStats){
                 recyclerContactName.text = contact.contactFirstName + " " + contact.contactLastName
@@ -68,17 +76,34 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                 editBtn.visibility = VISIBLE
             }else{
                 recyclerContactName.text        = contact.contactFirstName
-                if(contact.contactBlob != null){
-                    val bitmap = BitmapFactory.decodeByteArray(contact.contactBlob, 0, contact.contactBlob!!.size)
+                if(contact.contactPhoto != null){
+                    val bitmap = BitmapFactory.decodeByteArray(contact.contactPhoto, 0, contact.contactPhoto!!.size)
                     imageView.setImageBitmap(bitmap)
                 } else {
                     imageView.setImageResource(R.drawable.phone_android_black)
                 }
                 editBtn.visibility = GONE
             }
+
             expandableLayout.visibility = GONE
 
+
             itemView.setOnClickListener {
+                var string = STRING_EMPTY
+                if (contact.contactPhoneNumber == null && contact.contactEMail == null) {
+                    listener.getContactData(contact, adapterPosition)
+                }
+
+                for (row in contact.contactPhoneNumber!!.indices){
+                    string += "Phone ${contact.contactPhoneNumber!![row].contactPhoneType}  ${contact.contactPhoneNumber!![row].phone} \n"
+                }
+                recyclerContactPhone.text = string
+                string = STRING_EMPTY
+                for (row in contact.contactEMail!!.indices){
+                    string += "Email ${contact.contactEMail!![row].contactEmailType}  ${contact.contactEMail!![row].email} \n"
+                }
+                recyclerContactMail.text        = string
+
                 if (expandableLayout.visibility == GONE){
                     expandableLayout.visibility = VISIBLE
                 }else{
@@ -95,4 +120,5 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact)
+    fun getContactData(contact: Contact, position: Int)
 }

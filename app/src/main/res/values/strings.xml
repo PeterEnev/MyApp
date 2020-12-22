@@ -20,11 +20,11 @@
     <string name="last_name">                       Last Name</string>
     <string name="MSG_ENTER_VALID_EMAIL_ADDRESS">   Please enter a valid Email Address</string>
     <string name="MSG_ENTER_VALID_FIRST_NAME">      Please enter a valid First Name</string>
-    <string name="MSG_ENTER_VALID_GENDER">          Please enter a Gender</string>
     <string name="MSG_ENTER_VALID_LAST_NAME">       Please enter a valid Last Name</string>
     <string name="MSG_ENTER_VALID_PHONE_NUMBER">    Please enter a valid Phone Number</string>
     <string name="MSG_ENTER_COUNTRY">               Please enter Country</string>
     <string name="MSG_OOPS">                        Oops. Something went wrong.</string>
+    <string name="MSG_TIMEOUT">                     Connection problem</string>
     <string name="MSG_SAVE_SUCCESSFUL">             Save Successful</string>
     <string name="name_activity">                   Name</string>
     <string name="name_dialog">                     Name:</string>

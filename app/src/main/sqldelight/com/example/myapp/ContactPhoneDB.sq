@@ -35,7 +35,7 @@ SELECT
     contactPhoneId,
     contactId,
     phone,
-    contactPhoneTypeId
+    dataTypeName
 FROM ContactPhone
 INNER JOIN DataType
 ON ContactPhone.contactPhoneTypeId = DataType.dataTypeId

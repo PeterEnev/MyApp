@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.list_item_email.*
 import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.coroutines.withTimeoutOrNull
 
-private const val TIME_OUT_IN_MILISECONDS               = 30000L
 private const val DEFAULT_VALUE_NEW_CONTACT             = -1L
 private const val DATA_EXISTS                           = 0
 private const val DATA_UPDATE                           = 1
@@ -72,8 +71,8 @@ class ContactActivity :
         if (contactStatusExisting){
             editingContact = intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
 
-            contactPhoneList        .addAll(editingContact.contactPhoneNumber)
-            contactEmailList        .addAll(editingContact.contactEMail)
+            contactPhoneList        .addAll(editingContact.contactPhoneNumber!!)
+            contactEmailList        .addAll(editingContact.contactEMail!!)
 
 
             firstNameInput          .setText(editingContact.contactFirstName)
@@ -142,7 +141,7 @@ class ContactActivity :
                                                     getPhoneData(),
                                                     getEmailData(),
                                                     contactLocalStorageStats,
-                                                    contactBlob,
+                                                    contactPhoto,
                                                     contactEdit)}
             contactPresenter.editContact(contact)
         } else {
@@ -158,7 +157,7 @@ class ContactActivity :
                        contactPhoneNumber          = getPhoneData(),
                        contactEMail                = getEmailData(),
                        contactLocalStorageStats    = true,
-                       contactBlob                 = null)
+                       contactPhoto                = null)
     }
 
     private fun getEmailData(): List<ContactEmail>{

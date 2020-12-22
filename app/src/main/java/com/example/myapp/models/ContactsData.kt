@@ -11,6 +11,15 @@ private const val EMPTY_STRING                      = " "
 
 class ContactsData : DatabaseDB(){
 
+    fun getContactPhonesAndEmails(contact: Contact): Contact{
+
+        database.transaction {
+            contact.contactPhoneNumber = getContactPhones(contact.contactID!!)
+            contact.contactEMail = getContactEmails(contact.contactID!!)
+        }
+        return contact
+    }
+
     fun allContactData(): ArrayList<Contact> = runBlocking {
         val contactList         = arrayListOf<Contact>()
         val phoneContact        = async { PhoneContact().getPhoneContact()  }.await()
@@ -44,27 +53,27 @@ class ContactsData : DatabaseDB(){
                 updateContact(contact)
                 result = true
             }
-            for (index in contact.contactPhoneNumber.indices) {
-                if (contact.contactPhoneNumber[index].phoneEdit == DATA_CREATE) {
-                    addPhone(contact.contactPhoneNumber[index])
+            for (index in contact.contactPhoneNumber!!.indices) {
+                if (contact.contactPhoneNumber!![index].phoneEdit == DATA_CREATE) {
+                    addPhone(contact.contactPhoneNumber!![index])
                     result = true
-                } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_UPDATE) {
-                    updatePhone(contact.contactPhoneNumber[index])
+                } else if (contact.contactPhoneNumber!![index].phoneEdit == DATA_UPDATE) {
+                    updatePhone(contact.contactPhoneNumber!![index])
                     result = true
-                } else if (contact.contactPhoneNumber[index].phoneEdit == DATA_DELETE) {
-                    deletePhone(contact.contactPhoneNumber[index])
+                } else if (contact.contactPhoneNumber!![index].phoneEdit == DATA_DELETE) {
+                    deletePhone(contact.contactPhoneNumber!![index])
                     result = true
                 }
             }
-            for (index in contact.contactEMail.indices) {
-                if (contact.contactEMail[index].emailEdit == DATA_CREATE) {
-                    addEmail(contact.contactEMail[index])
+            for (index in contact.contactEMail!!.indices) {
+                if (contact.contactEMail!![index].emailEdit == DATA_CREATE) {
+                    addEmail(contact.contactEMail!![index])
                     result = true
-                } else if (contact.contactEMail[index].emailEdit == DATA_UPDATE) {
-                    updateEmail(contact.contactEMail[index])
+                } else if (contact.contactEMail!![index].emailEdit == DATA_UPDATE) {
+                    updateEmail(contact.contactEMail!![index])
                     result = true
-                } else if (contact.contactEMail[index].emailEdit == DATA_DELETE) {
-                    deleteEmail(contact.contactEMail[index])
+                } else if (contact.contactEMail!![index].emailEdit == DATA_DELETE) {
+                    deleteEmail(contact.contactEMail!![index])
                     result = true
                 }
             }

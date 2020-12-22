@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.myapp.*
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import kotlinx.coroutines.delay
 
 open class DatabaseDB {
     val context                 :Context               = MyApplication.instansce
@@ -17,24 +16,76 @@ open class DatabaseDB {
     val dbContactPhoneDBQueries :ContactPhoneDBQueries = database.contactPhoneDBQueries
 
 
+    fun getContactList(): ArrayList<Contact>{
+
+        val list                = arrayListOf<Contact>()
+        val listContactQuery    = dbContactsQuery.selectAllContacts().executeAsList()
+
+        for (index in listContactQuery.indices){
+
+            val queryRol = Contact(
+                contactID                   = listContactQuery[index].contactID,
+                contactFirstName            = listContactQuery[index].contactFirstName,
+                contactLastName             = listContactQuery[index].contactLastName,
+                contactCountryName          = null,
+                contactEMail                = null,
+                contactPhoneNumber          = null,
+                contactLocalStorageStats    = true
+            )
+            list.add(queryRol)
+        }
+        return list
+    }
+
+    fun getContactEmails(contactId: Long): List<ContactEmail>{
+        val list = mutableListOf<ContactEmail>()
+        val listEmailsQuery = dbContactEmailQuery.selectContactEmail(contactId).executeAsList()
+
+        for (index in listEmailsQuery.indices){
+            list.add (
+                ContactEmail(
+                contactEmailId      = listEmailsQuery[index].contactEmailId,
+                contactId           = listEmailsQuery[index].contactId,
+                email               = listEmailsQuery[index].email,
+                contactEmailType    = listEmailsQuery[index].dataTypeName
+            ))
+        }
+        return list
+    }
+
+    fun getContactPhones(contactId: Long): List<ContactPhone>{
+        val list = mutableListOf<ContactPhone>()
+        val listPhonesQuery = dbContactPhoneDBQueries.selectContactPhone(contactId).executeAsList()
+
+        for (index in listPhonesQuery.indices){
+            list.add( ContactPhone(
+                contactPhoneId      = listPhonesQuery[index].contactPhoneId,
+                contactId           = listPhonesQuery[index].contactId,
+                phone               = listPhonesQuery[index].phone,
+                contactPhoneType    = listPhonesQuery[index].dataTypeName
+            ))
+        }
+        return list
+    }
+
     fun saveNewContact(contact: Contact) : Boolean{
         val status = true
         database.transaction {
             dbContactsQuery.insertContacts(
                 contactFirstName    = contact.contactFirstName,
                 contactLastName     = contact.contactLastName,
-                countryName         = contact.contactCountryName
+                countryName         = contact.contactCountryName!!
             )
-            for (i in contact.contactPhoneNumber.size-1 downTo 0){
+            for (i in contact.contactPhoneNumber!!.size-1 downTo 0){
                 dbContactPhoneDBQueries.insertNewContactPhone(
-                    phone = contact.contactPhoneNumber.get(i).phone,
-                    dataTypeName = contact.contactPhoneNumber.get(i).contactPhoneType
+                    phone = contact.contactPhoneNumber!!.get(i).phone,
+                    dataTypeName = contact.contactPhoneNumber!!.get(i).contactPhoneType
                 )
             }
-            for (i in contact.contactEMail.size-1 downTo 0){
+            for (i in contact.contactEMail!!.size-1 downTo 0){
                 dbContactEmailQuery.insertNewContactEmail(
-                    email = contact.contactEMail.get(i).email,
-                    dataTypeName = contact.contactEMail.get(i).contactEmailType
+                    email = contact.contactEMail!!.get(i).email,
+                    dataTypeName = contact.contactEMail!!.get(i).contactEmailType
                 )
             }
         }
@@ -89,13 +140,13 @@ open class DatabaseDB {
         dbContactsQuery.updateContacts(
             contact.contactFirstName,
             contact.contactLastName,
-            contact.contactCountryName,
+            contact.contactCountryName!!,
             contact.contactID!!
         )
     }
 
-    fun getContactList(): ArrayList<Contact>{
-        var list = arrayListOf<Contact>()
+    fun getContactListFull(): ArrayList<Contact>{
+        var list                = arrayListOf<Contact>()
         var listContactQuery    = listOf<SelectAllContacts>()
         var listContactEmail    = listOf<SelectAllEmails>()
         var listContactPhone    = listOf<SelectAllPhones>()
@@ -150,7 +201,7 @@ open class DatabaseDB {
                 contactPhoneNumber,
                 contactEmail,
                 contactLocalStorageStats,
-                contactBlob = null
+                null
             )
             list.add(queryRol)
         }
