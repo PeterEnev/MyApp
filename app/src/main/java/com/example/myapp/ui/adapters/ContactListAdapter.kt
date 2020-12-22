@@ -1,7 +1,9 @@
 package com.example.myapp.ui.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -23,6 +25,7 @@ import kotlin.collections.ArrayList
 
 
 private const val STRING_EMPTY                          = " "
+private const val BITMAP_FACTORY_OFFSET                 = 0
 
 class ContactListAdapter (private var contactList: ArrayList<Contact>,
                           private val listener: ContactAdapterListener,
@@ -64,8 +67,8 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
             }else{
                 recyclerContactName.text        = contact.contactFirstName
                 if(contact.contactPhoto != null){
-                    val bitmap = BitmapFactory.decodeByteArray(contact.contactPhoto, 0, contact.contactPhoto!!.size)
-                    imageView.setImageBitmap(bitmap)
+                    val photo = BitmapFactory.decodeByteArray(contact.contactPhoto, BITMAP_FACTORY_OFFSET, contact.contactPhoto!!.size)
+                    imageView.setImageBitmap(photo)
                 } else {
                     imageView.setImageResource(R.drawable.phone_android_black)
                 }
@@ -81,9 +84,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                     expandLayout(expandableLayout, contact)
                 }
             }
-            editBtn.setOnClickListener {
-                listener.onEditBtnListener(contact)
-            }
+            editBtn.setOnClickListener { listener.onEditBtnListener(contact) }
         }
 
         private fun expandLayout(expandableLayout: ConstraintLayout, contact: Contact){

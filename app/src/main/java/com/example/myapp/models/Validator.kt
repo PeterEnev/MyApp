@@ -48,11 +48,11 @@ class Validator {
         return EMAIL_REGEX.toRegex().matches(email);
     }
 
-    private fun isNameValid(name: String): Boolean {
+    fun isNameValid(name: String): Boolean {
         return NAME_REGEX.toRegex().matches(name)
     }
 
-    private fun isPhoneValid(phone: String): Boolean {
+    fun isPhoneValid(phone: String): Boolean {
         return PHONE_REGEX.toRegex().matches(phone)
     }
 

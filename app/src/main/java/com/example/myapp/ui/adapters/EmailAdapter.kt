@@ -1,5 +1,6 @@
 package com.example.myapp.ui.adapters
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,21 +8,14 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactEmail
+import com.example.myapp.models.Utils
+import com.example.myapp.models.Validator
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
 
 private const val EMPTY_STRING                      = ""
-private const val SPINNER_HOME                      = "Home"
-private const val SPINNER_MOBILE                    = "Mobile"
-private const val SPINNER_WORK                      = "Work"
 private const val DATA_CREATE                       = 3
-private       val EMAIL_REGEX = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-        "\\@" +
-        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-        "(" +
-        "\\." +
-        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-        ")+"
+private const val BASE_EMAIL_SIZE                   = 0
 
 class EmailAdapter(emailList: List<ContactEmail>,
                    private val listener: EmailAdapterListener):
@@ -56,7 +50,7 @@ class EmailAdapter(emailList: List<ContactEmail>,
 
         fun bindItem(email: ContactEmail){
             eMailInput.setText(email.email)
-            typeEmail.setSelection(selectedType(email.contactEmailType))
+            typeEmail.setSelection(Utils().selectedType(email.contactEmailType))
 
             if (adapterPosition == emails.size-1){
                 addEmailButton.visibility = View.VISIBLE
@@ -67,9 +61,9 @@ class EmailAdapter(emailList: List<ContactEmail>,
                 removeEmailButton.setOnClickListener { removeEmail(adapterPosition) }
             }
             eMailInput.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus && !EMAIL_REGEX.toRegex().matches(eMailInput.text!!)){
+                if (!hasFocus && Validator().isNameValid(eMailInput.text.toString())){
                     emailTxt.setErrorEnabled(true)
-                    emailTxt.error = "Please enter a valid Email Address"
+                    emailTxt.error = Resources.getSystem().getString(R.string.MSG_ENTER_VALID_EMAIL_ADDRESS)
                 } else {
                     emailTxt.setErrorEnabled(false)
                 }
@@ -87,27 +81,16 @@ class EmailAdapter(emailList: List<ContactEmail>,
         emails.add(emptyContactEmail)
         listener.addNewEmailRow(id)
         notifyDataSetChanged()
-        //notifyItemInserted(emails.size-1)
     }
 
     private fun removeEmail(position: Int){
         listener.deleteEmailRow(position)
         emails.removeAt(position)
-        if (emails.size == 0){
+        if (emails.size == BASE_EMAIL_SIZE){
             emails.add(emptyContactEmail)
-            listener.addNewEmailRow(0)
+            listener.addNewEmailRow(BASE_EMAIL_SIZE)
         }
         notifyDataSetChanged()
-        //notifyItemRemoved(position)
-    }
-
-    private fun selectedType(type: String) : Int{
-        return when (type){
-            SPINNER_HOME     -> 0
-            SPINNER_MOBILE   -> 1
-            SPINNER_WORK     -> 2
-            else             -> 3
-        }
     }
 }
 

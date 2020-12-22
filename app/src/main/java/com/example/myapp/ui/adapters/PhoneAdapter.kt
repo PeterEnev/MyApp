@@ -1,5 +1,6 @@
 package com.example.myapp.ui.adapters
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,14 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactPhone
+import com.example.myapp.models.Utils
+import com.example.myapp.models.Validator
 import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
 
 private const val EMPTY_STRING              = ""
-private const val SPINNER_HOME              = "Home"
-private const val SPINNER_MOBILE            = "Mobile"
-private const val SPINNER_WORK              = "Work"
+private const val BASE_PHONE_SIZE           = 0
 private const val DATA_CREATE               = 3
 
 class PhoneAdapter (phoneList: List<ContactPhone>,
@@ -50,7 +51,7 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
 
         fun bindItems(phone: ContactPhone) {
             phoneInput.setText(phone.phone)
-            typePhone.setSelection(selectedType(phone.contactPhoneType))
+            typePhone.setSelection(Utils().selectedType(phone.contactPhoneType))
 
             if (adapterPosition == phones.size-1){
                 addPhoneButton.visibility = View.VISIBLE
@@ -62,9 +63,9 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
             }
 
             phoneInput.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus && phoneInput.text!!.count() !in 8..12){
+                if (!hasFocus && !Validator().isPhoneValid(phoneInput.text.toString())){
                     phoneTxt.setErrorEnabled(true)
-                    phoneTxt.error = "Please enter a valid Phone Number"
+                    phoneTxt.error = Resources.getSystem().getString(R.string.MSG_ENTER_VALID_PHONE_NUMBER)
                 } else {
                     phoneTxt.setErrorEnabled(false)
                 }
@@ -81,27 +82,16 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
         phones.add(emptyContactPhone)
         listener.addNewPhoneRow(id)
         notifyDataSetChanged()
-        //notifyItemInserted(phones.size-1)
     }
 
     private fun removePhone(position: Int){
         listener.deletePhoneRow(position)
         phones.removeAt(position)
-        if (phones.size == 0){
+        if (phones.size == BASE_PHONE_SIZE){
             phones.add(emptyContactPhone)
-            listener.addNewPhoneRow(0)
+            listener.addNewPhoneRow(BASE_PHONE_SIZE)
         }
         notifyDataSetChanged()
-        //notifyItemRemoved(position)
-    }
-
-    private fun selectedType(type: String) : Int{
-        return when (type){
-            SPINNER_HOME      -> 0
-            SPINNER_MOBILE    -> 1
-            SPINNER_WORK      -> 2
-            else              -> 3
-        }
     }
 }
 

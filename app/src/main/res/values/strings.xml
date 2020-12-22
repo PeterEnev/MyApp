@@ -35,7 +35,6 @@
     <string name="search_contact">                  Search Contact</string>
     <string name="search_country_dialog">           Search Country</string>
     <string name="type">                            type</string>
-    <string name="contact_phones">                  Phone : %s</string>
 
     <string-array name="type">
         <item>Home</item>
