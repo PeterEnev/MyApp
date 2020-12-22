@@ -1,5 +1,6 @@
 package com.example.myapp.ui.adapters
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -7,34 +8,31 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
-import com.example.myapp.models.ContactPhone
+import com.example.myapp.models.Utils
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.list_item_email.view.*
+import kotlinx.android.synthetic.main.list_item_phone.view.*
 import kotlinx.android.synthetic.main.recycler_contact.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlin.collections.ArrayList
 
 
-private const val STRING_EMPTY                          = ""
+private const val STRING_EMPTY                          = " "
 
 class ContactListAdapter (private var contactList: ArrayList<Contact>,
-                          private val listener: ContactAdapterListener) :
+                          private val listener: ContactAdapterListener,
+                          private val context: Context) :
                                 RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
-
-    var contactStatusExisting               = true
 
     fun updateList(newList: ArrayList<Contact>){
         contactList = newList
         notifyDataSetChanged()
     }
-
-    fun updateContactData(contact: Contact, position: Int){
-        contactList[position] = contact
-        //notifyItemChanged(position)
-
-    }
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -58,20 +56,9 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                                 RecyclerView.ViewHolder(itemView), LayoutContainer{
 
         fun bindItems(contact: Contact){
-//                for (row in contact.contactPhoneNumber.indices){
-//                    string += "Phone ${contact.contactPhoneNumber[row].contactPhoneType}  ${contact.contactPhoneNumber[row].phone} \n"
-//                }
-//                recyclerContactPhone.text = string
-//
-//                string = STRING_EMPTY
-//                for (row in contact.contactEMail.indices){
-//                    string += "Email ${contact.contactEMail[row].contactEmailType}  ${contact.contactEMail[row].email} \n"
-//                }
-//                recyclerContactMail.text        = string
-//                recyclerContactCountry.text     = contact.contactCountryName
 
             if (contact.contactLocalStorageStats){
-                recyclerContactName.text = contact.contactFirstName + " " + contact.contactLastName
+                recyclerContactName.text = contact.contactFirstName + STRING_EMPTY + contact.contactLastName
                 imageView.setImageResource(R.drawable.ic_contact_calendar_black)
                 editBtn.visibility = VISIBLE
             }else{
@@ -84,35 +71,55 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                 }
                 editBtn.visibility = GONE
             }
-
             expandableLayout.visibility = GONE
 
-
             itemView.setOnClickListener {
-                var string = STRING_EMPTY
-                if (contact.contactPhoneNumber == null && contact.contactEMail == null) {
-                    listener.getContactData(contact, adapterPosition)
-                }
-
-                for (row in contact.contactPhoneNumber!!.indices){
-                    string += "Phone ${contact.contactPhoneNumber!![row].contactPhoneType}  ${contact.contactPhoneNumber!![row].phone} \n"
-                }
-                recyclerContactPhone.text = string
-                string = STRING_EMPTY
-                for (row in contact.contactEMail!!.indices){
-                    string += "Email ${contact.contactEMail!![row].contactEmailType}  ${contact.contactEMail!![row].email} \n"
-                }
-                recyclerContactMail.text        = string
-
-                if (expandableLayout.visibility == GONE){
-                    expandableLayout.visibility = VISIBLE
-                }else{
-                    expandableLayout.visibility = GONE
+                if (contact.contactPhoneNumber == null && contact.contactEMail == null) runBlocking {
+                    contactList[adapterPosition] = async { listener.getContactData(contact, adapterPosition) }.await()
+                    expandLayout(expandableLayout, contactList[adapterPosition])
+                } else {
+                    expandLayout(expandableLayout, contact)
                 }
             }
             editBtn.setOnClickListener {
-                contactStatusExisting = true
                 listener.onEditBtnListener(contact)
+            }
+        }
+
+        private fun expandLayout(expandableLayout: ConstraintLayout, contact: Contact){
+            val listPhones  : LinearLayout  = includePhone
+            val listEmails  : LinearLayout  = includePhone
+            if (expandableLayout.visibility == GONE){
+                showData(listPhones, listEmails,  contact)
+                expandableLayout.visibility = VISIBLE
+            }else{
+                expandableLayout.visibility = GONE
+                listPhones.removeAllViews()
+                listEmails.removeAllViews()
+            }
+        }
+
+        private fun showData(listPhone: LinearLayout, listEmails: LinearLayout, contact: Contact){
+            val inflater = LayoutInflater.from(context)
+            for (index in contact.contactPhoneNumber!!.indices){
+                val rowView = inflater.inflate(R.layout.list_item_phone, null)
+                rowView.addPhoneButton.visibility = GONE
+                rowView.removePhoneButton.visibility = GONE
+                rowView.phoneInput.isEnabled = false
+                rowView.phoneInput.setText(contact.contactPhoneNumber!![index].phone)
+                rowView.typePhone.isEnabled = false
+                rowView.typePhone.setSelection(Utils().selectedType(contact.contactPhoneNumber!![index].contactPhoneType))
+                listPhone.addView(rowView)
+            }
+            for (index in contact.contactEMail!!.indices){
+                val rowView = inflater.inflate(R.layout.list_item_email, null)
+                rowView.addEmailButton.visibility = GONE
+                rowView.removeEmailButton.visibility = GONE
+                rowView.eMailInput.isEnabled = false
+                rowView.eMailInput.setText(contact.contactEMail!![index].email)
+                rowView.typeEmail.isEnabled = false
+                rowView.typeEmail.setSelection(Utils().selectedType(contact.contactEMail!![index].contactEmailType))
+                listEmails.addView(rowView)
             }
         }
     }
@@ -120,5 +127,5 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact)
-    fun getContactData(contact: Contact, position: Int)
+    fun getContactData(contact: Contact, position: Int):Contact
 }

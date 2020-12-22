@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun setContactList(data: ArrayList<Contact>){
         dataContactList                         = data
         dataContactListRenew                    = data
-        adapter                                 = ContactListAdapter(dataContactListRenew, this)
+        adapter                                 = ContactListAdapter(dataContactListRenew, this, this)
         mainActivityRecyclerView.adapter        = adapter
         mainActivityRecyclerView.layoutManager  = LinearLayoutManager(this)
 
@@ -107,9 +107,8 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
-    override fun getContactData(contact: Contact, position: Int) {
-        val contactWhitData =  mainPresenter.getContact(contact)
-        adapter.updateContactData(contactWhitData, position)
+    override fun getContactData(contact: Contact, position: Int): Contact {
+        return  mainPresenter.getContact(contact)
     }
 
     override fun toastErrorMsg() {

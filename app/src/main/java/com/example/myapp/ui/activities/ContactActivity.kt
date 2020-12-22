@@ -6,9 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
@@ -94,7 +96,6 @@ class ContactActivity :
                              EMPTY_STRING,
                              DATA_CREATE))
         }
-
 
         phoneAdapter                        = PhoneAdapter(contactPhoneList, this)
         emailAdapter                        = EmailAdapter(contactEmailList, this)

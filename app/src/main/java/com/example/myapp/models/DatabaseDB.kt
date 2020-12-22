@@ -27,7 +27,7 @@ open class DatabaseDB {
                 contactID                   = listContactQuery[index].contactID,
                 contactFirstName            = listContactQuery[index].contactFirstName,
                 contactLastName             = listContactQuery[index].contactLastName,
-                contactCountryName          = null,
+                contactCountryName          = listContactQuery[index].countryName,
                 contactEMail                = null,
                 contactPhoneNumber          = null,
                 contactLocalStorageStats    = true
