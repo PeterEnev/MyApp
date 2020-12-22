@@ -44,27 +44,27 @@ class PhoneContact {
             null
         )
 
-        val mimetypeIndex = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
-        val contactIdIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
-        val blobIndex = cursor.getColumnIndex(ContactsContract.Data.DATA15)
-        val nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-        val dataIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
-        val typeIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
+        val mimetypeIndex       = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
+        val contactIdIndex      = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
+        val blobIndex           = cursor.getColumnIndex(ContactsContract.Data.DATA15)
+        val nameIndex           = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+        val dataIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
+        val typeIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
 
-        var currentId = -1L
-        val names = mutableMapOf<Long, String>()
-        val phones = mutableListOf<ContactPhone>()
-        val emails = mutableListOf<ContactEmail>()
-        val blobArray = mutableMapOf<Long, ByteArray?>()
+        var currentId           = -1L
+        val names               = mutableMapOf<Long, String>()
+        val phones              = mutableListOf<ContactPhone>()
+        val emails              = mutableListOf<ContactEmail>()
+        val blobArray           = mutableMapOf<Long, ByteArray?>()
 
         while (cursor!!.moveToNext()) {
 
-            val id = cursor.getLong(contactIdIndex)
-            val mimetype = cursor.getString(mimetypeIndex)
-            val data = cursor.getString(dataIndex)
-            val type = cursor.getInt(typeIndex)
-            val name = cursor.getString(nameIndex)
-            val blob = cursor.getBlob(blobIndex)
+            val id              = cursor.getLong(contactIdIndex)
+            val mimetype        = cursor.getString(mimetypeIndex)
+            val data            = cursor.getString(dataIndex)
+            val type            = cursor.getInt(typeIndex)
+            val name            = cursor.getString(nameIndex)
+            val blob            = cursor.getBlob(blobIndex)
 
             if (cursor.isFirst) currentId = id
             if (currentId != id) currentId = id
@@ -73,19 +73,19 @@ class PhoneContact {
                 if (mimetype.contains(STRING_ITEM_PHONE)) {
                     phones.add(
                         ContactPhone(
-                            contactPhoneId = null,
-                            contactId = currentId,
-                            contactPhoneType = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            phone = data
+                            contactPhoneId      = null,
+                            contactId           = currentId,
+                            contactPhoneType    = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            phone               = data
                         )
                     )
                 } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
                     emails.add(
                         ContactEmail(
-                            contactEmailId = null,
-                            contactId = currentId,
-                            contactEmailType = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            email = data
+                            contactEmailId      = null,
+                            contactId           = currentId,
+                            contactEmailType    = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            email               = data
                         )
                     )
                 } else if (mimetype.contains(STRING_ITEM_PHOTO)) blobArray[currentId] = blob
@@ -100,10 +100,10 @@ class PhoneContact {
                 if (phones[item].contactId == id) {
                     contactPhoneNumber.add(
                         ContactPhone(
-                            contactPhoneId = null,
-                            contactId = id,
-                            phone = phones[item].phone,
-                            contactPhoneType = phones[item].contactPhoneType
+                            contactPhoneId      = null,
+                            contactId           = id,
+                            phone               = phones[item].phone,
+                            contactPhoneType    = phones[item].contactPhoneType
                         )
                     )
                 }
@@ -113,28 +113,28 @@ class PhoneContact {
                 if (emails[item].contactId == id) {
                     contactEmail.add(
                         ContactEmail(
-                            contactEmailId = null,
-                            contactId = id,
-                            email = emails[item].email,
-                            contactEmailType = emails[item].contactEmailType
+                            contactEmailId      = null,
+                            contactId           = id,
+                            email               = emails[item].email,
+                            contactEmailType    = emails[item].contactEmailType
                         )
                     )
                 }
             }
-            var contactBlob: ByteArray? = null
+            var contactPhoto: ByteArray? = null
             for ((index, img) in blobArray) {
-                if (index == id) contactBlob = img
+                if (index == id) contactPhoto = img
             }
             val contactLocalStorageStats = false
             var contact = Contact(
-                id,
-                name,
-                lastName,
-                country,
-                contactPhoneNumber,
-                contactEmail,
-                contactLocalStorageStats,
-                contactBlob
+                contactID                   = id,
+                contactFirstName            = name,
+                contactLastName             = lastName,
+                contactCountryName          = country,
+                contactPhoneNumber          = contactPhoneNumber,
+                contactEMail                = contactEmail,
+                contactLocalStorageStats    = contactLocalStorageStats,
+                contactPhoto                = contactPhoto
             )
         }
         return contact

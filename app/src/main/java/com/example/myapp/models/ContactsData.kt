@@ -14,8 +14,8 @@ class ContactsData : DatabaseDB(){
     fun getContactPhonesAndEmails(contact: Contact): Contact{
 
         database.transaction {
-            contact.contactPhoneNumber = getContactPhones(contact.contactID!!)
-            contact.contactEMail = getContactEmails(contact.contactID!!)
+            contact.contactPhoneNumber  = getContactPhones(contact.contactID!!)
+            contact.contactEMail        = getContactEmails(contact.contactID!!)
         }
         return contact
     }
@@ -27,23 +27,11 @@ class ContactsData : DatabaseDB(){
 
         contactList.addAll(databaseContact)
 
-
         for (index in phoneContact.indices){
             if(!compareContact(databaseContact, phoneContact[index].contactFirstName))
                 contactList.add(phoneContact[index])
         }
         return@runBlocking contactList
-    }
-
-    private fun compareContact(list: ArrayList<Contact>, name: String) : Boolean{
-        var result = false
-        for (index in list.indices){
-            if((list[index].contactFirstName + EMPTY_STRING + list[index].contactLastName) == name) {
-                result = true
-                break
-            }
-        }
-        return result
     }
 
     fun updateContactData(contact: Contact) : Boolean{
@@ -76,6 +64,17 @@ class ContactsData : DatabaseDB(){
                     deleteEmail(contact.contactEMail!![index])
                     result = true
                 }
+            }
+        }
+        return result
+    }
+
+    private fun compareContact(list: ArrayList<Contact>, name: String) : Boolean{
+        var result = false
+        for (index in list.indices){
+            if((list[index].contactFirstName + EMPTY_STRING + list[index].contactLastName) == name) {
+                result = true
+                break
             }
         }
         return result

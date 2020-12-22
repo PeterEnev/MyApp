@@ -180,8 +180,6 @@ class ContactActivity :
                 when (textLayout) {
                     firstNameTxt    -> R.string.MSG_ENTER_VALID_FIRST_NAME
                     lastNameTxt     -> R.string.MSG_ENTER_VALID_LAST_NAME
-                    emailTxt        -> R.string.MSG_ENTER_VALID_EMAIL_ADDRESS
-                    phoneTxt        -> R.string.MSG_ENTER_VALID_PHONE_NUMBER
                     else            -> R.string.MSG_ENTER_COUNTRY
                 }
             )
@@ -284,18 +282,7 @@ class ContactActivity :
     }
 
     override fun toastMsg(result: Int) {
-        var message: String
-        when(result){
-            0 -> message = getString(R.string.MSG_SAVE_SUCCESSFUL)
-            1 -> message = getString(R.string.MSG_ENTER_VALID_FIRST_NAME)
-            2 -> message = getString(R.string.MSG_ENTER_VALID_LAST_NAME)
-            3 -> message = getString(R.string.MSG_ENTER_VALID_EMAIL_ADDRESS)
-            4 -> message = getString(R.string.MSG_ENTER_VALID_PHONE_NUMBER)
-            else -> {
-                message = getString(R.string.MSG_OOPS)
-            }
-        }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, Utils().getToastMsg(result), Toast.LENGTH_SHORT).show()
     }
 
     override fun navigateToMainActivity(result: Boolean) {

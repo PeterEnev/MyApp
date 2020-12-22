@@ -5,15 +5,17 @@ import com.example.myapp.*
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
+private const val DATABASE_NAME                                = "test.db"
+
 open class DatabaseDB {
-    val context                 :Context               = MyApplication.instansce
-    val databaseName            :String                = "test.db"
-    val driver                  :SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
-    val database                :Database              = Database(driver)
-    val dbContriesQuery         :CountyiesDBQueries    = database.countyiesDBQueries
-    val dbContactsQuery         :ContactsDBQueries     = database.contactsDBQueries
-    val dbContactEmailQuery     :ContactEmailDBQueries = database.contactEmailDBQueries
-    val dbContactPhoneDBQueries :ContactPhoneDBQueries = database.contactPhoneDBQueries
+    private val context                 :Context               = MyApplication.instansce
+    private val databaseName            :String                = DATABASE_NAME
+    private val driver                  :SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
+            val database                :Database              = Database(driver)
+    private val dbContriesQuery         :CountyiesDBQueries    = database.countyiesDBQueries
+    private val dbContactsQuery         :ContactsDBQueries     = database.contactsDBQueries
+    private val dbContactEmailQuery     :ContactEmailDBQueries = database.contactEmailDBQueries
+    private val dbContactPhoneDBQueries :ContactPhoneDBQueries = database.contactPhoneDBQueries
 
 
     fun getContactList(): ArrayList<Contact>{
@@ -76,16 +78,16 @@ open class DatabaseDB {
                 contactLastName     = contact.contactLastName,
                 countryName         = contact.contactCountryName!!
             )
-            for (i in contact.contactPhoneNumber!!.size-1 downTo 0){
+            for (index in contact.contactPhoneNumber!!.size-1 downTo 0){
                 dbContactPhoneDBQueries.insertNewContactPhone(
-                    phone = contact.contactPhoneNumber!!.get(i).phone,
-                    dataTypeName = contact.contactPhoneNumber!!.get(i).contactPhoneType
+                    phone = contact.contactPhoneNumber!!.get(index).phone,
+                    dataTypeName = contact.contactPhoneNumber!!.get(index).contactPhoneType
                 )
             }
-            for (i in contact.contactEMail!!.size-1 downTo 0){
+            for (index in contact.contactEMail!!.size-1 downTo 0){
                 dbContactEmailQuery.insertNewContactEmail(
-                    email = contact.contactEMail!!.get(i).email,
-                    dataTypeName = contact.contactEMail!!.get(i).contactEmailType
+                    email = contact.contactEMail!!.get(index).email,
+                    dataTypeName = contact.contactEMail!!.get(index).contactEmailType
                 )
             }
         }
@@ -158,14 +160,14 @@ open class DatabaseDB {
         }
 
 
-        for (i in 0 until listContactQuery.size){
-            val contactID               = listContactQuery[i].contactID
-            val contactFirstName        = listContactQuery[i].contactFirstName
-            val contactLastName         = listContactQuery[i].contactLastName
-            val contactCountryName      = listContactQuery[i].countryName
+        for (index in listContactQuery.indices){
+            val contactID               = listContactQuery[index].contactID
+            val contactFirstName        = listContactQuery[index].contactFirstName
+            val contactLastName         = listContactQuery[index].contactLastName
+            val contactCountryName      = listContactQuery[index].countryName
 
             var contactPhoneNumber      = mutableListOf<ContactPhone>()
-            for (item in 0 until listContactPhone.size){
+            for (item in listContactPhone.indices){
                 if (listContactPhone[item].contactId == contactID){
                     contactPhoneNumber.add(
                         ContactPhone(
@@ -179,7 +181,7 @@ open class DatabaseDB {
             }
 
             var contactEmail            = mutableListOf<ContactEmail>()
-            for (item in 0 until listContactEmail.size){
+            for (item in listContactEmail.indices){
                 if (listContactEmail[item].contactId == contactID){
                     contactEmail.add(
                         ContactEmail(
@@ -191,17 +193,15 @@ open class DatabaseDB {
                 }
             }
 
-            val contactLocalStorageStats       = true
-
             val queryRol = Contact(
-                contactID,
-                contactFirstName,
-                contactLastName,
-                contactCountryName,
-                contactPhoneNumber,
-                contactEmail,
-                contactLocalStorageStats,
-                null
+                contactID                   = contactID,
+                contactFirstName            = contactFirstName,
+                contactLastName             = contactLastName,
+                contactCountryName          = contactCountryName,
+                contactPhoneNumber          = contactPhoneNumber,
+                contactEMail                = contactEmail,
+                contactLocalStorageStats    = true,
+                contactPhoto                = null
             )
             list.add(queryRol)
         }
@@ -212,11 +212,11 @@ open class DatabaseDB {
         val countryList         = ArrayList<Country>()
         val listQuery           = dbContriesQuery.selectAll().executeAsList()
 
-        for(i in 0 until listQuery.size){
-            val coutryId        = listQuery[i].countryCodeID
-            val countryName     = listQuery[i].countryName
-            val countryPrefih   = listQuery[i].countryPrefix
-            val queryRol        = Country(coutryId, countryName, countryPrefih)
+        for(index in listQuery.indices){
+            val countryId        = listQuery[index].countryCodeID
+            val countryName     = listQuery[index].countryName
+            val countryPrefix   = listQuery[index].countryPrefix
+            val queryRol        = Country(countryId, countryName, countryPrefix)
             countryList += queryRol
         }
         return countryList
