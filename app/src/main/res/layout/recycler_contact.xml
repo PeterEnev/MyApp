@@ -53,49 +53,22 @@
             android:visibility                          ="visible">
 
             <LinearLayout
-                android:id="@+id/includePhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/includeEmail"
+                android:id                              ="@+id/includePhone"
+                android:layout_width                    ="match_parent"
+                android:layout_height                   ="wrap_content"
+                android:orientation                     ="vertical"
+                app:layout_constraintBottom_toTopOf     ="@+id/includeEmail"
                 app:layout_constraintStart_toStartOf    ="parent"
                 app:layout_constraintEnd_toEndOf        ="parent"/>
 
             <LinearLayout
-                android:id="@+id/includeEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:id                              ="@+id/includeEmail"
+                android:layout_width                    ="match_parent"
+                android:layout_height                   ="wrap_content"
+                android:orientation                     ="vertical"
                 app:layout_constraintTop_toBottomOf     ="@+id/includePhone"
                 app:layout_constraintStart_toStartOf    ="parent"
                 app:layout_constraintEnd_toEndOf        ="parent"/>
-
-
-<!--            <TextView-->
-<!--                android:id                              ="@+id/recyclerContactPhone"-->
-<!--                android:layout_width                    ="wrap_content"-->
-<!--                android:layout_height                   ="wrap_content"-->
-<!--                android:text                            ="@string/phone"-->
-<!--                android:layout_marginStart              ="60dp"-->
-<!--                app:layout_constraintStart_toStartOf    ="parent"-->
-<!--                app:layout_constraintTop_toTopOf        ="parent"/>-->
-
-<!--            <TextView-->
-<!--                android:id                              ="@+id/recyclerContactMail"-->
-<!--                android:layout_width                    ="wrap_content"-->
-<!--                android:layout_height                   ="wrap_content"-->
-<!--                app:layout_constraintTop_toBottomOf=    "@+id/recyclerContactPhone"-->
-<!--                app:layout_constraintStart_toStartOf    ="@+id/recyclerContactPhone"-->
-<!--                android:text                            ="@string/email"/>-->
-
-<!--            <TextView-->
-<!--                android:id                              ="@+id/recyclerContactCountry"-->
-<!--                android:layout_width                    ="wrap_content"-->
-<!--                android:layout_height                   ="wrap_content"-->
-<!--                android:text                            ="@string/country"-->
-<!--                app:layout_constraintTop_toBottomOf     ="@+id/recyclerContactMail"-->
-<!--                app:layout_constraintStart_toStartOf    ="@+id/recyclerContactPhone"/>-->
-
 
             <Button
                 android:id                              ="@+id/editBtn"

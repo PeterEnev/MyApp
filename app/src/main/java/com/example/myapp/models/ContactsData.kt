@@ -13,16 +13,20 @@ class ContactsData : DatabaseDB(){
 
     fun getContactPhonesAndEmails(contact: Contact): Contact{
 
-        database.transaction {
-            contact.contactPhoneNumber  = getContactPhones(contact.contactID!!)
-            contact.contactEMail        = getContactEmails(contact.contactID!!)
+        if (contact.contactLocalStorageStats) {
+            database.transaction {
+                contact.contactPhoneNumber = getContactPhones(contact.contactID!!)
+                contact.contactEMail = getContactEmails(contact.contactID!!)
+            }
+            return contact
+        } else {
+            return PhoneContact().getContactData(contact)
         }
-        return contact
     }
 
     fun allContactData(): ArrayList<Contact> = runBlocking {
         val contactList         = arrayListOf<Contact>()
-        val phoneContact        = async { PhoneContact().getPhoneContact()  }.await()
+        val phoneContact        = async { PhoneContact().getAllNameAndPhoto()  }.await()
         val databaseContact     = async { getContactList()                  }.await()
 
         contactList.addAll(databaseContact)

@@ -36,28 +36,18 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id                              ="@+id/removeEmailButton"
-        android:layout_width                    ="38dp"
-        android:layout_height                   ="38dp"
-        android:background                      ="#00FFFFFF"
-        android:clickable                       ="true"
-        android:focusable                       ="true"
-        android:gravity                         ="end"
         android:src                             ="@drawable/remove_black_24dp"
         app:layout_constraintEnd_toEndOf        ="parent"
         app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
-        app:layout_constraintTop_toTopOf        ="parent" />
+        app:layout_constraintTop_toTopOf        ="parent"
+        style                                   ="@style/ListItemButton"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id                              ="@+id/addEmailButton"
-        android:layout_width                    ="38dp"
-        android:layout_height                   ="38dp"
-        android:gravity                         ="end"
-        android:focusable                       ="true"
-        android:clickable                       ="true"
-        android:background                      ="#00FFFFFF"
         android:src                             ="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf        ="parent"
         app:layout_constraintStart_toEndOf      ="@+id/emailTxt"
-        app:layout_constraintTop_toBottomOf     ="@+id/removeEmailButton" />
+        app:layout_constraintTop_toBottomOf     ="@+id/removeEmailButton"
+        style                                   ="@style/ListItemButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

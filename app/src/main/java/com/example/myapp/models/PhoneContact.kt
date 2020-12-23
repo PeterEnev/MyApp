@@ -22,17 +22,13 @@ class PhoneContact {
         val projection = arrayOf(
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.CONTACT_ID,
-            ContactsContract.Data.DATA15,
-            ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Contactables.DATA,
             ContactsContract.CommonDataKinds.Contactables.TYPE
-
         )
         val selection =
-            ContactsContract.Data.CONTACT_ID + " = ? " + "AND " + ContactsContract.Data.MIMETYPE + " in (?, ?, ?)"
+            ContactsContract.Data.CONTACT_ID + " = ? " + "AND " + ContactsContract.Data.MIMETYPE + " in ( ?, ?)"
         val selectionArgs = arrayOf(
             contact.contactID.toString(),
-            ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE,
             ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
             ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE
         )
@@ -46,16 +42,12 @@ class PhoneContact {
 
         val mimetypeIndex       = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
         val contactIdIndex      = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
-        val blobIndex           = cursor.getColumnIndex(ContactsContract.Data.DATA15)
-        val nameIndex           = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
         val dataIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
         val typeIndex           = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.TYPE)
 
         var currentId           = -1L
-        val names               = mutableMapOf<Long, String>()
         val phones              = mutableListOf<ContactPhone>()
         val emails              = mutableListOf<ContactEmail>()
-        val blobArray           = mutableMapOf<Long, ByteArray?>()
 
         while (cursor!!.moveToNext()) {
 
@@ -63,13 +55,10 @@ class PhoneContact {
             val mimetype        = cursor.getString(mimetypeIndex)
             val data            = cursor.getString(dataIndex)
             val type            = cursor.getInt(typeIndex)
-            val name            = cursor.getString(nameIndex)
-            val blob            = cursor.getBlob(blobIndex)
 
             if (cursor.isFirst) currentId = id
             if (currentId != id) currentId = id
             if (currentId == id) {
-                names[currentId] = name
                 if (mimetype.contains(STRING_ITEM_PHONE)) {
                     phones.add(
                         ContactPhone(
@@ -77,87 +66,24 @@ class PhoneContact {
                             contactId           = currentId,
                             contactPhoneType    = if (type == 1) STRING_HOME else STRING_MOBILE,
                             phone               = data
-                        )
-                    )
+                        ))
                 } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
                     emails.add(
                         ContactEmail(
-                            contactEmailId      = null,
-                            contactId           = currentId,
-                            contactEmailType    = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            email               = data
+                            contactEmailId = null,
+                            contactId = currentId,
+                            contactEmailType = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            email = data
                         )
                     )
-                } else if (mimetype.contains(STRING_ITEM_PHOTO)) blobArray[currentId] = blob
+                }
             }
         }
         cursor.close()
-        for ((id, name) in names) {
-            val lastName = STRING_EMPTY
-            val country = STRING_EMPTY
-            val contactPhoneNumber = mutableListOf<ContactPhone>()
-            for (item in 0 until phones.size) {
-                if (phones[item].contactId == id) {
-                    contactPhoneNumber.add(
-                        ContactPhone(
-                            contactPhoneId      = null,
-                            contactId           = id,
-                            phone               = phones[item].phone,
-                            contactPhoneType    = phones[item].contactPhoneType
-                        )
-                    )
-                }
-            }
-            val contactEmail = mutableListOf<ContactEmail>()
-            for (item in 0 until emails.size) {
-                if (emails[item].contactId == id) {
-                    contactEmail.add(
-                        ContactEmail(
-                            contactEmailId      = null,
-                            contactId           = id,
-                            email               = emails[item].email,
-                            contactEmailType    = emails[item].contactEmailType
-                        )
-                    )
-                }
-            }
-            var contactPhoto: ByteArray? = null
-            for ((index, img) in blobArray) {
-                if (index == id) contactPhoto = img
-            }
-            val contactLocalStorageStats = false
-            var contact = Contact(
-                contactID                   = id,
-                contactFirstName            = name,
-                contactLastName             = lastName,
-                contactCountryName          = country,
-                contactPhoneNumber          = contactPhoneNumber,
-                contactEMail                = contactEmail,
-                contactLocalStorageStats    = contactLocalStorageStats,
-                contactPhoto                = contactPhoto
-            )
-        }
+        contact.contactPhoneNumber = phones
+        contact.contactEMail = emails
         return contact
     }
-//        while (cursor!!.moveToNext()) {
-//
-//            val id          = cursor.getLong(contactIdIndex)
-//            val mimetype    = cursor.getString(mimetypeIndex)
-//            val data        = cursor.getString(dataIndex)
-//            val type        = cursor.getInt(typeIndex)
-//            val name        = cursor.getString(nameIndex)
-//            val blob        = cursor.getBlob(blobIndex)
-//
-//            println("id $id  >>  mimetype  $mimetype  >> data $data  >> type $type ")
-//            contact = Contact(
-//                contactID = id,
-//                contactPhoneNumber = data,
-//                contactEMail =
-//            )
-//        }
-//        cursor.close()
-//
-//        return contact
 
     fun getAllNameAndPhoto() : ArrayList<Contact> {
         val allNameAndPhotoList = arrayListOf<Contact>()

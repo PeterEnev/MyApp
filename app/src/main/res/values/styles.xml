@@ -60,6 +60,15 @@
         <item name="android:paddingEnd">        20dp</item>
     </style>
 
+    <style name="ListItemButton" parent="AppTheme">
+        <item name="android:layout_width">      38dp</item>
+        <item name="android:layout_height">     38dp</item>
+        <item name="android:background">        #00FFFFFF</item>
+        <item name="android:clickable">         true</item>
+        <item name="android:focusable">         true</item>
+        <item name="android:gravity">           end</item>
+    </style>
+
 
     <style name="MyApp.Button" parent="Widget.MaterialComponents.Button">
         <!--<item name="android:background">@color/buttonBackground</item>-->
