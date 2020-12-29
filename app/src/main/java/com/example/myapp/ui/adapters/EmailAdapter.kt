@@ -1,5 +1,6 @@
 package com.example.myapp.ui.adapters
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ private const val DATA_CREATE                       = 3
 private const val BASE_EMAIL_SIZE                   = 0
 
 class EmailAdapter(emailList: List<ContactEmail>,
+                   private val context: Context,
                    private val listener: EmailAdapterListener):
     RecyclerView.Adapter<EmailAdapter.ViewHolder>(){
 
@@ -63,7 +65,7 @@ class EmailAdapter(emailList: List<ContactEmail>,
             eMailInput.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus && Validator().isNameValid(eMailInput.text.toString())){
                     emailTxt.setErrorEnabled(true)
-                    emailTxt.error = Resources.getSystem().getString(R.string.MSG_ENTER_VALID_EMAIL_ADDRESS)
+                    emailTxt.error = context.getString(R.string.MSG_ENTER_VALID_EMAIL_ADDRESS)
                 } else {
                     emailTxt.setErrorEnabled(false)
                 }

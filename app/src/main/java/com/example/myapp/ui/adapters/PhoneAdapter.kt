@@ -1,5 +1,6 @@
 package com.example.myapp.ui.adapters
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ private const val BASE_PHONE_SIZE           = 0
 private const val DATA_CREATE               = 3
 
 class PhoneAdapter (phoneList: List<ContactPhone>,
+                    private val context: Context,
                     private val listener: PhoneAdapterListener):
     RecyclerView.Adapter<PhoneAdapter.ViewHolder>(){
 
@@ -65,7 +67,7 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
             phoneInput.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus && !Validator().isPhoneValid(phoneInput.text.toString())){
                     phoneTxt.setErrorEnabled(true)
-                    phoneTxt.error = Resources.getSystem().getString(R.string.MSG_ENTER_VALID_PHONE_NUMBER)
+                    phoneTxt.error = context.getString(R.string.MSG_ENTER_VALID_PHONE_NUMBER)
                 } else {
                     phoneTxt.setErrorEnabled(false)
                 }

@@ -89,14 +89,14 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
         private fun expandLayout(expandableLayout: ConstraintLayout, contact: Contact){
             val listPhones  : LinearLayout  = includePhone
-            val listEmails  : LinearLayout  = includePhone
+            val listEmails  : LinearLayout  = includeEmail
+            listPhones.removeAllViews()
+            listEmails.removeAllViews()
             if (expandableLayout.visibility == GONE){
                 showData(listPhones, listEmails,  contact)
                 expandableLayout.visibility = VISIBLE
             }else{
                 expandableLayout.visibility = GONE
-                listPhones.removeAllViews()
-                listEmails.removeAllViews()
             }
         }
 

@@ -97,8 +97,8 @@ class ContactActivity :
                              DATA_CREATE))
         }
 
-        phoneAdapter                        = PhoneAdapter(contactPhoneList, this)
-        emailAdapter                        = EmailAdapter(contactEmailList, this)
+        phoneAdapter                        = PhoneAdapter(contactPhoneList, this, this)
+        emailAdapter                        = EmailAdapter(contactEmailList, this, this)
         emailRecyclerView.adapter           = emailAdapter
         emailRecyclerView.layoutManager     = LinearLayoutManager(this)
 
