@@ -1,10 +1,12 @@
 package com.example.myapp.presenters
 
+import com.example.myapp.data.DatabaseDB
+import com.example.myapp.helperClasses.ContactsData
+import com.example.myapp.helperClasses.Validator
 import com.example.myapp.models.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
-import javax.xml.transform.Result
 
 private const val TIME_OUT_IN_MILLISECONDS              = 3000L
 private const val CODE_DATA_VALID                       = 0
@@ -20,7 +22,7 @@ class ContactPresenter(private val contactView: ContactView) {
     fun saveContact(contact: Contact) = runBlocking {
         val checkValid = Validator().checkContact(contact)
         if (checkValid == CODE_DATA_VALID){
-            when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){DatabaseDB().saveNewContact(contact)}){
+            when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ DatabaseDB().saveNewContact(contact)}){
                 null -> contactView.toastMsg(CODE_MSG_TIMEOUT)
                 else -> contactView.navigateToMainActivity(result)
             }
@@ -32,7 +34,7 @@ class ContactPresenter(private val contactView: ContactView) {
     fun editContact(contact: Contact) = runBlocking{
         val checkValid = Validator().checkContact(contact)
         if (checkValid == CODE_DATA_VALID) {
-            when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ContactsData().updateContactData(contact)}){
+            when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ ContactsData().updateContactData(contact)}){
                 null -> contactView.toastMsg(CODE_MSG_TIMEOUT)
                 else -> contactView.navigateToMainActivity(result)
             }

@@ -1,5 +1,8 @@
-package com.example.myapp.models
+package com.example.myapp.helperClasses
 
+import com.example.myapp.models.Contact
+import com.example.myapp.data.DatabaseDB
+import com.example.myapp.data.PhoneContact
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
@@ -11,7 +14,7 @@ private const val EMPTY_STRING                      = " "
 
 class ContactsData : DatabaseDB(){
 
-    fun getContactPhonesAndEmails(contact: Contact): Contact{
+    fun getContactPhonesAndEmails(contact: Contact): Contact {
 
         if (contact.contactLocalStorageStats) {
             database.transaction {

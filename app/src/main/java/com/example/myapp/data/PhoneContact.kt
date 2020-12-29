@@ -1,8 +1,11 @@
-package com.example.myapp.models
+package com.example.myapp.data
 
 import android.content.Context
 import android.provider.ContactsContract
 import com.example.myapp.MyApplication
+import com.example.myapp.models.Contact
+import com.example.myapp.models.ContactEmail
+import com.example.myapp.models.ContactPhone
 
 
 private const val STRING_EMPTY                          = ""
@@ -66,7 +69,8 @@ class PhoneContact {
                             contactId           = currentId,
                             contactPhoneType    = if (type == 1) STRING_HOME else STRING_MOBILE,
                             phone               = data
-                        ))
+                        )
+                    )
                 } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
                     emails.add(
                         ContactEmail(
@@ -205,17 +209,21 @@ class PhoneContact {
             if (currentId == id) {
                 names[currentId] = name
                 if (mimetype.contains(STRING_ITEM_PHONE)) {
-                    phones.add(ContactPhone(
+                    phones.add(
+                        ContactPhone(
                             contactPhoneId      = null,
                             contactId           = currentId,
                             contactPhoneType    = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            phone               = data))
+                            phone               = data)
+                    )
                 } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
-                    emails.add(ContactEmail(
+                    emails.add(
+                        ContactEmail(
                             contactEmailId      = null,
                             contactId           = currentId,
                             contactEmailType    = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            email               = data))
+                            email               = data)
+                    )
                 } else if (mimetype.contains(STRING_ITEM_PHOTO)) blobArray[currentId] = blob
             }
         }

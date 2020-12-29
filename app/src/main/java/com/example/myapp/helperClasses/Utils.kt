@@ -1,4 +1,4 @@
-package com.example.myapp.models
+package com.example.myapp.helperClasses
 
 import android.content.res.Resources
 import com.example.myapp.R

@@ -6,15 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityContactBinding
+import com.example.myapp.helperClasses.Utils
 import com.example.myapp.models.*
 import com.example.myapp.presenters.ContactPresenter
 import com.example.myapp.presenters.ContactView
@@ -22,9 +21,6 @@ import com.example.myapp.ui.adapters.*
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
-import kotlinx.android.synthetic.main.list_item_email.*
-import kotlinx.android.synthetic.main.list_item_phone.*
-import kotlinx.coroutines.withTimeoutOrNull
 
 private const val DEFAULT_VALUE_NEW_CONTACT             = -1L
 private const val DATA_EXISTS                           = 0

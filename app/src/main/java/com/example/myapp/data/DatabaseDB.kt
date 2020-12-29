@@ -1,7 +1,11 @@
-package com.example.myapp.models
+package com.example.myapp.data
 
 import android.content.Context
 import com.example.myapp.*
+import com.example.myapp.models.Contact
+import com.example.myapp.models.ContactEmail
+import com.example.myapp.models.ContactPhone
+import com.example.myapp.models.Country
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
@@ -50,7 +54,8 @@ open class DatabaseDB {
                 contactId           = listEmailsQuery[index].contactId,
                 email               = listEmailsQuery[index].email,
                 contactEmailType    = listEmailsQuery[index].dataTypeName
-            ))
+            )
+            )
         }
         return list
     }
@@ -65,7 +70,8 @@ open class DatabaseDB {
                 contactId           = listPhonesQuery[index].contactId,
                 phone               = listPhonesQuery[index].phone,
                 contactPhoneType    = listPhonesQuery[index].dataTypeName
-            ))
+            )
+            )
         }
         return list
     }
@@ -189,7 +195,8 @@ open class DatabaseDB {
                             contactId           = listContactEmail[item].contactId,
                             email               = listContactEmail[item].email,
                             contactEmailType    = listContactEmail[item].dataTypeName
-                    ))
+                    )
+                    )
                 }
             }
 

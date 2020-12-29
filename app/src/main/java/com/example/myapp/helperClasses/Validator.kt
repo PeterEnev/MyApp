@@ -1,4 +1,6 @@
-package com.example.myapp.models
+package com.example.myapp.helperClasses
+
+import com.example.myapp.models.Contact
 
 class Validator {
     companion object {

@@ -1,9 +1,7 @@
 package com.example.myapp.ui.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -14,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
-import com.example.myapp.models.Utils
+import com.example.myapp.helperClasses.Utils
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.view.*
 import kotlinx.android.synthetic.main.list_item_phone.view.*

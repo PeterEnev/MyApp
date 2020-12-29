@@ -1,7 +1,6 @@
 package com.example.myapp.ui.adapters
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactEmail
-import com.example.myapp.models.Utils
-import com.example.myapp.models.Validator
+import com.example.myapp.helperClasses.Utils
+import com.example.myapp.helperClasses.Validator
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
 
