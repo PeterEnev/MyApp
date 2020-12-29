@@ -56,8 +56,9 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                            override val containerView: View?) :
                                 RecyclerView.ViewHolder(itemView), LayoutContainer{
 
-        fun bindItems(contact: Contact){
 
+
+        fun bindItems(contact: Contact){
             if (contact.contactLocalStorageStats){
                 recyclerContactName.text = contact.contactFirstName + STRING_EMPTY + contact.contactLastName
                 imageView.setImageResource(R.drawable.ic_contact_calendar_black)
@@ -76,8 +77,8 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
             itemView.setOnClickListener {
                 if (contact.contactPhoneNumber == null && contact.contactEMail == null) runBlocking {
-                    contactList[adapterPosition] = async { listener.getContactData(contact, adapterPosition) }.await()
-                    expandLayout(expandableLayout, contactList[adapterPosition])
+                    contactList[position] = async { listener.getContactData(contact, adapterPosition) }.await()
+                    expandLayout(expandableLayout, contactList[position])
                 } else {
                     expandLayout(expandableLayout, contact)
                 }
