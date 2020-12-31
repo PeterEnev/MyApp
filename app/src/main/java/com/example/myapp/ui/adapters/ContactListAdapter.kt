@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
 import com.example.myapp.helperClasses.Utils
-import com.example.myapp.presenters.MainPresenter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.view.*
 import kotlinx.android.synthetic.main.list_item_phone.view.*
@@ -35,7 +34,8 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
         contactList = newList
         notifyDataSetChanged()
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_contact, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_contact, parent, false))
 
     override fun onBindViewHolder(holder: ContactListAdapter.ViewHolder, position: Int) = holder.bindItems(contactList[position])
 

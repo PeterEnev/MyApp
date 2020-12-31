@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.recyclerview.widget.DiffUtil
 import com.example.myapp.R
 import com.example.myapp.models.Country
 import kotlinx.android.synthetic.main.list_item_country.view.*
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.list_item_country.view.*
 class CountryListAdapter(val context: Context,
                          var listCountry: ArrayList<Country>) : BaseAdapter() {
 
-    val inflater: LayoutInflater =
+    private val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     fun updateList(newListCountry: ArrayList<Country>){
@@ -21,7 +20,6 @@ class CountryListAdapter(val context: Context,
         notifyDataSetChanged()
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
         val rowView = inflater.inflate(R.layout.list_item_country, parent, false)
         val country = getItem(position) as Country
 
@@ -30,16 +28,10 @@ class CountryListAdapter(val context: Context,
         return rowView
     }
 
-    override fun getItem(position: Int): Any {
-        return listCountry[position]
-    }
+    override fun getItem(position: Int) = listCountry[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
-    override fun getCount(): Int {
-        return listCountry.size
-    }
+    override fun getCount() = listCountry.size
 }
 

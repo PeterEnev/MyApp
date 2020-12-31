@@ -33,21 +33,14 @@ class EmailAdapter(emailList: List<ContactEmail>,
         emails.addAll(emailList)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmailAdapter.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_email, parent, false)
-        return ViewHolder(view, view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_email, parent, false))
 
     override fun getItemCount() = emails.size
 
-    override fun onBindViewHolder(holder: EmailAdapter.ViewHolder, position: Int) {
-        holder.bindItem(emails[position])
-    }
+    override fun onBindViewHolder(holder: EmailAdapter.ViewHolder, position: Int) = holder.bindItem(emails[position])
 
-    inner class ViewHolder(itemView: View,
-                           override val containerView: View?):
-        RecyclerView.ViewHolder(itemView), LayoutContainer{
+    inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer{
 
         fun bindItem(email: ContactEmail){
             eMailInput.setText(email.email)

@@ -11,6 +11,7 @@ import com.example.myapp.ui.activities.MainActivity
 import kotlinx.coroutines.*
 
 private const val TIME_OUT_IN_MILLISECONDS               = 3000L
+private const val CODE_MSG_TIMEOUT                       = 6
 private const val STORAGE_PERMISSION_CODE                = 1
 
 
@@ -28,7 +29,7 @@ class MainPresenter(private val mainView: MainView) {
 
     fun setContactListNoPermission() = runBlocking {
         when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ DatabaseDB().getContactList()}){
-            null -> mainView.toastErrorMsg()
+            null -> mainView.toastErrorMsg(CODE_MSG_TIMEOUT)
             else -> mainView.setContactList(result)
         }
     }
@@ -41,5 +42,5 @@ class MainPresenter(private val mainView: MainView) {
 interface MainView{
     fun navigateToNewContactActivity()
     fun setContactList(contactList: ArrayList<Contact>)
-    fun toastErrorMsg()
+    fun toastErrorMsg(result: Int)
 }

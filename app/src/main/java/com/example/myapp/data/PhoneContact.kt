@@ -74,10 +74,10 @@ class PhoneContact {
                 } else if (mimetype.contains(STRING_ITEM_EMAIL)) {
                     emails.add(
                         ContactEmail(
-                            contactEmailId = null,
-                            contactId = currentId,
-                            contactEmailType = if (type == 1) STRING_HOME else STRING_MOBILE,
-                            email = data
+                            contactEmailId      = null,
+                            contactId           = currentId,
+                            contactEmailType    = if (type == 1) STRING_HOME else STRING_MOBILE,
+                            email               = data
                         )
                     )
                 }

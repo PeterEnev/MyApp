@@ -33,20 +33,14 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
         phones.addAll(phoneList)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhoneAdapter.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_phone, parent, false)
-        return ViewHolder(view, view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_phone, parent, false))
+
     override fun getItemCount() = phones.size
 
-    override fun onBindViewHolder(holder: PhoneAdapter.ViewHolder, position: Int) {
-        holder.bindItems(phones[position])
-    }
+    override fun onBindViewHolder(holder: PhoneAdapter.ViewHolder, position: Int) = holder.bindItems(phones[position])
 
-    inner class ViewHolder(itemView: View,
-                           override val containerView: View?)
-        :RecyclerView.ViewHolder(itemView), LayoutContainer {
+    inner class ViewHolder(override val containerView: View) :RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bindItems(phone: ContactPhone) {
             phoneInput.setText(phone.phone)

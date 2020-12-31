@@ -16,7 +16,7 @@ open class DatabaseDB {
     private val databaseName            :String                = DATABASE_NAME
     private val driver                  :SqlDriver             = AndroidSqliteDriver(Database.Schema, context, databaseName)
             val database                :Database              = Database(driver)
-    private val dbContriesQuery         :CountyiesDBQueries    = database.countyiesDBQueries
+    private val dbCountriesQuery        :CountyiesDBQueries    = database.countyiesDBQueries
     private val dbContactsQuery         :ContactsDBQueries     = database.contactsDBQueries
     private val dbContactEmailQuery     :ContactEmailDBQueries = database.contactEmailDBQueries
     private val dbContactPhoneDBQueries :ContactPhoneDBQueries = database.contactPhoneDBQueries
@@ -86,14 +86,14 @@ open class DatabaseDB {
             )
             for (index in contact.contactPhoneNumber!!.indices){
                 dbContactPhoneDBQueries.insertNewContactPhone(
-                    phone = contact.contactPhoneNumber!!.get(index).phone,
-                    dataTypeName = contact.contactPhoneNumber!!.get(index).contactPhoneType
+                    phone           = contact.contactPhoneNumber!!.get(index).phone,
+                    dataTypeName    = contact.contactPhoneNumber!!.get(index).contactPhoneType
                 )
             }
             for (index in contact.contactEMail!!.indices){
                 dbContactEmailQuery.insertNewContactEmail(
-                    email = contact.contactEMail!!.get(index).email,
-                    dataTypeName = contact.contactEMail!!.get(index).contactEmailType
+                    email           = contact.contactEMail!!.get(index).email,
+                    dataTypeName    = contact.contactEMail!!.get(index).contactEmailType
                 )
             }
         }
@@ -217,7 +217,7 @@ open class DatabaseDB {
 
     fun getCountryList(): ArrayList<Country>{
         val countryList         = ArrayList<Country>()
-        val listQuery           = dbContriesQuery.selectAll().executeAsList()
+        val listQuery           = dbCountriesQuery.selectAll().executeAsList()
 
         for(index in listQuery.indices){
             val countryId       = listQuery[index].countryCodeID
