@@ -84,13 +84,13 @@ open class DatabaseDB {
                 contactLastName     = contact.contactLastName,
                 countryName         = contact.contactCountryName!!
             )
-            for (index in contact.contactPhoneNumber!!.size-1 downTo 0){
+            for (index in contact.contactPhoneNumber!!.indices){
                 dbContactPhoneDBQueries.insertNewContactPhone(
                     phone = contact.contactPhoneNumber!!.get(index).phone,
                     dataTypeName = contact.contactPhoneNumber!!.get(index).contactPhoneType
                 )
             }
-            for (index in contact.contactEMail!!.size-1 downTo 0){
+            for (index in contact.contactEMail!!.indices){
                 dbContactEmailQuery.insertNewContactEmail(
                     email = contact.contactEMail!!.get(index).email,
                     dataTypeName = contact.contactEMail!!.get(index).contactEmailType
@@ -220,7 +220,7 @@ open class DatabaseDB {
         val listQuery           = dbContriesQuery.selectAll().executeAsList()
 
         for(index in listQuery.indices){
-            val countryId        = listQuery[index].countryCodeID
+            val countryId       = listQuery[index].countryCodeID
             val countryName     = listQuery[index].countryName
             val countryPrefix   = listQuery[index].countryPrefix
             val queryRol        = Country(countryId, countryName, countryPrefix)

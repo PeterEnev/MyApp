@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.Contact
 import com.example.myapp.helperClasses.Utils
+import com.example.myapp.presenters.MainPresenter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.view.*
 import kotlinx.android.synthetic.main.list_item_phone.view.*
@@ -34,29 +35,13 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
         contactList = newList
         notifyDataSetChanged()
     }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_contact, parent, false))
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ContactListAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_contact, parent, false)
-        return ViewHolder(view, view)
-    }
+    override fun onBindViewHolder(holder: ContactListAdapter.ViewHolder, position: Int) = holder.bindItems(contactList[position])
 
-    override fun onBindViewHolder(holder: ContactListAdapter.ViewHolder, position: Int) {
-        holder.bindItems(contactList[position])
-    }
+    override fun getItemCount() = contactList.size
 
-    override fun getItemCount(): Int {
-        return contactList.size
-    }
-
-    inner class ViewHolder(itemView: View,
-                           override val containerView: View?) :
-                                RecyclerView.ViewHolder(itemView), LayoutContainer{
-
-
+    inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer{
 
         fun bindItems(contact: Contact){
             if (contact.contactLocalStorageStats){
@@ -77,7 +62,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
             itemView.setOnClickListener {
                 if (contact.contactPhoneNumber == null && contact.contactEMail == null) runBlocking {
-                    contactList[position] = async { listener.getContactData(contact, adapterPosition) }.await()
+                    contactList[position] = async { listener.getContactData(contact) }.await()
                     expandLayout(expandableLayout, contactList[position])
                 } else {
                     expandLayout(expandableLayout, contact)
@@ -127,5 +112,5 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact)
-    fun getContactData(contact: Contact, position: Int):Contact
+    fun getContactData(contact: Contact):Contact
 }

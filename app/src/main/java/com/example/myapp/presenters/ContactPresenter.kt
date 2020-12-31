@@ -11,6 +11,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 private const val TIME_OUT_IN_MILLISECONDS              = 3000L
 private const val CODE_DATA_VALID                       = 0
 private const val CODE_MSG_TIMEOUT                      = 6
+private const val CODE_MSG_OPS                          = 7
 
 class ContactPresenter(private val contactView: ContactView) {
 
@@ -24,7 +25,7 @@ class ContactPresenter(private val contactView: ContactView) {
         if (checkValid == CODE_DATA_VALID){
             when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ DatabaseDB().saveNewContact(contact)}){
                 null -> contactView.toastMsg(CODE_MSG_TIMEOUT)
-                else -> contactView.navigateToMainActivity(result)
+                else -> contactView.navigateToMainActivity(if (result) checkValid else CODE_MSG_OPS)
             }
         } else {
             contactView.toastMsg(checkValid)
@@ -36,7 +37,7 @@ class ContactPresenter(private val contactView: ContactView) {
         if (checkValid == CODE_DATA_VALID) {
             when (val result = withTimeoutOrNull(TIME_OUT_IN_MILLISECONDS){ ContactsData().updateContactData(contact)}){
                 null -> contactView.toastMsg(CODE_MSG_TIMEOUT)
-                else -> contactView.navigateToMainActivity(result)
+                else -> contactView.navigateToMainActivity(if (result) checkValid else CODE_MSG_OPS)
             }
         } else {
             contactView.toastMsg(checkValid)
@@ -46,6 +47,6 @@ class ContactPresenter(private val contactView: ContactView) {
 
 interface ContactView{
     fun openChoiceCountryDialog(listCountry: ArrayList<Country>)
-    fun navigateToMainActivity(message: Boolean)
+    fun navigateToMainActivity(message: Int)
     fun toastMsg(checkResultStatus: Int)
 }

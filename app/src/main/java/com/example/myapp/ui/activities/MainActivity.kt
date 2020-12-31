@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +24,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
 private const val CONTACT_SERIALIZABLE_EXTRA            = "data"
-private const val STORAGE_PERMISSION_CODE               =  1
-private const val REQUEST_CODE_OK                       =  0
+private const val STORAGE_PERMISSION_CODE               = 1
+private const val REQUEST_CODE_OK                       = 0
 
 class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
@@ -40,24 +41,25 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
         mainPresenter = MainPresenter(this)
 
-        if(ContextCompat.checkSelfPermission(this, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            mainPresenter.setContactList()
-        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(READ_CONTACTS), STORAGE_PERMISSION_CODE)
-        }
+        init()
+    }
+
+    private fun init() {
+        mainPresenter.setContactList(this)
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == STORAGE_PERMISSION_CODE
             && ContextCompat.checkSelfPermission(this, READ_CONTACTS)
             == PackageManager.PERMISSION_GRANTED ){
-            mainPresenter.setContactList()
+            mainPresenter.setContactList(this)
         } else {
             mainPresenter.setContactListNoPermission()
         }
@@ -77,10 +79,10 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
         mainActivitySearchContactInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                for (i in 0 until dataContactList.size){
-                    if ((dataContactList[i].contactFirstName + " " + dataContactList[i].contactLastName).
+                for (index in dataContactList.indices){
+                    if ((dataContactList[index].contactFirstName + " " + dataContactList[index].contactLastName).
                         toUpperCase().contains(s.toString().toUpperCase())){
-                        dataContactListRenew.add(dataContactList[i])
+                        dataContactListRenew.add(dataContactList[index])
                     }
                 }
                 adapter.updateList(dataContactListRenew)
@@ -94,8 +96,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        dataContactList = mainPresenter.getContactList()
-        adapter.updateList(dataContactList)
+        mainPresenter.setContactList(this)
+        //dataContactList = mainPresenter.getContactList()
+        //adapter.updateList(dataContactList)
     }
 
     override fun onEditBtnListener(contact: Contact) {
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
-    override fun getContactData(contact: Contact, position: Int): Contact {
+    override fun getContactData(contact: Contact): Contact {
         return  mainPresenter.getContact(contact)
     }
 

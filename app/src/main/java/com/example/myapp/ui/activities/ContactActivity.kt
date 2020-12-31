@@ -69,14 +69,14 @@ class ContactActivity :
         if (contactStatusExisting){
             editingContact = intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
 
-            contactPhoneList        .addAll(editingContact.contactPhoneNumber!!)
-            contactEmailList        .addAll(editingContact.contactEMail!!)
+            contactPhoneList.addAll(editingContact.contactPhoneNumber!!)
+            contactEmailList.addAll(editingContact.contactEMail!!)
 
 
-            firstNameInput          .setText(editingContact.contactFirstName)
-            lastNameInput           .setText(editingContact.contactLastName)
-            countryInput            .setText(editingContact.contactCountryName)
-            saveEditContactBtn      .setText(R.string.BTN_EDIT)
+            firstNameInput.setText(editingContact.contactFirstName)
+            lastNameInput.setText(editingContact.contactLastName)
+            countryInput.setText(editingContact.contactCountryName)
+            saveEditContactBtn.setText(R.string.BTN_EDIT)
         } else {
             contactEmailList.add(
                 ContactEmail(null,
@@ -281,12 +281,8 @@ class ContactActivity :
         Toast.makeText(this, Utils().getToastMsg(result), Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToMainActivity(result: Boolean) {
-        val message = getString(R.string.MSG_SAVE_SUCCESSFUL)
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(RESULT, result)
-        setResult(Activity.RESULT_OK, intent)
+    override fun navigateToMainActivity(result: Int) {
+        toastMsg(result)
         finish()
     }
 }
