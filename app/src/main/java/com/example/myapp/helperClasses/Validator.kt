@@ -46,19 +46,11 @@ class Validator {
         return result
     }
 
-    private fun isEmailValid(email: String): Boolean {
-        return EMAIL_REGEX.toRegex().matches(email);
-    }
+    fun isNameValid(name: String) = NAME_REGEX.toRegex().matches(name)
 
-    fun isNameValid(name: String): Boolean {
-        return NAME_REGEX.toRegex().matches(name)
-    }
+    fun isPhoneValid(phone: String) = PHONE_REGEX.toRegex().matches(phone)
 
-    fun isPhoneValid(phone: String): Boolean {
-        return PHONE_REGEX.toRegex().matches(phone)
-    }
+    private fun isCountryValid(string: String) = STRING_REGEX.toRegex().matches(string)
 
-    private fun isCountryValid(string: String): Boolean {
-        return STRING_REGEX.toRegex().matches(string)
-    }
+    private fun isEmailValid(email: String) = EMAIL_REGEX.toRegex().matches(email)
 }

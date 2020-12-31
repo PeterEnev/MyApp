@@ -3,18 +3,17 @@ package com.example.myapp.ui.activities
 import android.Manifest.permission.READ_CONTACTS
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityMainBinding
+import com.example.myapp.helperClasses.Utils
 import com.example.myapp.models.Contact
 import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
@@ -47,10 +46,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     private fun init() {
         mainPresenter.setContactList(this)
         newContactFab.setOnClickListener { mainPresenter.newContactFabClick() }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
@@ -97,8 +92,6 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mainPresenter.setContactList(this)
-        //dataContactList = mainPresenter.getContactList()
-        //adapter.updateList(dataContactList)
     }
 
     override fun onEditBtnListener(contact: Contact) {
@@ -110,11 +103,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         startActivityForResult(intent, REQUEST_CODE_OK)
     }
 
-    override fun getContactData(contact: Contact): Contact {
-        return  mainPresenter.getContact(contact)
-    }
+    override fun getContactData(contact: Contact) = mainPresenter.getContact(contact)
 
-    override fun toastErrorMsg() {
-        Toast.makeText(this, getString(R.string.MSG_OOPS), Toast.LENGTH_SHORT).show()
+    override fun toastErrorMsg(resultCode: Int) {
+        Toast.makeText(this, Utils().getToastMsg(resultCode), Toast.LENGTH_SHORT).show()
     }
 }

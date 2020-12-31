@@ -33,11 +33,7 @@ private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
 private const val CONTACT_SERIALIZABLE_EXTRA            = "data"
 private const val RESULT                                = "result"
 
-class ContactActivity :
-    AppCompatActivity(),
-    ContactView,
-    EmailAdapterListener,
-    PhoneAdapterListener {
+class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, PhoneAdapterListener {
 
     private lateinit var bindingContact             : ActivityContactBinding
     private lateinit var contactPresenter           : ContactPresenter
@@ -57,13 +53,9 @@ class ContactActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingContact          =
-            DataBindingUtil.setContentView(this, R.layout.activity_contact)
-
+        bindingContact          = DataBindingUtil.setContentView(this, R.layout.activity_contact)
         contactPresenter        = ContactPresenter(this)
-
-        contactStatusExisting   =
-            intent.getBooleanExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, false)
+        contactStatusExisting   = intent.getBooleanExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, false)
 
 
         if (contactStatusExisting){

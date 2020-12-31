@@ -18,8 +18,8 @@ class ContactsData : DatabaseDB(){
 
         if (contact.contactLocalStorageStats) {
             database.transaction {
-                contact.contactPhoneNumber = getContactPhones(contact.contactID!!)
-                contact.contactEMail = getContactEmails(contact.contactID!!)
+                contact.contactPhoneNumber  = getContactPhones(contact.contactID!!)
+                contact.contactEMail        = getContactEmails(contact.contactID!!)
             }
             return contact
         } else {
@@ -30,7 +30,7 @@ class ContactsData : DatabaseDB(){
     fun allContactData(): ArrayList<Contact> = runBlocking {
         val contactList         = arrayListOf<Contact>()
         val phoneContact        = async { PhoneContact().getAllNameAndPhoto()  }.await()
-        val databaseContact     = async { getContactList()                  }.await()
+        val databaseContact     = async { getContactList()                     }.await()
 
         contactList.addAll(databaseContact)
 
