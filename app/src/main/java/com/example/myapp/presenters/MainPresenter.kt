@@ -20,7 +20,6 @@ class MainPresenter(private val mainView: MainView) {
         } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.requestPermissions(arrayOf(READ_CONTACTS), UtilsDefines.STORAGE_PERMISSION_CODE)
         }
-
     }
 
     fun setContactListNoPermission() = runBlocking {

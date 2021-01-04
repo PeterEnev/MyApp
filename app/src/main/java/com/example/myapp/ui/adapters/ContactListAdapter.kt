@@ -28,7 +28,7 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
                                 RecyclerView.Adapter<ContactListAdapter.ViewHolder>()  {
 
     private lateinit var layout: ConstraintLayout
-    private var contactPosition  = -1
+    private var contactPosition  = UtilsDefines.DEFAULT_VALUE_ADAPTER_POSITION
 
     fun updateList(newList: ArrayList<Contact>){
         contactList = newList

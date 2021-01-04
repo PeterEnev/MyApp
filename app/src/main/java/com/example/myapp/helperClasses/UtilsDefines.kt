@@ -15,6 +15,7 @@ class UtilsDefines {
 
         const val EMPTY_STRING                          = " "
         const val DEFAULT_VALUE_NEW_CONTACT             = -1L
+        const val DEFAULT_VALUE_ADAPTER_POSITION        = -1
         const val BITMAP_FACTORY_OFFSET                 = 0
         const val TIME_OUT_IN_MILLISECONDS              = 3000L
         const val STORAGE_PERMISSION_CODE               = 1
