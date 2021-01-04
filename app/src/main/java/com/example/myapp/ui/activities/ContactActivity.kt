@@ -21,15 +21,6 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
 
-private const val DEFAULT_VALUE_NEW_CONTACT             = -1L
-private const val DATA_UPDATE                           = 1
-private const val DATA_DELETE                           = 2
-private const val DATA_CREATE                           = 3
-
-private const val EMPTY_STRING                          = ""
-private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
-private const val RESULT                                = "result"
-
 class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, PhoneAdapterListener {
 
     private lateinit var bindingContact             : ActivityContactBinding
@@ -52,7 +43,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
         super.onCreate(savedInstanceState)
         bindingContact          = DataBindingUtil.setContentView(this, R.layout.activity_contact)
         contactPresenter        = ContactPresenter(this)
-        contactStatusExisting   = intent.getBooleanExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, false)
+        contactStatusExisting   = intent.getBooleanExtra(UtilsDefines.CONTACT_EXISTING_BOOLEAN_EXTRA, false)
 
 
         if (contactStatusExisting){
@@ -68,18 +59,20 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
             saveEditContactBtn.setText(R.string.BTN_EDIT)
         } else {
             contactEmailList.add(
-                ContactEmail(null,
-                             if (contactStatusExisting) editingContact.contactID else null,
-                             EMPTY_STRING,
-                             EMPTY_STRING,
-                             DATA_CREATE))
+                ContactEmail(
+                    null,
+                    if (contactStatusExisting) editingContact.contactID else null,
+                    UtilsDefines.EMPTY_STRING,
+                    UtilsDefines.EMPTY_STRING,
+                    UtilsDefines.CODE_DATA_CREATE))
 
             contactPhoneList.add(
-                ContactPhone(null,
-                             if (contactStatusExisting) editingContact.contactID else null,
-                             EMPTY_STRING,
-                             EMPTY_STRING,
-                             DATA_CREATE))
+                ContactPhone(
+                    null,
+                    if (contactStatusExisting) editingContact.contactID else null,
+                    UtilsDefines.EMPTY_STRING,
+                    UtilsDefines.EMPTY_STRING,
+                    UtilsDefines.CODE_DATA_CREATE))
         }
 
         phoneAdapter                        = PhoneAdapter(contactPhoneList, this, this)
@@ -93,7 +86,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
         firstNameInput.setOnFocusChangeListener { _, hasFocus ->
             if (contactStatusExisting && editingContact.contactFirstName != firstNameInput.text.toString()){
                 editingContact.contactFirstName     = firstNameInput.text.toString()
-                editingContact.contactEdit          = DATA_UPDATE
+                editingContact.contactEdit          = UtilsDefines.CODE_DATA_UPDATE
             }
             errorHandler(
                 firstNameTxt,
@@ -104,7 +97,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
         lastNameInput.setOnFocusChangeListener{ _, hasFocus ->
             if (contactStatusExisting && editingContact.contactLastName != lastNameInput.text.toString()){
                 editingContact.contactLastName      = lastNameInput.text.toString()
-                editingContact.contactEdit          = DATA_UPDATE
+                editingContact.contactEdit          = UtilsDefines.CODE_DATA_UPDATE
             }
             errorHandler(
                 lastNameTxt,
@@ -113,7 +106,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
         }
 
         countryInput.setOnClickListener {
-            if (contactStatusExisting) editingContact.contactEdit = DATA_UPDATE
+            if (contactStatusExisting) editingContact.contactEdit = UtilsDefines.CODE_DATA_UPDATE
             contactPresenter.getCountryNames()
         }
     }
@@ -136,7 +129,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
     }
 
     private fun getContactData() :Contact{
-        return Contact(contactID                   = DEFAULT_VALUE_NEW_CONTACT,
+        return Contact(contactID                   = UtilsDefines.DEFAULT_VALUE_NEW_CONTACT,
                        contactFirstName            = firstNameInput.text.toString(),
                        contactLastName             = lastNameInput.text.toString(),
                        contactCountryName          = countryInput.text.toString(),
@@ -176,36 +169,36 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
     override fun notifyDataChangedPhoneRow(position: Int, phone: String, type: String) {
         contactPhoneList[position].phone                = phone
         contactPhoneList[position].contactPhoneType     = type
-        if (contactPhoneList[position].phoneEdit != DATA_CREATE)
-            contactPhoneList[position].phoneEdit = DATA_UPDATE
+        if (contactPhoneList[position].phoneEdit != UtilsDefines.CODE_DATA_CREATE)
+            contactPhoneList[position].phoneEdit = UtilsDefines.CODE_DATA_UPDATE
     }
 
     override fun notifyDataChangedEmailRow(position: Int, email: String, type: String){
         contactEmailList[position].email                = email
         contactEmailList[position].contactEmailType     = type
-        if (contactEmailList[position].emailEdit != DATA_CREATE)
-            contactEmailList[position].emailEdit = DATA_UPDATE
+        if (contactEmailList[position].emailEdit != UtilsDefines.CODE_DATA_CREATE)
+            contactEmailList[position].emailEdit = UtilsDefines.CODE_DATA_UPDATE
     }
 
     override fun addNewPhoneRow(id: Int) {
         contactPhoneList.add(ContactPhone(null,
                                             if (contactStatusExisting) editingContact.contactID else null,
-                                            EMPTY_STRING,
-                                            EMPTY_STRING,
-                                            DATA_CREATE))
+                                            UtilsDefines.EMPTY_STRING,
+                                            UtilsDefines.EMPTY_STRING,
+                                            UtilsDefines.CODE_DATA_CREATE))
     }
 
     override fun addNewEmailRow(id: Int) {
         contactEmailList.add(ContactEmail(null,
                                             if (contactStatusExisting) editingContact.contactID else null,
-                                            EMPTY_STRING,
-                                            EMPTY_STRING,
-                                            DATA_CREATE))
+                                            UtilsDefines.EMPTY_STRING,
+                                            UtilsDefines.EMPTY_STRING,
+                                            UtilsDefines.CODE_DATA_CREATE))
     }
 
     override fun deletePhoneRow(position: Int) {
         if (contactPhoneList[position].contactPhoneId != null){
-            contactPhoneList[position].phoneEdit = DATA_DELETE
+            contactPhoneList[position].phoneEdit = UtilsDefines.CODE_DATA_DELETE
             deletedPhones.add(contactPhoneList[position])
             contactPhoneList.removeAt(position)
         } else {
@@ -215,7 +208,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
 
     override fun deleteEmailRow(position: Int) {
         if (contactEmailList[position].contactEmailId != null){
-            contactEmailList[position].emailEdit = DATA_DELETE
+            contactEmailList[position].emailEdit = UtilsDefines.CODE_DATA_DELETE
             deletedEmails.add(contactEmailList[position])
             contactEmailList.removeAt(position)
         } else {

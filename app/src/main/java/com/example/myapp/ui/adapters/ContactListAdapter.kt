@@ -116,5 +116,4 @@ class ContactListAdapter (private var contactList: ArrayList<Contact>,
 
 interface ContactAdapterListener{
     fun onEditBtnListener(contact: Contact)
-    fun getContactData(contact: Contact):Contact
 }

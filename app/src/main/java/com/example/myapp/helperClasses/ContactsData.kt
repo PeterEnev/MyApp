@@ -6,12 +6,6 @@ import com.example.myapp.data.PhoneContact
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-private const val DATA_EXISTS                       = 0
-private const val DATA_UPDATE                       = 1
-private const val DATA_DELETE                       = 2
-private const val DATA_CREATE                       = 3
-private const val EMPTY_STRING                      = " "
-
 class ContactsData : DatabaseDB(){
 
     fun getContactPhonesAndEmails(contact: Contact): Contact {
@@ -44,30 +38,30 @@ class ContactsData : DatabaseDB(){
     fun updateContactData(contact: Contact) : Boolean{
         var result = false
         database.transaction {
-            if(contact.contactEdit != DATA_EXISTS) {
+            if(contact.contactEdit != UtilsDefines.CODE_DATA_EXISTS) {
                 updateContact(contact)
                 result = true
             }
             for (index in contact.contactPhoneNumber!!.indices) {
-                if (contact.contactPhoneNumber!![index].phoneEdit == DATA_CREATE) {
+                if (contact.contactPhoneNumber!![index].phoneEdit == UtilsDefines.CODE_DATA_CREATE) {
                     addPhone(contact.contactPhoneNumber!![index])
                     result = true
-                } else if (contact.contactPhoneNumber!![index].phoneEdit == DATA_UPDATE) {
+                } else if (contact.contactPhoneNumber!![index].phoneEdit == UtilsDefines.CODE_DATA_UPDATE) {
                     updatePhone(contact.contactPhoneNumber!![index])
                     result = true
-                } else if (contact.contactPhoneNumber!![index].phoneEdit == DATA_DELETE) {
+                } else if (contact.contactPhoneNumber!![index].phoneEdit == UtilsDefines.CODE_DATA_DELETE) {
                     deletePhone(contact.contactPhoneNumber!![index])
                     result = true
                 }
             }
             for (index in contact.contactEMail!!.indices) {
-                if (contact.contactEMail!![index].emailEdit == DATA_CREATE) {
+                if (contact.contactEMail!![index].emailEdit == UtilsDefines.CODE_DATA_CREATE) {
                     addEmail(contact.contactEMail!![index])
                     result = true
-                } else if (contact.contactEMail!![index].emailEdit == DATA_UPDATE) {
+                } else if (contact.contactEMail!![index].emailEdit == UtilsDefines.CODE_DATA_UPDATE) {
                     updateEmail(contact.contactEMail!![index])
                     result = true
-                } else if (contact.contactEMail!![index].emailEdit == DATA_DELETE) {
+                } else if (contact.contactEMail!![index].emailEdit == UtilsDefines.CODE_DATA_DELETE) {
                     deleteEmail(contact.contactEMail!![index])
                     result = true
                 }
@@ -79,7 +73,7 @@ class ContactsData : DatabaseDB(){
     private fun compareContact(list: ArrayList<Contact>, name: String) : Boolean{
         var result = false
         for (index in list.indices){
-            if((list[index].contactFirstName + EMPTY_STRING + list[index].contactLastName) == name) {
+            if((list[index].contactFirstName + UtilsDefines.EMPTY_STRING + list[index].contactLastName) == name) {
                 result = true
                 break
             }

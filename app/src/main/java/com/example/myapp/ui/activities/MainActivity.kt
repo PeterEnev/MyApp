@@ -25,10 +25,6 @@ import kotlinx.android.synthetic.main.recycler_contact.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
-private const val STORAGE_PERMISSION_CODE               = 1
-private const val REQUEST_CODE_OK                       = 0
-
 class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     private lateinit var bindingMain                    : ActivityMainBinding
@@ -54,7 +50,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == STORAGE_PERMISSION_CODE
+        if(requestCode == UtilsDefines.STORAGE_PERMISSION_CODE
             && ContextCompat.checkSelfPermission(this, READ_CONTACTS)
             == PackageManager.PERMISSION_GRANTED ){
             mainPresenter.setContactList(this)
@@ -65,7 +61,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
 
     override fun navigateToNewContactActivity(){
         val intent = Intent(this, ContactActivity::class.java)
-        startActivityForResult(intent, REQUEST_CODE_OK)
+        startActivityForResult(intent, UtilsDefines.REQUEST_CODE_OK)
     }
 
     override fun setContactList(data: ArrayList<Contact>){
@@ -104,11 +100,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
         val bundle = Bundle()
         bundle.putSerializable(UtilsDefines.CONTACT_SERIALIZABLE_EXTRA, contact)
         intent.putExtras(bundle)
-        intent.putExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, true)
-        startActivityForResult(intent, REQUEST_CODE_OK)
+        intent.putExtra(UtilsDefines.CONTACT_EXISTING_BOOLEAN_EXTRA, true)
+        startActivityForResult(intent, UtilsDefines.REQUEST_CODE_OK)
     }
-
-    override fun getContactData(contact: Contact) = mainPresenter.getContact(contact)
 
     override fun toastErrorMsg(resultCode: Int) {
         Toast.makeText(this, Utils().getToastMsg(resultCode), Toast.LENGTH_SHORT).show()

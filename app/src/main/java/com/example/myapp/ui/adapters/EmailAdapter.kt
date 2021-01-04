@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactEmail
 import com.example.myapp.helperClasses.Utils
+import com.example.myapp.helperClasses.UtilsDefines
 import com.example.myapp.helperClasses.Validator
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_email.*
-
-private const val EMPTY_STRING                      = ""
-private const val DATA_CREATE                       = 3
-private const val BASE_EMAIL_SIZE                   = 0
 
 class EmailAdapter(emailList: List<ContactEmail>,
                    private val context: Context,
@@ -25,9 +22,9 @@ class EmailAdapter(emailList: List<ContactEmail>,
     private val emails                      = mutableListOf<ContactEmail>()
     private val emptyContactEmail           = ContactEmail(null,
                                                             null,
-                                                            EMPTY_STRING,
-                                                            EMPTY_STRING,
-                                                            DATA_CREATE)
+                                                            UtilsDefines.EMPTY_STRING,
+                                                            UtilsDefines.EMPTY_STRING,
+                                                            UtilsDefines.CODE_DATA_CREATE)
 
     init {
         emails.addAll(emailList)
@@ -80,9 +77,9 @@ class EmailAdapter(emailList: List<ContactEmail>,
     private fun removeEmail(position: Int){
         listener.deleteEmailRow(position)
         emails.removeAt(position)
-        if (emails.size == BASE_EMAIL_SIZE){
+        if (emails.size == UtilsDefines.BASE_EMAIL_SIZE){
             emails.add(emptyContactEmail)
-            listener.addNewEmailRow(BASE_EMAIL_SIZE)
+            listener.addNewEmailRow(UtilsDefines.BASE_EMAIL_SIZE)
         }
         notifyDataSetChanged()
     }

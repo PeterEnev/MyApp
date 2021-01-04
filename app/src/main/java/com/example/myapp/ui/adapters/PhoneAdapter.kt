@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.R
 import com.example.myapp.models.ContactPhone
 import com.example.myapp.helperClasses.Utils
+import com.example.myapp.helperClasses.UtilsDefines
 import com.example.myapp.helperClasses.Validator
 import kotlinx.android.synthetic.main.list_item_phone.*
 import kotlinx.android.extensions.LayoutContainer
-
-private const val EMPTY_STRING              = ""
-private const val BASE_PHONE_SIZE           = 0
-private const val DATA_CREATE               = 3
 
 class PhoneAdapter (phoneList: List<ContactPhone>,
                     private val context: Context,
@@ -25,9 +22,9 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
     private val phones                      = mutableListOf<ContactPhone>()
     private val emptyContactPhone           = ContactPhone( null,
                                                             null,
-                                                            EMPTY_STRING,
-                                                            EMPTY_STRING,
-                                                            DATA_CREATE)
+                                                            UtilsDefines.EMPTY_STRING,
+                                                            UtilsDefines.EMPTY_STRING,
+                                                            UtilsDefines.CODE_DATA_CREATE)
 
     init {
         phones.addAll(phoneList)
@@ -80,9 +77,9 @@ class PhoneAdapter (phoneList: List<ContactPhone>,
     private fun removePhone(position: Int){
         listener.deletePhoneRow(position)
         phones.removeAt(position)
-        if (phones.size == BASE_PHONE_SIZE){
+        if (phones.size == UtilsDefines.BASE_PHONE_SIZE){
             phones.add(emptyContactPhone)
-            listener.addNewPhoneRow(BASE_PHONE_SIZE)
+            listener.addNewPhoneRow(UtilsDefines.BASE_PHONE_SIZE)
         }
         notifyDataSetChanged()
     }
