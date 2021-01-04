@@ -14,15 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityMainBinding
 import com.example.myapp.helperClasses.Utils
+import com.example.myapp.helperClasses.UtilsDefines
 import com.example.myapp.models.Contact
 import com.example.myapp.presenters.MainPresenter
 import com.example.myapp.presenters.MainView
 import com.example.myapp.ui.adapters.ContactAdapterListener
 import com.example.myapp.ui.adapters.ContactListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.recycler_contact.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
-private const val CONTACT_SERIALIZABLE_EXTRA            = "data"
 private const val STORAGE_PERMISSION_CODE               = 1
 private const val REQUEST_CODE_OK                       = 0
 
@@ -68,7 +71,9 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun setContactList(data: ArrayList<Contact>){
         dataContactList                         = data
         dataContactListRenew                    = data
-        adapter                                 = ContactListAdapter(dataContactListRenew, this, this)
+        adapter                                 = ContactListAdapter(dataContactListRenew, this, this) {
+            adapter.updateContact(mainPresenter.getContact(it))
+        }
         mainActivityRecyclerView.adapter        = adapter
         mainActivityRecyclerView.layoutManager  = LinearLayoutManager(this)
 
@@ -97,7 +102,7 @@ class MainActivity : AppCompatActivity(), MainView, ContactAdapterListener {
     override fun onEditBtnListener(contact: Contact) {
         val intent = Intent(this, ContactActivity::class.java)
         val bundle = Bundle()
-        bundle.putSerializable(CONTACT_SERIALIZABLE_EXTRA, contact)
+        bundle.putSerializable(UtilsDefines.CONTACT_SERIALIZABLE_EXTRA, contact)
         intent.putExtras(bundle)
         intent.putExtra(CONTACT_EXISTING_BOOLEAN_EXTRA, true)
         startActivityForResult(intent, REQUEST_CODE_OK)

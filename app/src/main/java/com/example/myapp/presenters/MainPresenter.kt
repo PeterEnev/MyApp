@@ -36,7 +36,12 @@ class MainPresenter(private val mainView: MainView) {
 
     fun newContactFabClick() = mainView.navigateToNewContactActivity()
 
-    fun getContact(contact: Contact) = ContactsData().getContactPhonesAndEmails(contact)
+    fun getContact(contact: Contact) : Contact {
+        if (contact.contactPhoneNumber != null && contact.contactEMail != null)
+            return contact
+        else
+            return ContactsData().getContactPhonesAndEmails(contact)
+    }
 }
 
 interface MainView{

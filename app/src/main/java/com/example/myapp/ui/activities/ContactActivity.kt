@@ -1,8 +1,6 @@
 package com.example.myapp.ui.activities
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapp.R
 import com.example.myapp.databinding.ActivityContactBinding
 import com.example.myapp.helperClasses.Utils
+import com.example.myapp.helperClasses.UtilsDefines
 import com.example.myapp.models.*
 import com.example.myapp.presenters.ContactPresenter
 import com.example.myapp.presenters.ContactView
@@ -23,14 +22,12 @@ import kotlinx.android.synthetic.main.activity_contact.*
 import kotlinx.android.synthetic.main.country_search_dialog.*
 
 private const val DEFAULT_VALUE_NEW_CONTACT             = -1L
-private const val DATA_EXISTS                           = 0
 private const val DATA_UPDATE                           = 1
 private const val DATA_DELETE                           = 2
 private const val DATA_CREATE                           = 3
 
 private const val EMPTY_STRING                          = ""
 private const val CONTACT_EXISTING_BOOLEAN_EXTRA        = "existing"
-private const val CONTACT_SERIALIZABLE_EXTRA            = "data"
 private const val RESULT                                = "result"
 
 class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, PhoneAdapterListener {
@@ -59,7 +56,7 @@ class ContactActivity : AppCompatActivity(), ContactView, EmailAdapterListener, 
 
 
         if (contactStatusExisting){
-            editingContact = intent.getSerializableExtra(CONTACT_SERIALIZABLE_EXTRA) as Contact
+            editingContact = intent.getSerializableExtra(UtilsDefines.CONTACT_SERIALIZABLE_EXTRA) as Contact
 
             contactPhoneList.addAll(editingContact.contactPhoneNumber!!)
             contactEmailList.addAll(editingContact.contactEMail!!)

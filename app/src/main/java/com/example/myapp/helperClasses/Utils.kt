@@ -19,6 +19,7 @@ class Utils {
         private const val SPINNER_HOME                                  = "Home"
         private const val SPINNER_MOBILE                                = "Mobile"
         private const val SPINNER_WORK                                  = "Work"
+        private const val STRING_EMPTY                                  = " "
 
     }
     fun getToastMsg(codeMsg: Int): String{
@@ -41,5 +42,9 @@ class Utils {
             SPINNER_WORK      -> 2
             else              -> 3
         }
+    }
+
+    fun fullName(firstName: String, lastName: String?): String{
+        return if (lastName != null)  firstName + STRING_EMPTY + lastName else firstName
     }
 }
